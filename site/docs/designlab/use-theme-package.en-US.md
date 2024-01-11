@@ -10,7 +10,7 @@ After the theme is configured and published by the style configuration platform,
 
 ## Install
 
-```
+```bash
 npm i @arco-design/theme-line
 ```
 
@@ -26,12 +26,12 @@ Confirm whether the project needs to use **load on demand** for the style
 
 #### Need to load styles on demand
 
-Introduce the theme package through the [ArcoWebpack plugin](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-webpack-react/README.md) or [Arco Vite plugin](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-vite-react/README.md) (recommended `1.5.0` version and above)
+Introduce the theme package through the [Arco plugins](https://github.com/arco-design/arco-plugins/blob/main/README.md).
 
-Introduce the `@arco-design/webpack-plugin` plugin in the webpack configuration. Specify the theme package name through the `theme` field.
+Introduce the `@arco-plugins/webpack-react` plugin in the webpack configuration. Specify the theme package name through the `theme` field.
 
 ```js
-const ArcoWebpackPlugin = require('@arco-design/webpack-plugin');
+const ArcoWebpackPlugin = require('@arco-plugins/webpack-react');
 
 // webpack config
 {
@@ -59,6 +59,6 @@ When directly importing the css file, you need to check whether it is consistent
 
 1. #### The style configured using the developer mode does not take effect?
 
-If you use the on-demand loading of styles, please upgrade the ArcoWebpack plugin to at least version `1.5.0`.
+If you use the on-demand loading of styles, please upgrade the ArcoWebpack plugin to the latest version.
 
 If you don’t use styles to load on demand, please check if you have introduced the theme package `index.less` in your project.

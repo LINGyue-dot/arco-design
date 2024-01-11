@@ -1,3 +1,27 @@
+## 2.54.2
+
+2023-10-20
+
+### 💅 Style
+
+- Fix `Button.Group` border-radius style under single button.([#2294](https://github.com/arco-design/arco-design/pull/2294) [@bestlyg](https://github.com/bestlyg))
+
+## 2.52.0
+
+2023-08-18
+
+### 🐛 BugFix
+
+- Fix bug that after the `Button` component is set to `disabled`, the `onClick` event will still be triggered when the button is a link.([#2111](https://github.com/arco-design/arco-design/pull/2111) [@lio-mengxiang](https://github.com/lio-mengxiang))
+
+## 2.41.0
+
+2022-10-28
+
+### 💅 Style
+
+- Fix the bug that the border style of text buttons is wrong under `Button.Group`([#1515](https://github.com/arco-design/arco-design/pull/1515))
+
 ## 2.28.2
 
 2022-01-21

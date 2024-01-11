@@ -20,7 +20,6 @@ interface InnerYearPickerProps extends YearPickerProps {
   rangeValues?: Dayjs[];
   onSuperPrev?: () => void;
   onSuperNext?: () => void;
-  originMode?: 'date' | 'week' | 'month' | 'year' | 'quarter';
 }
 
 function YearPicker(props: InnerYearPickerProps) {
@@ -40,11 +39,10 @@ function YearPicker(props: InnerYearPickerProps) {
     onSuperNext,
     format,
     icons,
-    originMode,
     ...rest
   } = props;
 
-  const { locale: globalLocale, getPrefixCls } = useContext(ConfigContext);
+  const { locale: globalLocale, getPrefixCls, rtl } = useContext(ConfigContext);
   const DATEPICKER_LOCALE = merge(globalLocale.DatePicker, locale);
   const CALENDAR_LOCALE = DATEPICKER_LOCALE.Calendar;
 
@@ -87,7 +85,6 @@ function YearPicker(props: InnerYearPickerProps) {
         disabledDate={disabledDate}
         CALENDAR_LOCALE={CALENDAR_LOCALE}
         mode="year"
-        originMode={originMode}
         format={format}
       />
     );
@@ -101,15 +98,12 @@ function YearPicker(props: InnerYearPickerProps) {
         prefixCls={getPrefixCls('picker')}
         icons={icons}
         title={`${rows[0][1].name} - ${rows[3][2].name}`}
+        rtl={rtl}
         {...headerOperations}
       />
       {renderCalendar()}
     </div>
   );
 }
-
-YearPicker.defaultProps = {
-  pickerType: 'year',
-};
 
 export default YearPicker;

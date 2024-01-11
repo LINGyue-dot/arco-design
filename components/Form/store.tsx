@@ -1,11 +1,21 @@
+import React from 'react';
 import get from 'lodash/get';
 import setWith from 'lodash/setWith';
 import has from 'lodash/has';
 import omit from 'lodash/omit';
 import { cloneDeep, set, iterativelyGetKeys } from './utils';
-import { isArray, isObject, isString } from '../_util/is';
+import { isArray, isFunction, isObject, isString } from '../_util/is';
 import Control from './control';
-import { FieldError, FormProps, ValidateFieldsErrors, KeyType, FormValidateFn } from './interface';
+import {
+  FieldError,
+  FormProps,
+  ValidateFieldsErrors,
+  FieldState,
+  KeyType,
+  SubmitStatus,
+  FormValidateFn,
+  ValidateOptions,
+} from './interface';
 import promisify from './promisify';
 
 export type DeepPartial<T> = T extends object
@@ -43,9 +53,21 @@ class Store<
   FieldValue = FormData[keyof FormData],
   FieldKey extends KeyType = keyof FormData
 > {
+  // 表示的 Form 的提交状态而非单个字段的提交状态。
+  // 只有在触发表单 reset（原生 reset，而非当前的 resetFields） 时，才会回到  init 状态（目前没有支持 form.reset，所以没有这块逻辑）
+  private submitStatus: SubmitStatus = SubmitStatus.init;
+
   private registerFields: Control<FormData, FieldValue, FieldKey>[] = [];
 
+  // 所有 form item value 的变动，都会通知这里注册到的 watcher
   private registerWatchers: (() => void)[] = [];
+
+  // 所有 form item 内部 errors, validating, touched 状态的变化，都会通知这里注册到的 watcher
+  // TODO: 合并 registerWatchers
+  private registerStateWatchers: (() => void)[] = [];
+
+  // 所有 form 整体 的变动，都会通知这里注册到的 watcher
+  private registerFormWatchers: (() => void)[] = [];
 
   // 和formControl 的 touched属性不一样。 只要被改过的字段，这里就会存储。并且不会跟随formControl被卸载而清除。
   // reset 的时候清除
@@ -59,15 +81,32 @@ class Store<
     onValidateFail?: (errors: { [key in FieldKey]: FieldError<FieldValue> }) => void;
   } = {};
 
+  private notifyWatchers() {
+    this.registerWatchers.forEach((item) => {
+      item();
+    });
+  }
+
+  // 注册监听全局状态的 watcher
+  private notifyFormWatcher() {
+    this.registerFormWatchers.forEach((item) => {
+      item();
+    });
+  }
+
+  private notifyStateWatchers() {
+    this.registerStateWatchers.forEach((item) => {
+      item();
+    });
+  }
+
   private triggerValuesChange(value: Partial<FormData>) {
     if (value && Object.keys(value).length) {
       const { onValuesChange } = this.callbacks;
       onValuesChange && onValuesChange(value, this.getFields());
     }
 
-    this.registerWatchers.forEach((item) => {
-      item();
-    });
+    this.notifyWatchers();
   }
 
   private triggerTouchChange(value: Partial<FormData>) {
@@ -77,12 +116,33 @@ class Store<
     }
   }
 
+  // 告知 form 状态改变，进行状态收集
+  public innerCollectFormState = () => {
+    this.notifyStateWatchers();
+  };
+
   public innerSetCallbacks = (
     values: Pick<FormProps<FormData, FieldValue, FieldKey>, innerCallbackType> & {
       onValidateFail?: (errors: { [key in FieldKey]: FieldError<FieldValue> }) => void;
     }
   ) => {
     this.callbacks = values;
+  };
+
+  public registerFormWatcher = (item) => {
+    this.registerFormWatchers.push(item);
+
+    return () => {
+      this.registerFormWatchers = this.registerFormWatchers.filter((x) => x !== item);
+    };
+  };
+
+  public registerStateWatcher = (item) => {
+    this.registerStateWatchers.push(item);
+
+    return () => {
+      this.registerStateWatchers = this.registerStateWatchers.filter((x) => x !== item);
+    };
   };
 
   public registerWatcher = (item) => {
@@ -96,31 +156,39 @@ class Store<
   // 收集所有control字段，并在组件卸载时移除
   public registerField = (item: Control<FormData, FieldValue, FieldKey>) => {
     this.registerFields.push(item);
+    this.notifyWatchers();
 
     return () => {
       this.registerFields = this.registerFields.filter((x) => x !== item);
+      this.notifyWatchers();
     };
   };
 
   // hasField为true时，只返回传入field属性的control实例
-  private getRegisteredFields = (hasField?: boolean): Control<FormData, FieldValue, FieldKey>[] => {
+  // isFormList 目前只在校验时需要包含
+  // TODO formlist 实现缺陷，待优化
+  private getRegisteredFields = (
+    hasField?: boolean,
+    options?: { containFormList?: boolean }
+  ): Control<FormData, FieldValue, FieldKey>[] => {
     if (hasField) {
       return this.registerFields.filter(
-        (control) => control.hasFieldProps() && !control.props?.isFormList
+        (control) =>
+          control.hasFieldProps() && (options?.containFormList || !control.props?.isFormList)
       );
     }
     return this.registerFields;
   };
 
-  // 获取props.field === field 的contorl组件。
+  // 获取props.field === field 的control组件。
   public getRegisteredField = (field?: FieldKey) => {
     return this.registerFields.filter((x) => x.props.field === field)[0];
   };
 
-  // 通知所有的formitem进行更新。
-  // setfielValue: 外部调用setFieldsValue (setFieldValue等)方法触发更新
+  // 通知所有的FormItem进行更新。
+  // setFieldValue: 外部调用setFieldsValue (setFieldValue等)方法触发更新
   // innerSetValue: 控件例如Input，通过onChange事件触发的更新
-  // reset： 重置
+  // reset：重置
   private notify = (type: NotifyType, info: StoreChangeInfo<FieldKey>) => {
     if (type === 'setFieldValue' || (type === 'innerSetValue' && !info.ignore)) {
       // type = reset时，在reset函数里处理
@@ -217,6 +285,18 @@ class Store<
     return this.store;
   };
 
+  // 目前返回提交状态，后续统一维护 errors,warnings 后，这里可进行拓展
+  public innerGetStoreStatus = () => {
+    return {
+      submitStatus: this.submitStatus,
+    };
+  };
+
+  // 内部使用，返回原始对象，注入到组件的 value 都从这里获取值，cloneDeep 后的值每次引用地址是不同的
+  public innerGetFieldValue = (field: FieldKey) => {
+    return get(this.store, field);
+  };
+
   // 获取所有被操作过的字段
   public getTouchedFields = (): FieldKey[] => {
     return this.getRegisteredFields(true)
@@ -295,7 +375,7 @@ class Store<
   };
 
   public getFieldValue = (field: FieldKey): FieldValue => {
-    return get(this.store, field);
+    return cloneDeep(get(this.store, field));
   };
 
   // 获取单个字段的错误信息。
@@ -315,7 +395,7 @@ class Store<
         }
       });
     } else {
-      this.getRegisteredFields(true).forEach((item) => {
+      this.getRegisteredFields(true, { containFormList: true }).forEach((item) => {
         if (item.getErrors()) {
           errors[item.props.field] = item.getErrors();
         }
@@ -325,9 +405,7 @@ class Store<
   };
 
   public getFields = (): Partial<FormData> => {
-    const values = cloneDeep(this.store);
-
-    return values;
+    return cloneDeep(this.store);
   };
 
   public getFieldsValue = (fields?: FieldKey[]): Partial<FormData> => {
@@ -380,27 +458,52 @@ class Store<
     }
   };
 
+  // 这坨代码好烂啊。。有时间一定重构 。。 一定。。 一定！！！
   public validate: FormValidateFn<FormData, FieldValue, FieldKey> = promisify<FormData>(
     (
-      fieldsOrCallback?:
+      fieldsOrCallbackOrConfig?:
         | FieldKey[]
+        | ((errors?: ValidateFieldsErrors<FieldValue, FieldKey>, values?: FormData) => void)
+        | ValidateOptions,
+      cbOrConfig?:
+        | ValidateOptions
         | ((errors?: ValidateFieldsErrors<FieldValue, FieldKey>, values?: FormData) => void),
       cb?: (errors?: ValidateFieldsErrors<FieldValue, FieldKey>, values?: FormData) => void
     ) => {
-      let callback: (
+      const allItems = this.getRegisteredFields(true, {
+        containFormList: true,
+      });
+      const controlItems =
+        isArray(fieldsOrCallbackOrConfig) && fieldsOrCallbackOrConfig.length
+          ? allItems.filter((x) => fieldsOrCallbackOrConfig.indexOf(x.props.field) > -1)
+          : allItems;
+
+      const options = isObject(fieldsOrCallbackOrConfig)
+        ? (fieldsOrCallbackOrConfig as ValidateOptions)
+        : isObject(cbOrConfig)
+        ? (cbOrConfig as ValidateOptions)
+        : {};
+
+      const callback: (
         errors?: ValidateFieldsErrors<FieldValue, FieldKey>,
         values?: Partial<FormData>
-      ) => void = () => {};
-      let controlItems = this.getRegisteredFields(true);
+      ) => void = isFunction(fieldsOrCallbackOrConfig)
+        ? fieldsOrCallbackOrConfig
+        : isFunction(cbOrConfig)
+        ? cbOrConfig
+        : cb || (() => {});
 
-      if (isArray(fieldsOrCallback) && fieldsOrCallback.length > 0) {
-        controlItems = controlItems.filter((x) => fieldsOrCallback.indexOf(x.props.field) > -1);
-        callback = cb || callback;
-      } else if (typeof fieldsOrCallback === 'function') {
-        callback = fieldsOrCallback;
-      }
+      const promises = controlItems.map((x) =>
+        options?.validateOnly ? x.validateFieldOnly() : x.validateField()
+      );
 
-      const promises = controlItems.map((x) => x.validateField());
+      const onValidateFail = (errors) => {
+        if (!options?.validateOnly) {
+          const { onValidateFail } = this.callbacks;
+          onValidateFail && onValidateFail(errors);
+        }
+      };
+
       Promise.all(promises).then((result) => {
         let errors = {} as ValidateFieldsErrors<FieldValue, FieldKey>;
         const values = {} as Partial<FormData>;
@@ -409,12 +512,15 @@ class Store<
           if (x.error) {
             errors = { ...errors, ...x.error };
           }
-          set(values, x.field, x.value);
+          const item = this.getRegisteredField(x.field);
+          if (!item?.props?.isFormList) {
+            // 保持和 2.46.0 之前版本行为一致，避免 {users: []}
+            set(values, x.field, x.value);
+          }
         });
 
         if (Object.keys(errors).length) {
-          const { onValidateFail } = this.callbacks;
-          onValidateFail && onValidateFail(errors);
+          onValidateFail(errors);
           callback && callback(errors, cloneDeep(values));
         } else {
           callback && callback(null, cloneDeep(values));
@@ -423,16 +529,66 @@ class Store<
     }
   );
 
+  private toggleSubmitStatus = (submitStatus: SubmitStatus) => {
+    this.submitStatus = submitStatus;
+    this.innerCollectFormState();
+
+    this.notifyFormWatcher();
+  };
+
   public submit = () => {
+    this.toggleSubmitStatus(SubmitStatus.submitting);
+
     this.validate((errors, values) => {
-      if (!errors) {
-        const { onSubmit } = this.callbacks;
-        onSubmit && onSubmit(values);
-      } else {
-        const { onSubmitFailed } = this.callbacks;
-        onSubmitFailed && onSubmitFailed(errors);
+      let result;
+      const { onSubmit, onSubmitFailed } = this.callbacks;
+      if (!errors && onSubmit) {
+        result = onSubmit(values);
+      }
+      if (errors && onSubmitFailed) {
+        result = onSubmitFailed(errors);
+      }
+
+      this.toggleSubmitStatus(errors ? SubmitStatus.error : SubmitStatus.success);
+
+      if (result && result.then) {
+        // resolve 或者 reject， 都需要更新 submitting 的提交状态
+        result.catch((error) => {
+          // 保持以前的逻辑
+          return Promise.reject(error);
+        });
       }
     });
+  };
+
+  public getFieldsState = (fields?: FieldKey[]): { [key in FieldKey]?: FieldState<FieldValue> } => {
+    const result = {} as { [key in FieldKey]?: FieldState<FieldValue> };
+
+    const getItemState = (item) => {
+      if (!item) {
+        return null;
+      }
+      const error = item.getErrors();
+      return {
+        errors: error ? [error] : [],
+        warnings: item.getWarnings(),
+        validateStatus: item.getValidateStatus(),
+        isSubmitting: this.submitStatus === SubmitStatus.submitting,
+        isTouched: item.isTouched(),
+        value: this.getFieldValue(item.props.field),
+      };
+    };
+
+    if (isArray(fields)) {
+      fields.forEach((key) => {
+        result[key] = getItemState(this.getRegisteredField(key));
+      });
+      return result;
+    }
+    this.getRegisteredFields(true).forEach((item) => {
+      result[item.props.field] = getItemState(item);
+    });
+    return result;
   };
 
   public clearFields = (fieldKeys?: FieldKey | FieldKey[]) => {
@@ -447,8 +603,15 @@ class Store<
 
       this.triggerValuesChange(changeValues);
 
-      this.notify('setFieldValue', { prev, field: fields });
-      this._popTouchField(fields);
+      this.notify('setFieldValue', {
+        prev,
+        field: fields,
+        data: {
+          errors: null,
+          warnings: null,
+        },
+      });
+      // this._popTouchField(fields);
     } else {
       const changeValues = {};
       this.store = {};
@@ -458,9 +621,16 @@ class Store<
       });
 
       this.triggerValuesChange(changeValues);
-      this._popTouchField();
+      // this._popTouchField();
 
-      this.notify('setFieldValue', { prev, field: Object.keys(changeValues) as FieldKey[] });
+      this.notify('setFieldValue', {
+        prev,
+        field: Object.keys(changeValues) as FieldKey[],
+        data: {
+          errors: null,
+          warnings: null,
+        },
+      });
     }
   };
 }

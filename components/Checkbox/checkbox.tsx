@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useRef, useEffect } from 'react';
+import React, { useContext, useCallback, useRef, useEffect, ReactNode, ReactElement } from 'react';
 import Group, { CheckboxGroupContext } from './group';
 import cs from '../_util/classNames';
 import { ConfigContext } from '../ConfigProvider';
@@ -9,12 +9,12 @@ import Hover from '../_class/icon-hover';
 import IconCheck from './icon-check';
 import { CheckboxProps } from './interface';
 import useMergeProps from '../_util/hooks/useMergeProps';
-import { isFunction } from '../_util/is';
+import { isFunction, isNullOrUndefined } from '../_util/is';
 
 function Checkbox<T extends React.ReactText>(baseProps: CheckboxProps<T>, ref) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { getPrefixCls, componentConfig } = useContext(ConfigContext);
+  const { getPrefixCls, componentConfig, rtl } = useContext(ConfigContext);
   const props = useMergeProps<CheckboxProps>(baseProps, {}, componentConfig?.Checkbox);
 
   const context = useContext(CheckboxGroupContext);
@@ -41,6 +41,7 @@ function Checkbox<T extends React.ReactText>(baseProps: CheckboxProps<T>, ref) {
       [`${prefixCls}-disabled`]: !!disabled,
       [`${prefixCls}-indeterminate`]: !!indeterminate,
       [`${prefixCls}-checked`]: checked,
+      [`${prefixCls}-rtl`]: rtl,
       error,
     },
     className
@@ -78,6 +79,18 @@ function Checkbox<T extends React.ReactText>(baseProps: CheckboxProps<T>, ref) {
     },
     [props.children, rest.onClick]
   );
+
+  let icon: ReactNode = <IconCheck className={`${prefixCls}-mask-icon`} />;
+  if (mergeProps.icon) {
+    if (React.isValidElement(mergeProps.icon)) {
+      icon = React.cloneElement(mergeProps.icon as ReactElement, {
+        className: `${prefixCls}-mask-icon`,
+      });
+    } else {
+      icon = mergeProps.icon;
+    }
+  }
+
   return (
     <label
       ref={ref}
@@ -107,11 +120,9 @@ function Checkbox<T extends React.ReactText>(baseProps: CheckboxProps<T>, ref) {
             className={`${prefixCls}-mask-wrapper`}
             disabled={checked || disabled || indeterminate}
           >
-            <div className={`${prefixCls}-mask`}>
-              <IconCheck className={`${prefixCls}-mask-icon`} />
-            </div>
+            <div className={`${prefixCls}-mask`}>{icon}</div>
           </Hover>
-          {children && <span className={`${prefixCls}-text`}>{children}</span>}
+          {!isNullOrUndefined(children) && <span className={`${prefixCls}-text`}>{children}</span>}
         </>
       )}
     </label>

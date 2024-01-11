@@ -1,3 +1,120 @@
+## 2.57.0
+
+2023-12-08
+
+### 🐛 问题修复
+
+- 修复 `Upload` 组件在 directory = false 场景下，手动拖拽文件夹到上传区域时会将文件夹作为文件加入列表的问题([#2425](https://github.com/arco-design/arco-design/pull/2425))
+
+## 2.56.0
+
+2023-11-17
+
+### 🐛 问题修复
+
+- 修复 `Upload` 批量上传时已上传文件状态被覆盖成 init([#2362](https://github.com/arco-design/arco-design/pull/2362))
+
+## 2.55.0
+
+2023-10-27
+
+### 🆕 功能升级
+
+- `Upload` 支持自定义上传 method([#2297](https://github.com/arco-design/arco-design/pull/2297))
+
+## 2.53.0
+
+2023-09-08
+
+### 🆕 功能升级
+
+- `Upload` 支持通过 `accept.strict` 设置 `accept` 属性遵循浏览器原生表现，不对文件后缀名进行严格匹配过滤([#2218](https://github.com/arco-design/arco-design/pull/2218) )
+- `Upload`  组件 `onRemove` 方法支持回调参数传入当前文件列表([#2218](https://github.com/arco-design/arco-design/pull/2218) )
+- `Upload`  组件 `onRemove` 方法返回值的 TS 类型修正，`void` 调整为 `void \([#2218](https://github.com/arco-design/arco-design/pull/2218) )
+
+## 2.45.0
+
+2023-02-17
+
+### 🐛 问题修复
+
+- 修复 `Upload` 组件校验重复 `uid` 警告逻辑异常([#1783](https://github.com/arco-design/arco-design/pull/1783))
+
+## 2.44.2
+
+2023-02-10
+
+### 🐛 问题修复
+
+- 修复 `Upload` 组件 react 18 下严格模式中批量上传文件不生效 bug。([#1767](https://github.com/arco-design/arco-design/pull/1767))
+
+## 2.43.0
+
+2022-12-23
+
+### 🐛 问题修复
+
+- 修复 `Upload` 组件在设置 `accept=audio/mp3` 时，mp3 文件无法被正常上传的 bug。([#1669](https://github.com/arco-design/arco-design/pull/1669))
+
+## 2.42.0
+
+2022-11-25
+
+### 🆕 功能升级
+
+- `Upload` 支持通过 `drag=false` 设置关闭拖拽上传([#1613](https://github.com/arco-design/arco-design/pull/1613))
+
+## 2.41.3
+
+2022-11-18
+
+### 🐛 问题修复
+
+- 修复 `Upload` 组件对大写后缀名文件错误过滤的 bug。([#1572](https://github.com/arco-design/arco-design/pull/1572))
+
+## 2.41.0
+
+2022-10-28
+
+### 🆕 功能升级
+
+- `Upload` 组件支持通过 `imagePreview` 属性启用内置的图片预览功能。([#1459](https://github.com/arco-design/arco-design/pull/1459))
+- `Upload` 组件支持 `onDragLeave` 和 `onDragOver` 事件回调([#1459](https://github.com/arco-design/arco-design/pull/1459))
+
+## 2.38.1
+
+2022-08-05
+
+### 🐛 问题修复
+
+- 修复 `Upload` 组件设置`accept=*`时失效的问题([#1233](https://github.com/arco-design/arco-design/pull/1233))
+
+## 2.37.0
+
+2022-07-08
+
+### 🆕 功能升级
+
+- `Upload` 组件支持监听 `onDrop` 事件([#1071](https://github.com/arco-design/arco-design/pull/1071))
+
+### 🐛 问题修复
+
+- 修复 `Upload` 组件在 Windows 系统下可以上传非 `accept` 类型的文件([#1097](https://github.com/arco-design/arco-design/pull/1097))
+
+## 2.34.0
+
+2022-05-27
+
+### 🆕 功能升级
+
+- `Upload` 组件支持通过 `showUploadList.imageRender` 属性渲染图片。([#925](https://github.com/arco-design/arco-design/pull/925))
+- `Upload` 组件支持通过 `showUploadList.progressRender` 属性渲染上传进度节点。([#925](https://github.com/arco-design/arco-design/pull/925))
+- `Upload` 组件支持传入函数类型的 `children` 渲染触发上传的节点内容。([#925](https://github.com/arco-design/arco-design/pull/925))
+
+### 💅 样式更新
+
+- `Upload` 组件照片墙模式下图片展示区域新增默认灰色背景。([#925](https://github.com/arco-design/arco-design/pull/925))
+
 ## 2.33.0
 
 2022-05-13

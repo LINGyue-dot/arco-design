@@ -32,10 +32,16 @@ export interface PopconfirmProps {
     | 'rt'
     | 'rb';
   /**
-   * @zh 标题
-   * @en Title of Popconfirm
+   * @zh 标题。 函数类型在 `2.48.0` 支持
+   * @en Title of Popconfirm. Function types are supported in `2.48.0`
    */
-  title?: ReactNode;
+  title?: ReactNode | (() => ReactNode);
+  /**
+   * @zh 内容.函数类型在 `2.48.0` 支持
+   * @en Content of Popconfirm   Function types are supported in `2.48.0`
+   * @version 2.44.0
+   */
+  content?: ReactNode | (() => ReactNode);
   /**
    * @zh 是否禁用
    * @en whether to disabled
@@ -46,12 +52,12 @@ export interface PopconfirmProps {
    * @zh 取消按钮文字
    * @en The text of the cancel button
    */
-  cancelText?: string;
+  cancelText?: ReactNode;
   /**
    * @zh 确认按钮文字
    * @en The text of the ok button
    */
-  okText?: string;
+  okText?: ReactNode;
   /**
    * @zh 确认按钮的类型
    * @en The type of the ok button

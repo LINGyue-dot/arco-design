@@ -75,7 +75,6 @@ export interface PaginationProps {
   /**
    * @zh 是否可以改变每页条数
    * @en Is it possible to change page size
-   * @defaultValue true
    */
   sizeCanChange?: boolean;
   /**
@@ -112,8 +111,8 @@ export interface PaginationProps {
    */
   simple?: boolean;
   /**
-   * @zh 是否显示快速跳转到某页
-   * @en Whether to display quick jump
+   * @zh 是否显示快速跳转到某页，在 `simple` 模式下默认为 true
+   * @en Whether to display quick jump. Defaults to true in `simple` mode
    */
   showJumper?: boolean;
   /**

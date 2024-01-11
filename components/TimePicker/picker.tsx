@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState, ReactElement } from 'react';
 import { Dayjs } from 'dayjs';
+import cs from '../_util/classNames';
 import Trigger from '../Trigger';
 import { PickerProps, CalendarValue } from './interface';
 import { isArray, isDayjs } from '../_util/is';
@@ -20,6 +21,8 @@ import useMergeProps from '../_util/hooks/useMergeProps';
 import usePrevious from '../_util/hooks/usePrevious';
 import useUpdate from '../_util/hooks/useUpdate';
 import PickerContext from './context';
+import { getFormatTime } from './util';
+import { pickDataAttributes } from '../_util/pick';
 
 function getFormat(props) {
   return props.format || 'HH:mm:ss';
@@ -45,8 +48,13 @@ const defaultProps: InnerPickerProps = {
   scrollSticky: true,
 };
 
+const triggerPopupAlign = { bottom: 4 };
+
 const Picker = (baseProps: InnerPickerProps) => {
-  const { locale, getPrefixCls, componentConfig } = useContext(ConfigContext);
+  const { locale, getPrefixCls, componentConfig, rtl } = useContext(ConfigContext);
+  if (rtl) {
+    defaultProps.position = 'br';
+  }
   const props = useMergeProps<InnerPickerProps>(
     baseProps,
     defaultProps,
@@ -64,6 +72,8 @@ const Picker = (baseProps: InnerPickerProps) => {
     isRangePicker,
     picker,
     error,
+    status,
+    triggerElement,
     triggerProps,
     value: propsValue,
     onChange,
@@ -141,14 +151,17 @@ const Picker = (baseProps: InnerPickerProps) => {
   function setOpen(visible, callback?: () => void) {
     setPopupVisible(visible);
     setInputValue(undefined);
-    callback && callback();
+    callback?.();
     if (!visible) {
       setValueShow(undefined);
     }
   }
 
   function onConfirmValue(vs: Dayjs | Dayjs[]) {
-    const newValue = isRangePicker && order ? getSortedDayjsArray(vs as Dayjs[]) : vs;
+    const newValue =
+      isRangePicker && order && isArray(vs)
+        ? getSortedDayjsArray(vs.map((v) => getFormatTime(v)))
+        : vs;
     setValue(newValue);
     setValueShow(undefined);
     setInputValue(undefined);
@@ -174,7 +187,7 @@ const Picker = (baseProps: InnerPickerProps) => {
     }
   }
 
-  function renderPopup() {
+  function renderPopup(panelOnly?: boolean) {
     const vs = isRangePicker
       ? isArray(valueShow) && valueShow.length
         ? valueShow
@@ -182,7 +195,11 @@ const Picker = (baseProps: InnerPickerProps) => {
       : valueShow || mergedValue;
 
     return (
-      <div className={`${prefixCls}-container`} onClick={() => focusInput()}>
+      <div
+        className={cs(`${prefixCls}-container`, panelOnly ? className : '')}
+        style={panelOnly ? style : {}}
+        onClick={() => focusInput()}
+      >
         {React.cloneElement(picker as ReactElement, {
           ...props,
           format,
@@ -250,10 +267,6 @@ const Picker = (baseProps: InnerPickerProps) => {
     }
   }
 
-  function onPressTab(e) {
-    e.preventDefault();
-  }
-
   function onClear(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
     onConfirmValue(undefined);
@@ -274,53 +287,62 @@ const Picker = (baseProps: InnerPickerProps) => {
     format,
     disabled,
     error,
+    status,
     size,
     onPressEnter,
     onClear,
     suffixIcon,
     editable,
     allowClear,
+    prefix: props.prefix,
+    ...pickDataAttributes(props),
   };
 
   return (
     <PickerContext.Provider value={{ utcOffset, timezone }}>
-      <Trigger
-        popup={() => renderPopup()}
-        trigger="click"
-        clickToClose={false}
-        position={position}
-        disabled={disabled}
-        popupAlign={{ bottom: 4 }}
-        getPopupContainer={getPopupContainer}
-        onVisibleChange={onVisibleChange}
-        popupVisible={mergedPopupVisible}
-        classNames="slideDynamicOrigin"
-        unmountOnExit={!!unmountOnExit}
-        {...triggerProps}
-      >
-        {isRangePicker ? (
-          <InputRange
-            {...baseInputProps}
-            ref={refInput}
-            placeholder={rangePickerPlaceholder as string[]}
-            value={(isArray(valueShow) && valueShow.length ? valueShow : mergedValue) as Dayjs[]}
-            onChange={onChangeInput}
-            inputValue={inputValue}
-            changeFocusedInputIndex={changeFocusedInputIndex}
-            focusedInputIndex={focusedInputIndex}
-            onPressTab={onPressTab}
-          />
-        ) : (
-          <Input
-            {...baseInputProps}
-            ref={refInput}
-            placeholder={inputPlaceHolder}
-            value={(valueShow || mergedValue) as Dayjs}
-            inputValue={inputValue as string}
-            onChange={onChangeInput}
-          />
-        )}
-      </Trigger>
+      {triggerElement === null ? (
+        renderPopup(true)
+      ) : (
+        <Trigger
+          popup={() => renderPopup()}
+          trigger="click"
+          clickToClose={false}
+          position={position}
+          disabled={disabled}
+          popupAlign={triggerPopupAlign}
+          getPopupContainer={getPopupContainer}
+          onVisibleChange={onVisibleChange}
+          popupVisible={mergedPopupVisible}
+          classNames="slideDynamicOrigin"
+          unmountOnExit={!!unmountOnExit}
+          {...triggerProps}
+        >
+          {triggerElement ||
+            (isRangePicker ? (
+              <InputRange
+                {...baseInputProps}
+                ref={refInput}
+                placeholder={rangePickerPlaceholder as string[]}
+                value={
+                  (isArray(valueShow) && valueShow.length ? valueShow : mergedValue) as Dayjs[]
+                }
+                onChange={onChangeInput}
+                inputValue={inputValue}
+                changeFocusedInputIndex={changeFocusedInputIndex}
+                focusedInputIndex={focusedInputIndex}
+              />
+            ) : (
+              <Input
+                {...baseInputProps}
+                ref={refInput}
+                placeholder={inputPlaceHolder}
+                value={(valueShow || mergedValue) as Dayjs}
+                inputValue={inputValue as string}
+                onChange={onChangeInput}
+              />
+            ))}
+        </Trigger>
+      )}
     </PickerContext.Provider>
   );
 };

@@ -1,3 +1,93 @@
+## 2.55.1
+
+2023-11-03
+
+### 🐛 问题修复
+
+- 修复 `Input` 组件默认传入包含换行符的字符串且未做值的改动时， `onChange` 会在 blur 时触发一次的 bug。([#2335](https://github.com/arco-design/arco-design/pull/2335))
+
+## 2.55.0
+
+2023-10-27
+
+### 💅 样式更新
+
+- 修复 `Input` 组件具有前后缀时在 Safari 中清空文本导致垂直方向高度抖动的问题。([#2315](https://github.com/arco-design/arco-design/pull/2315))
+
+## 2.54.0
+
+2023-10-09
+
+### 🆕 功能升级
+
+- `Input` 组件支持通过 `autoWidth` 属性设置宽度自适应。([#2274](https://github.com/arco-design/arco-design/pull/2274))
+
+## 2.53.2
+
+2023-09-22
+
+### 🐛 问题修复
+
+- 修复 `Input.Search` 组件在 `value` 受控且传入了对象类型的 `maxLength`并直接触发 `onSearch`时， 回调参数错误的 bug([#2239](https://github.com/arco-design/arco-design/pull/2239))
+
+## 2.51.0
+
+2023-07-28
+
+### 🆎 类型修正
+
+- 导出 `<Input />` 组件的 `Ref` 类型定义([#2105](https://github.com/arco-design/arco-design/pull/2105) [@WindrunnerMax](https://github.com/WindrunnerMax))
+
+## 2.50.1
+
+2023-07-14
+
+### 💅 样式更新
+
+- 修复 `Input` 组件设置 `allowClear` 且宽度不固定时 hover 前后出现的宽度抖动问题。([#2084](https://github.com/arco-design/arco-design/pull/2084))
+
+## 2.50.0
+
+2023-06-30
+
+### 🆕 功能升级
+
+- `Input` 支持通过 `normalize` 在指定时机对输入值进行格式化。([#2065](https://github.com/arco-design/arco-design/pull/2065))
+- `Input` 支持配置清除按钮([#2059](https://github.com/arco-design/arco-design/pull/2059))
+
+## 2.48.2
+
+2023-05-26
+
+### 🐛 问题修复
+
+- 修复 `Input.Search` 组件点击搜索图标或搜索按钮时错误触发 `onPressEnter` 回调的 bug。([#1990](https://github.com/arco-design/arco-design/pull/1990))
+- 修复 `Input.TextArea` 组件 `autoSize` 属性在非英文输入法时可能不生效的问题。([#1988](https://github.com/arco-design/arco-design/pull/1988))
+
+## 2.46.3
+
+2023-04-07
+
+### 🆎 类型修正
+
+- 完善 `Input.Textarea` TS 定义([#1899](https://github.com/arco-design/arco-design/pull/1899))
+
+## 2.36.1
+
+2022-07-01
+
+### 🐛 问题修复
+
+- 修复 `Input` 组件导致的控制台 React Warning(not recognize prop on a DOM element)。([#1070](https://github.com/arco-design/arco-design/pull/1070))
+
+## 2.35.0
+
+2022-06-10
+
+### 🐛 问题修复
+
+- 修复 `Input.TextArea` 组件输入中文时长度有可能超过 `maxLength` 的 bug。([#988](https://github.com/arco-design/arco-design/pull/988))
+
 ## 2.32.1
 
 2022-04-22

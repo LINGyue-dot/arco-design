@@ -1,12 +1,12 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ReactNode, ReactText, HTMLAttributes } from 'react';
 
 /**
  * @title Checkbox
  * @zh `T = string | number`
  * @en `T = string | number`
  */
-export interface CheckboxProps<T extends React.ReactText = any>
-  extends Omit<React.HTMLAttributes<HTMLLabelElement>, 'className' | 'onChange'> {
+export interface CheckboxProps<T extends ReactText = any>
+  extends Omit<HTMLAttributes<HTMLLabelElement>, 'children' | 'className' | 'onChange'> {
   style?: CSSProperties;
   className?: string | string[];
   /**
@@ -44,6 +44,12 @@ export interface CheckboxProps<T extends React.ReactText = any>
    * @en To set checkbox value
    */
   value?: T;
+  /**
+   * @zh 自定义 IconCheck
+   * @en Custom IconCheck
+   * @version 2.43.0
+   */
+  icon?: ReactNode;
   checkboxGroupValue?: T[];
   onGroupChange?: (value: T, checked: boolean) => void;
   isCheckboxGroup?: boolean;
@@ -53,7 +59,7 @@ export interface CheckboxProps<T extends React.ReactText = any>
 /**
  * @title Checkbox.Group
  */
-export interface CheckboxGroupProps<T extends React.ReactText> {
+export interface CheckboxGroupProps<T extends ReactText> {
   style?: CSSProperties;
   className?: string | string[];
   /**
@@ -77,7 +83,7 @@ export interface CheckboxGroupProps<T extends React.ReactText> {
    * @zh 可选项
    * @en Specifies options
    */
-  options?: (T | { label: ReactNode; value: T; disabled?: boolean })[];
+  options?: (T | { label: ReactNode; value: T; disabled?: boolean; icon?: ReactNode })[];
   /**
    * @zh 选中的选项（受控模式）
    * @en To set value

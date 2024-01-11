@@ -1,3 +1,43 @@
+## 2.51.0
+
+2023-07-28
+
+### 🆕 功能升级
+
+- `Dropdown.Button` 允许传入所有的 `DropdownProps`。([#2091](https://github.com/arco-design/arco-design/pull/2091))
+
+## 2.39.3
+
+2022-09-02
+
+### 💅 样式更新
+
+- 优化 `Dropdown` 组件下拉菜单中 `Menu` 内嵌 `<a/>` 的样式。([#1362](https://github.com/arco-design/arco-design/pull/1362))
+
+## 2.37.1
+
+2022-07-14
+
+### 🐛 问题修复
+
+- 修复 `disabled` 属性未对 `Dropdown.Button` 的第二个按钮生效的 bug。([#1136](https://github.com/arco-design/arco-design/pull/1136))
+
+## 2.36.0
+
+2022-06-24
+
+### 💅 样式更新
+
+- 在 `Dropdown` 的菜单项没有子节点时彻底隐藏弹出菜单。([#1043](https://github.com/arco-design/arco-design/pull/1043))
+
+## 2.34.0
+
+2022-05-27
+
+### 🐛 问题修复
+
+- 修复 `Dropdown` 内的 `Menu` 组件 `onMenuItemClick` 的第三个参数 `keyPath` 缺失的 bug。([#921](https://github.com/arco-design/arco-design/pull/921))
+
 ## 2.33.0
 
 2022-05-13

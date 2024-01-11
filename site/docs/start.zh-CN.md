@@ -37,6 +37,7 @@ yarn add @arco-design/web-react
 * 开发环境: https://unpkg.com/@arco-design/web-react@latest/dist/arco.development.js
 * 生产环境: https://unpkg.com/@arco-design/web-react@latest/dist/arco.min.js
   * 图标: https://unpkg.com/@arco-design/web-react@latest/dist/arco-icon.min.js
+  * 样式: https://unpkg.com/@arco-design/web-react@latest/dist/css/arco.min.css
 
 不过，我们不建议通过 CDN 使用，因为 CDN 会引入全量的组件代码，这样会影响页面加载速度。
 
@@ -86,6 +87,7 @@ ReactDOM.render(
 
 > 具体使用方式请点击插件链接到详情页中查看
 
+  - [@arco-plugins/unplugin-react 🚧](https://github.com/arco-design/arco-plugins/blob/main/packages/unplugin-react/README.zh-CN.md) 适用于包括 Rspack 在内多种 Bundler 的 Unplugin 插件
   - [@arco-plugins/webpack-react](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-webpack-react/README.zh-CN.md) 适用于 Arco react 组件的 webpack 插件
   - [@arco-plugins/vite-react](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-vite-react/README.zh-CN.md) 适用于 Arco react 组件库的 vite 插件
   - [@arco-plugins/vite-vue](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-vite-vue/README.zh-CN.md) 适用于 Arco vue 组件库的 vite 插件

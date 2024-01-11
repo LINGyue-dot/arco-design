@@ -6,10 +6,12 @@ import { ConfigContext } from '../ConfigProvider';
 import useMergeValue from '../_util/hooks/useMergeValue';
 import { RadioGroupProps, RadioGroupContextProps } from './interface';
 import useMergeProps from '../_util/hooks/useMergeProps';
+import { pickDataAttributes } from '../_util/pick';
+import { pickTriggerPropsFromRest } from '../_util/constant';
 
-export const RadioGroupContext = createContext<RadioGroupContextProps>({
+const defaultContextValue: RadioGroupContextProps = {
   type: 'radio',
-});
+};
 
 const defaultProps: RadioGroupProps = {
   type: 'radio',
@@ -17,8 +19,14 @@ const defaultProps: RadioGroupProps = {
   direction: 'horizontal',
 };
 
+export const RadioGroupContext = createContext<RadioGroupContextProps>(defaultContextValue);
+
+export const ClearRadioGroupContext = ({ children }: PropsWithChildren<{}>) => {
+  return <RadioGroupContext.Provider children={children} value={defaultContextValue} />;
+};
+
 function Group(baseProps: PropsWithChildren<RadioGroupProps>) {
-  const { getPrefixCls, size: ctxSize, componentConfig } = useContext(ConfigContext);
+  const { getPrefixCls, size: ctxSize, componentConfig, rtl } = useContext(ConfigContext);
   const props = useMergeProps<PropsWithChildren<RadioGroupProps>>(
     baseProps,
     defaultProps,
@@ -40,6 +48,7 @@ function Group(baseProps: PropsWithChildren<RadioGroupProps>) {
       [`${prefixCls}-mode-${mode}`]: !!mode,
       [`${prefixCls}-group-disabled`]: disabled,
       [`${prefixCls}-group-direction-vertical`]: direction === 'vertical',
+      [`${prefixCls}-group-rtl`]: rtl,
     },
     className
   );
@@ -64,7 +73,13 @@ function Group(baseProps: PropsWithChildren<RadioGroupProps>) {
   };
   return (
     <RadioGroupContext.Provider value={contextProp}>
-      <div className={classNames} style={style}>
+      <div
+        className={classNames}
+        role="radiogroup"
+        style={style}
+        {...pickTriggerPropsFromRest(props)}
+        {...pickDataAttributes(props)}
+      >
         {options && isArray(options)
           ? options.map((option, index) => {
               if (isObject(option)) {

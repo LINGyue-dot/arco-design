@@ -1,4 +1,15 @@
-import { isArray } from '../_util/is';
+import { isArray, isObject, isUndefined, isNull, isNumber, isString } from '../_util/is';
+import type { ColumnProps, SorterFn } from './interface';
+
+export function px2Number(width: number | string): number | string {
+  if (isNumber(width)) {
+    return width;
+  }
+  if (isString(width) && width.includes('px')) {
+    return +width.replace('px', '');
+  }
+  return width;
+}
 
 export function getScrollBarHeight(ele: HTMLElement | null) {
   return ele ? ele.offsetHeight - ele.clientHeight : 0;
@@ -10,6 +21,52 @@ export function getScrollBarWidth(ele: HTMLElement | null) {
 
 export function isChildrenNotEmpty(record, field: string) {
   return isArray(record[field]) && record[field].length;
+}
+
+export function deepCloneData(data, childrenColumnName) {
+  function travel(data) {
+    if (!data) {
+      return [];
+    }
+    const newData = [];
+    data.forEach((d) => {
+      // case: [[], []]
+      // case: ['', '']
+      // case: [1, 2]
+      if (!isObject(d)) {
+        newData.push(d);
+      } else {
+        const _d = { ...d };
+        _d.__ORIGIN_DATA = d;
+        const children = _d[childrenColumnName];
+        if (isObject(_d) && children && isArray(children)) {
+          _d[childrenColumnName] = travel(children);
+        }
+        newData.push(_d);
+      }
+    });
+
+    return newData;
+  }
+
+  return travel(data);
+}
+
+export function getOriginData(data) {
+  if (isObject(data)) {
+    return data.__ORIGIN_DATA;
+  }
+
+  if (!data || !isArray(data)) {
+    return data;
+  }
+
+  return data.map((d) => {
+    if (!isObject(d) || !('__ORIGIN_DATA' in d)) {
+      return d;
+    }
+    return d.__ORIGIN_DATA;
+  });
 }
 
 export function getSelectedKeys(
@@ -85,10 +142,10 @@ export function getSelectedKeysByData(
 
   checkedKeys.forEach((key) => {
     const record = flattenData.find((d) => getRowKey(d) === key);
-
-    loop(record);
-
-    updateParent(record, selectedRowKeys, indeterminateKeys, getRowKey, childrenColumnName);
+    if (!isUndefined(record) && !isNull(record)) {
+      loop(record);
+      updateParent(record, selectedRowKeys, indeterminateKeys, getRowKey, childrenColumnName);
+    }
   });
 
   return {
@@ -104,13 +161,13 @@ function updateParent(
   getRowKey,
   childrenColumnName: string
 ) {
-  if (record.parent) {
-    const parentKey = getRowKey(record.parent);
-    if (isArray(record.parent[childrenColumnName])) {
-      const total = record.parent[childrenColumnName].length;
+  if (record.__INTERNAL_PARENT) {
+    const parentKey = getRowKey(record.__INTERNAL_PARENT);
+    if (isArray(record.__INTERNAL_PARENT[childrenColumnName])) {
+      const total = record.__INTERNAL_PARENT[childrenColumnName].length;
       let len = 0;
       let flag = false;
-      record.parent[childrenColumnName].forEach((c) => {
+      record.__INTERNAL_PARENT[childrenColumnName].forEach((c) => {
         if (selectedKeys.has(getRowKey(c))) {
           len += 1;
         }
@@ -133,6 +190,28 @@ function updateParent(
       }
     }
 
-    updateParent(record.parent, selectedKeys, indeterminateKeys, getRowKey, childrenColumnName);
+    updateParent(
+      record.__INTERNAL_PARENT,
+      selectedKeys,
+      indeterminateKeys,
+      getRowKey,
+      childrenColumnName
+    );
+  }
+}
+
+export function getSorterFn(sorter: ColumnProps['sorter']): SorterFn | null {
+  if (typeof sorter === 'function') {
+    return sorter;
+  }
+  if (typeof sorter === 'object' && typeof sorter.compare === 'function') {
+    return sorter.compare;
+  }
+  return null;
+}
+
+export function getSorterPriority(sorter: ColumnProps['sorter']): number | undefined {
+  if (typeof sorter === 'object' && typeof sorter.multiple === 'number') {
+    return sorter.multiple;
   }
 }

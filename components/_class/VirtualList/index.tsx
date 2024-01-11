@@ -1,4 +1,12 @@
-import React, { useEffect, useImperativeHandle, useRef, useMemo, useState, ReactNode } from 'react';
+import React, {
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useMemo,
+  useState,
+  ReactNode,
+  CSSProperties,
+} from 'react';
 import {
   Key,
   getValidScrollTop,
@@ -26,12 +34,12 @@ import useIsomorphicLayoutEffect from '../../_util/hooks/useIsomorphicLayoutEffe
 export type RenderFunc<T> = (
   item: T,
   index: number,
-  props: { style: React.CSSProperties }
+  props: { style: React.CSSProperties; itemIndex: number }
 ) => ReactNode;
 
 type Status = 'NONE' | 'MEASURE_START' | 'MEASURE_DONE';
 
-export interface VirtualListProps<T> extends React.HTMLAttributes<any> {
+export interface VirtualListProps<T> extends Omit<React.HTMLAttributes<any>, 'children'> {
   children: RenderFunc<T>;
   data: T[];
   /* Viewable area height (`2.11.0` starts support `string` type such as `80%`) */
@@ -50,6 +58,10 @@ export interface VirtualListProps<T> extends React.HTMLAttributes<any> {
   measureLongestItem?: boolean;
   /* Configure the default behavior related to scrolling */
   scrollOptions?: ScrollIntoViewOptions;
+  needFiller?: boolean;
+  /** Custom filler outer style */
+  outerStyle?: CSSProperties;
+  innerStyle?: CSSProperties;
   onScroll?: React.UIEventHandler<HTMLElement>;
 }
 
@@ -155,6 +167,9 @@ const VirtualList: React.ForwardRefExoticComponent<
     measureLongestItem,
     scrollOptions,
     onScroll,
+    needFiller = true,
+    outerStyle,
+    innerStyle,
     ...restProps
   } = props;
   // Compatible with setting the height of the list through style.maxHeight
@@ -178,7 +193,7 @@ const VirtualList: React.ForwardRefExoticComponent<
   const isVirtual =
     threshold !== null && itemCount >= threshold && itemTotalHeight > viewportHeight;
 
-  const refList = useRef(null);
+  const refList = useRef<HTMLElement>(null);
   const refRafId = useRef(null);
   const refLockScroll = useRef(false);
   const refIsVirtual = useRef(isVirtual);
@@ -340,7 +355,11 @@ const VirtualList: React.ForwardRefExoticComponent<
 
   // Modify the state and recalculate the position in the next render
   const virtualListScrollHandler = (event, isInit = false) => {
-    const { scrollTop: rawScrollTop, clientHeight, scrollHeight } = refList.current;
+    // Do NOT use refList.current.scrollHeight
+    // We should use Filler's height as total scroll height
+    // Filler's translate style may make refList.current.scrollHeight larger than Filler's height
+    const scrollHeight = itemTotalHeight;
+    const { scrollTop: rawScrollTop, clientHeight } = refList.current;
     const scrollTop = getValidScrollTop(rawScrollTop, scrollHeight - clientHeight);
 
     // Prevent jitter
@@ -390,6 +409,8 @@ const VirtualList: React.ForwardRefExoticComponent<
 
   // Handle additions and deletions of list items or switching the virtual state
   useEffect(() => {
+    if (!refList.current) return;
+
     let changedItemIndex: number = null;
     const switchTo = refIsVirtual.current !== isVirtual ? (isVirtual ? 'virtual' : 'raw') : '';
 
@@ -435,7 +456,7 @@ const VirtualList: React.ForwardRefExoticComponent<
   }, [data, isVirtual]);
 
   useIsomorphicLayoutEffect(() => {
-    if (state.status === 'MEASURE_START') {
+    if (state.status === 'MEASURE_START' && refList.current) {
       const { scrollTop, scrollHeight, clientHeight } = refList.current;
       const scrollPtg = getScrollPercentage({
         scrollTop,
@@ -471,6 +492,8 @@ const VirtualList: React.ForwardRefExoticComponent<
       scrollTo: (arg) => {
         refRafId.current && caf(refRafId.current);
         refRafId.current = raf(() => {
+          if (!refList.current) return;
+
           if (typeof arg === 'number') {
             refList.current.scrollTop = arg;
             return;
@@ -547,6 +570,12 @@ const VirtualList: React.ForwardRefExoticComponent<
               itemTop += getCachedItemHeight(getItemKeyByIndex(i));
             }
             const itemBottom = itemTop + indexItemHeight;
+            const itemMiddle = itemTop + indexItemHeight / 2;
+
+            // If item is visible, skip scrolling
+            if (itemMiddle > scrollTop && itemMiddle < clientHeight + scrollTop) {
+              return;
+            }
 
             if (align === 'nearest') {
               if (itemTop < scrollTop) {
@@ -571,6 +600,7 @@ const VirtualList: React.ForwardRefExoticComponent<
       const originIndex = startIndex + index;
       const node = renderChild(item, originIndex, {
         style: {},
+        itemIndex: index,
       }) as React.ReactElement;
       const key = getItemKey(item, originIndex);
       return React.cloneElement(node, {
@@ -586,11 +616,11 @@ const VirtualList: React.ForwardRefExoticComponent<
           ) {
             if (isStaticItemHeight) {
               if (!heightMap[KEY_VIRTUAL_ITEM_HEIGHT]) {
-                heightMap[KEY_VIRTUAL_ITEM_HEIGHT] = getNodeHeight(ele);
+                heightMap[KEY_VIRTUAL_ITEM_HEIGHT] = getNodeHeight(ele, true);
               }
               heightMap[key] = heightMap[KEY_VIRTUAL_ITEM_HEIGHT];
             } else {
-              heightMap[key] = getNodeHeight(ele);
+              heightMap[key] = getNodeHeight(ele, true);
             }
           }
         },
@@ -650,14 +680,20 @@ const VirtualList: React.ForwardRefExoticComponent<
           <>
             <Filler
               height={itemTotalHeight}
+              outerStyle={outerStyle}
+              innerStyle={innerStyle}
               offset={state.status === 'MEASURE_DONE' ? state.startItemTop : 0}
             >
               {renderChildren(data.slice(state.startIndex, state.endIndex + 1), state.startIndex)}
             </Filler>
             {renderLongestItem()}
           </>
+        ) : needFiller ? (
+          <Filler height={viewportHeight} outerStyle={outerStyle} innerStyle={innerStyle}>
+            {renderChildren(data, 0)}
+          </Filler>
         ) : (
-          <Filler height={viewportHeight}>{renderChildren(data, 0)}</Filler>
+          renderChildren(data, 0)
         )}
       </WrapperTagName>
     </ResizeObserver>

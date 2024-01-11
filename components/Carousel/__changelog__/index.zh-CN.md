@@ -1,3 +1,28 @@
+## 2.51.1
+
+2023-08-04
+
+### 🐛 问题修复
+
+- 优化 `Carousel` 双击箭头底部文字避免被选中([#2119](https://github.com/arco-design/arco-design/pull/2119) [@notbucai](https://github.com/notbucai))
+
+## 2.50.0
+
+2023-06-30
+
+### 🐛 问题修复
+
+- 修复 `Carousel` 组件 `trigger` 设置为 `hover` 时页面切换异常的问题。([#2063](https://github.com/arco-design/arco-design/pull/2063))
+
+## 2.38.0
+
+2022-07-29
+
+### 🐛 问题修复
+
+- 修复 `Carousel` 点击指示器中间的区域时会滑动到第一页的 bug。([#1210](https://github.com/arco-design/arco-design/pull/1210))
+- 修复 `Carousel` 内的子元素无法撑起组件高度的 bug。([#1210](https://github.com/arco-design/arco-design/pull/1210))
+
 ## 2.28.0
 
 2022-01-07

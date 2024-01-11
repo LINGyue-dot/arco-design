@@ -14,12 +14,20 @@ import { CSSTransition } from 'react-transition-group';
 import cs from '../_util/classNames';
 import { isArray, isFunction, isUndefined, isObject } from '../_util/is';
 import Grid from '../Grid';
-import { FormItemProps, FieldError, KeyType, FormContextProps, VALIDATE_STATUS } from './interface';
+import {
+  FormItemProps,
+  FieldError,
+  KeyType,
+  FormContextProps,
+  VALIDATE_STATUS,
+  FormItemChildrenFn,
+} from './interface';
 import Control from './control';
 import {
   FormItemContext as RawFormItemContext,
   FormItemContextType as RawFormItemContextType,
   FormContext,
+  FormListContext,
 } from './context';
 import { ConfigContext } from '../ConfigProvider';
 import omit from '../_util/omit';
@@ -93,6 +101,7 @@ const Item = <
 ) => {
   const { getPrefixCls, prefixCls: prefix } = useContext(ConfigContext);
   const topFormContext = useContext(RawFormItemContext);
+  const formListContext = useContext(FormListContext);
   const [errors, setErrors] = useState<{
     [key: string]: FieldError<FieldValue>;
   }>(null);
@@ -127,6 +136,7 @@ const Item = <
       }
       return newErrors;
     });
+
     setWarnings((current) => {
       const newVal = { ...(current || {}) };
       if (warnings && warnings.length) {
@@ -212,8 +222,14 @@ const Item = <
 
     if (isFunction(children)) {
       return (
-        <Control disabled={disabled} {...(props as any)} {...(field ? { key: field } : {})}>
-          {(...rest) => children(...rest)}
+        <Control
+          disabled={disabled}
+          {...(props as any)}
+          {...(field ? { key: field, _key: field } : {})}
+        >
+          {(...rest) =>
+            children(...(rest as Parameters<FormItemChildrenFn<FormData, FieldValue, FieldKey>>))
+          }
         </Control>
       );
     }
@@ -221,7 +237,9 @@ const Item = <
     if (isArray(children)) {
       const childrenDom = React.Children.map(children, (child, i) => {
         const key = (isObject(child) && (child as ReactElement).key) || i;
-        const childProps = !isUndefined(disabled) ? { key, disabled } : { key };
+        const existChildDisabled = isObject(child) && 'disabled' in (child as ReactElement).props;
+        const childProps =
+          !isUndefined(disabled) && !existChildDisabled ? { key, disabled } : { key };
         return isObject(child) ? cloneElement(child as ReactElement, childProps) : child;
       });
       return (
@@ -232,8 +250,9 @@ const Item = <
     }
     if (React.Children.count(children) === 1) {
       if (field) {
+        const key = formListContext?.getItemKey?.(field) || field;
         return (
-          <Control disabled={disabled} {...(props as any)} key={field}>
+          <Control disabled={disabled} {...(props as any)} key={key} _key={key}>
             {children}
           </Control>
         );
@@ -243,10 +262,12 @@ const Item = <
         if ((children as any).type?.isFormControl) {
           return children;
         }
-        const childProps = isUndefined(disabled) ? {} : { disabled };
+        const existChildDisabled = 'disabled' in (children as ReactElement).props;
+        const childProps = !existChildDisabled && !isUndefined(disabled) ? { disabled } : null;
+
         return (
           <Control {...(props as any)} field={undefined}>
-            {cloneElement(children as ReactElement, childProps)}
+            {!childProps ? children : cloneElement(children as ReactElement, childProps)}
           </Control>
         );
       }
@@ -278,6 +299,7 @@ const Item = <
           <Row
             ref={ref}
             {...omit(rest, [
+              'tooltip',
               'children',
               'prefixCls',
               'store',
@@ -323,6 +345,7 @@ const Item = <
                 )}
               >
                 <FormItemLabel
+                  tooltip={props.tooltip}
                   htmlFor={props.field && formContext.getFormElementId(props.field)}
                   label={label}
                   prefix={prefix}
@@ -371,7 +394,7 @@ export default ItemComponent as <
   FieldValue = FormData[keyof FormData],
   FieldKey extends KeyType = keyof FormData
 >(
-  props: React.PropsWithChildren<FormItemProps<FormData, FieldValue, FieldKey>> & {
+  props: FormItemProps<FormData, FieldValue, FieldKey> & {
     ref?: React.Ref<typeof Row['prototype']>;
   }
 ) => React.ReactElement;

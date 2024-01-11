@@ -1,3 +1,85 @@
+## 2.57.0
+
+2023-12-08
+
+### 💎 功能优化
+
+- 优化 `Trigger` 部分逻辑耗时问题([#2427](https://github.com/arco-design/arco-design/pull/2427))
+
+## 2.56.1
+
+2023-11-24
+
+### 🐛 问题修复
+
+- 修复不同弹出方向的 `Trigger` 组件在嵌套使用时，箭头样式被相互覆盖的 bug。([#2378](https://github.com/arco-design/arco-design/pull/2378))
+
+## 2.55.0
+
+2023-10-27
+
+### 🆕 功能升级
+
+- `Trigger` 支持配置在捕获阶段触发 `clickOutside` 逻辑。([#2324](https://github.com/arco-design/arco-design/pull/2324))
+
+## 2.51.2
+
+2023-08-11
+
+### 💎 功能优化
+
+- 优化 `Trigger` 组件在内容高度存在小数时会出现定位误差导致出现不必要滚动条的问题。([#2141](https://github.com/arco-design/arco-design/pull/2141))
+
+## 2.45.1
+
+2023-03-01
+
+### 🐛 问题修复
+
+- 修复 `Trigger` 组件在 `trigger=hover`时注入的 `onClick` 导致组件默认 `onClick` 不生效的 bug。([#1808](https://github.com/arco-design/arco-design/pull/1808))
+
+## 2.44.1
+
+2023-02-03
+
+### 🐛 问题修复
+
+- 修复 `Trigger` 组件的 `props.style` 不生效的 bug。([#1750](https://github.com/arco-design/arco-design/pull/1750))
+- 修复 `Trigger` 组件的 `clickToClose` 在 trigger="hover"  时不生效的 bug。([#1750](https://github.com/arco-design/arco-design/pull/1750))
+
+## 2.43.0
+
+2022-12-23
+
+### 💎 功能优化
+
+- 优化 `Trigger` 组件的触发节点样式变为 `display: none` 时弹出层位置出现闪动的问题。([#1652](https://github.com/arco-design/arco-design/pull/1652))
+- 优化 `Trigger` 组件的弹出层尺寸改变定位未及时更新导致的闪动问题。([#1652](https://github.com/arco-design/arco-design/pull/1652))
+
+## 2.42.0
+
+2022-11-25
+
+### 🐛 问题修复
+
+- 修复 `Trigger` 组件的 `containerScrollToClose` 属性在页面滚动容器为 document.documentElement 时不生效的 bug。([#1606](https://github.com/arco-design/arco-design/pull/1606))
+
+## 2.38.0
+
+2022-07-29
+
+### 🐛 问题修复
+
+- 修复 `Trigger` 组件在 React 18 严格模式下弹出层无法显示的 bug。([#1215](https://github.com/arco-design/arco-design/pull/1215))
+
+## 2.34.0
+
+2022-05-27
+
+### 🆕 功能升级
+
+- `Trigger` 组件支持通过 `containerScrollToClose` 属性设置弹出层挂载容器滚动时，关闭弹出层。([#913](https://github.com/arco-design/arco-design/pull/913))
+
 ## 2.32.0
 
 2022-04-15

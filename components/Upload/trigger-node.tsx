@@ -6,8 +6,10 @@ import IconPlus from '../../icon/react-icon/IconPlus';
 import { TriggerProps } from './interface';
 import { ConfigContext } from '../ConfigProvider';
 import { getFiles, loopDirectory } from './util';
+import useKeyboardEvent from '../_util/hooks/useKeyboardEvent';
 
 const TriggerNode = (props: PropsWithChildren<TriggerProps>) => {
+  const getKeyboardEvents = useKeyboardEvent();
   const { locale } = useContext(ConfigContext);
   const [isDragging, setIsDragging] = useState(false);
   const [dragEnterCount, setDragEnterCount] = useState(0); // the number of times ondragenter was triggered
@@ -26,6 +28,11 @@ const TriggerNode = (props: PropsWithChildren<TriggerProps>) => {
     <div
       className={`${prefixCls}-trigger`}
       onClick={disabled ? undefined : props.onClick}
+      {...getKeyboardEvents({
+        onPressEnter: () => {
+          !disabled && props.onClick?.();
+        },
+      })}
       onDragEnter={() => {
         setDragEnterCount(dragEnterCount + 1);
       }}
@@ -39,28 +46,48 @@ const TriggerNode = (props: PropsWithChildren<TriggerProps>) => {
 
         if (dragEnterCount === 0) {
           setIsDragging(false);
+          !disabled && props.onDragLeave?.(e);
         } else {
           setDragEnterCount(dragEnterCount - 1);
         }
       }}
       onDrop={(e: React.DragEvent) => {
         e.preventDefault();
-        if (!disabled) {
+        if (!disabled && props.drag !== false) {
           setIsDragging(false);
           if (props.directory) {
             loopDirectory(e.dataTransfer.items, accept, (files) => {
               props.onDragFiles && props.onDragFiles(files);
             });
           } else {
-            const files = getFiles(e.dataTransfer.files, accept);
-            props.onDragFiles && props.onDragFiles(multiple ? files : files.slice(0, 1));
+            const directoryIndices = [].slice
+              .call(e.dataTransfer.items || [])
+              .reduce((result, item, index) => {
+                if (item.webkitGetAsEntry) {
+                  const entry = item.webkitGetAsEntry();
+                  if (entry.isDirectory) {
+                    return [...result, index];
+                  }
+                  return result;
+                }
+              }, []);
+            // Filter out directories
+            const droppedFiles = [].slice.call(e.dataTransfer.files || []).filter((_, index) => {
+              return !directoryIndices.includes(index);
+            });
+            const files = getFiles(droppedFiles, accept);
+            if (files.length > 0) {
+              props.onDragFiles && props.onDragFiles(multiple ? files : files.slice(0, 1));
+            }
           }
+          props.onDrop && props.onDrop(e);
         }
       }}
       onDragOver={(e: React.DragEvent) => {
         e.preventDefault();
         if (!disabled && !isDragging) {
           setIsDragging(true);
+          props.onDragOver?.(e);
         }
       }}
     >
@@ -70,7 +97,11 @@ const TriggerNode = (props: PropsWithChildren<TriggerProps>) => {
         </div>
       ) : listType === 'picture-card' ? (
         <div className={`${prefixCls}-trigger-picture-wrapper`}>
-          <div className={`${prefixCls}-trigger-picture`}>
+          <div
+            className={`${prefixCls}-trigger-picture`}
+            tabIndex={0}
+            aria-label={locale.Upload.upload}
+          >
             <div className={`${prefixCls}-trigger-picture-text`}>
               <IconPlus />
             </div>
@@ -81,6 +112,8 @@ const TriggerNode = (props: PropsWithChildren<TriggerProps>) => {
           className={cs(`${prefixCls}-trigger-drag`, {
             [`${prefixCls}-trigger-drag-active`]: isDragging,
           })}
+          tabIndex={0}
+          aria-label={locale.Upload.drag}
         >
           <IconPlus />
           <p className={`${prefixCls}-trigger-drag-text`}>
@@ -89,7 +122,12 @@ const TriggerNode = (props: PropsWithChildren<TriggerProps>) => {
           {tip && <div className={`${prefixCls}-trigger-tip`}>{tip}</div>}
         </div>
       ) : (
-        <Button {...nodeProps} type="primary" className={`${prefixCls}-trigger-with-icon`}>
+        <Button
+          {...nodeProps}
+          aria-label={locale.Upload.upload}
+          type="primary"
+          className={`${prefixCls}-trigger-with-icon`}
+        >
           <IconUpload />
           {locale.Upload.upload}
         </Button>

@@ -1,3 +1,93 @@
+## 2.55.1
+
+2023-11-03
+
+### 🐛 BugFix
+
+- Fixed a bug where `onChange` would be triggered once during blur when the `Input` component passed in a string containing a newline character by default without changing the value.([#2335](https://github.com/arco-design/arco-design/pull/2335))
+
+## 2.55.0
+
+2023-10-27
+
+### 💅 Style
+
+- Fixed the issue that clear text of `Input` with prefix/suffix in Safari caused vertical jitter.([#2315](https://github.com/arco-design/arco-design/pull/2315))
+
+## 2.54.0
+
+2023-10-09
+
+### 🆕 Feature
+
+- The `Input` component supports setting width adaptation through the `autoWidth` property.([#2274](https://github.com/arco-design/arco-design/pull/2274))
+
+## 2.53.2
+
+2023-09-22
+
+### 🐛 BugFix
+
+- Fixed the bug of incorrect callback parameters in the `Input.Search` component when `value` is controlled and `maxLength` of the object type is passed in and `onSearch` is triggered directly.([#2239](https://github.com/arco-design/arco-design/pull/2239))
+
+## 2.51.0
+
+2023-07-28
+
+### 🆎 TypeScript
+
+- Export the `Ref` type definition of the `<Input />` component([#2105](https://github.com/arco-design/arco-design/pull/2105) [@WindrunnerMax](https://github.com/WindrunnerMax))
+
+## 2.50.1
+
+2023-07-14
+
+### 💅 Style
+
+- Fix the width jitter problem before and after hover when `Input` is set to `allowClear` and the width is not fixed.([#2084](https://github.com/arco-design/arco-design/pull/2084))
+
+## 2.50.0
+
+2023-06-30
+
+### 🆕 Feature
+
+- `Input` supports `normalize` to format the input value at the specified time.([#2065](https://github.com/arco-design/arco-design/pull/2065))
+- `Input` supports clearIcon property([#2059](https://github.com/arco-design/arco-design/pull/2059))
+
+## 2.48.2
+
+2023-05-26
+
+### 🐛 BugFix
+
+- Fix the bug that the `onPressEnter` callback is incorrectly triggered when the `Input.Search` component clicks the search icon or search button.([#1990](https://github.com/arco-design/arco-design/pull/1990))
+- Fix the issue that the `autoSize` of the `Input.TextArea` may not take effect while typing non-English texts.([#1988](https://github.com/arco-design/arco-design/pull/1988))
+
+## 2.46.3
+
+2023-04-07
+
+### 🆎 TypeScript
+
+- Improve the definition of 'Input.Textarea' TS([#1899](https://github.com/arco-design/arco-design/pull/1899))
+
+## 2.36.1
+
+2022-07-01
+
+### 🐛 BugFix
+
+- Fix console React Warning (not recognize prop on a DOM element) caused by `Input` component.([#1070](https://github.com/arco-design/arco-design/pull/1070))
+
+## 2.35.0
+
+2022-06-10
+
+### 🐛 BugFix
+
+- Fixed the bug that the length of `Input.TextArea` component may exceed `maxLength` when inputting Chinese.([#988](https://github.com/arco-design/arco-design/pull/988))
+
 ## 2.32.1
 
 2022-04-22

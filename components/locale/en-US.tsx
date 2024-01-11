@@ -1,8 +1,10 @@
 import 'dayjs/locale/en';
+import { DefaultValidateMessage } from 'b-validate';
 
 const Calendar = {
   formatYear: 'YYYY',
   formatMonth: 'MMM YYYY',
+  monthBeforeYear: true,
   today: 'Today',
   view: {
     month: 'Month',
@@ -162,5 +164,11 @@ export default {
     zoomIn: 'Zoom In',
     zoomOut: 'Zoom Out',
     originalSize: 'Original Size',
+  },
+  Form: DefaultValidateMessage,
+  ColorPicker: {
+    history: 'History Colors',
+    preset: 'Preset Colors',
+    empty: 'Empty',
   },
 };

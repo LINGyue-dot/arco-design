@@ -11,8 +11,10 @@ import IconDelete from '../../icon/react-icon/IconDelete';
 import IconHover from '../_class/icon-hover';
 import { ConfigContext } from '../ConfigProvider';
 import { isObject } from '../_util/is';
+import useKeyboardEvent from '../_util/hooks/useKeyboardEvent';
 
 export const TransferList = (props: TransferListProps, ref) => {
+  const getKeyboardEvents = useKeyboardEvent();
   const {
     style,
     prefixCls,
@@ -35,6 +37,8 @@ export const TransferList = (props: TransferListProps, ref) => {
     handleSelect,
     handleRemove,
     filterOption,
+    renderHeaderUnit,
+    virtualListProps,
     onSearch,
     onResetData,
     onDragStart,
@@ -113,13 +117,25 @@ export const TransferList = (props: TransferListProps, ref) => {
       });
     }
 
+    const eleHeaderUnit = (
+      <span className={`${baseClassName}-header-unit`}>
+        {renderHeaderUnit(countSelected, countRendered)}
+      </span>
+    );
+
     return allowClear ? (
       <>
         <span className={`${baseClassName}-header-title`}>{title}</span>
+        {eleHeaderUnit}
         {!disabled && validKeys.length ? (
           <IconHover
             className={`${baseClassName}-icon-clear`}
             onClick={clearItems(keysCanBeChecked)}
+            tabIndex={0}
+            role="button"
+            {...getKeyboardEvents({
+              onPressEnter: clearItems(keysCanBeChecked),
+            })}
           >
             <IconDelete />
           </IconHover>
@@ -130,9 +146,7 @@ export const TransferList = (props: TransferListProps, ref) => {
         <span className={`${baseClassName}-header-title`}>
           <Checkbox {...checkboxProps}>{title}</Checkbox>
         </span>
-        <span
-          className={`${baseClassName}-header-unit`}
-        >{`${countSelected} / ${countRendered}`}</span>
+        {eleHeaderUnit}
       </>
     );
   };
@@ -149,15 +163,38 @@ export const TransferList = (props: TransferListProps, ref) => {
         filteredItems: itemsToRender,
         onItemRemove: (key) => handleRemove([key]),
         onItemSelect: handleItemChecked,
-        onItemSelectAll: handleItemAllChecked,
+        onItemSelectAll: (keys, checked) => {
+          handleSelect(checked ? keys.concat(selectedDisabledKeys) : [...selectedDisabledKeys]);
+        },
       });
 
     return customList ? (
       <div className={`${baseClassName}-custom-list`}>{customList}</div>
     ) : (
       <List
+        bordered={false}
+        paginationInFooter
+        virtualListProps={virtualListProps}
         wrapperClassName={`${baseClassName}-list`}
         dataSource={itemsToRender}
+        pagination={
+          pagination
+            ? {
+                simple: true,
+                size: 'mini',
+                ...(typeof pagination === 'object' ? pagination : {}),
+              }
+            : undefined
+        }
+        footer={
+          showFooter === true ? (
+            <Button size="mini" disabled={disabled} onClick={onResetData}>
+              {locale.Transfer.resetText}
+            </Button>
+          ) : (
+            showFooter || null
+          )
+        }
         render={(item: TransferItem) => (
           <Item
             key={item.key}
@@ -193,26 +230,6 @@ export const TransferList = (props: TransferListProps, ref) => {
             }}
           />
         )}
-        pagination={
-          pagination
-            ? {
-                simple: true,
-                size: 'mini',
-                ...(typeof pagination === 'object' ? pagination : {}),
-              }
-            : undefined
-        }
-        bordered={false}
-        paginationInFooter
-        footer={
-          showFooter === true ? (
-            <Button size="mini" disabled={disabled} onClick={onResetData}>
-              {locale.Transfer.resetText}
-            </Button>
-          ) : (
-            showFooter || null
-          )
-        }
       />
     );
   };

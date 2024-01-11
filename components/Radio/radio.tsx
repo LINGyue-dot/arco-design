@@ -1,4 +1,4 @@
-import React, { useContext, PropsWithChildren, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import cs from '../_util/classNames';
 import Group, { RadioGroupContext } from './group';
 import { ConfigContext } from '../ConfigProvider';
@@ -7,12 +7,12 @@ import useMergeValue from '../_util/hooks/useMergeValue';
 import IconHover from '../_class/icon-hover';
 import { RadioProps } from './interface';
 import useMergeProps from '../_util/hooks/useMergeProps';
-import { isFunction } from '../_util/is';
+import { isFunction, isNullOrUndefined } from '../_util/is';
 
-function Radio(baseProps: PropsWithChildren<RadioProps>) {
+function Radio(baseProps: RadioProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { getPrefixCls, componentConfig } = useContext(ConfigContext);
-  const props = useMergeProps<PropsWithChildren<RadioProps>>(baseProps, {}, componentConfig?.Radio);
+  const { getPrefixCls, componentConfig, rtl } = useContext(ConfigContext);
+  const props = useMergeProps<RadioProps>(baseProps, {}, componentConfig?.Radio);
 
   const context = useContext(RadioGroupContext);
 
@@ -37,6 +37,7 @@ function Radio(baseProps: PropsWithChildren<RadioProps>) {
     {
       [`${prefixCls}-checked`]: checked,
       [`${prefixCls}-disabled`]: disabled,
+      [`${prefixCls}-rtl`]: rtl,
     },
     className
   );
@@ -99,7 +100,7 @@ function Radio(baseProps: PropsWithChildren<RadioProps>) {
           >
             <div className={`${prefixCls}-mask`} />
           </IconHover>
-          {children && <span className={`${prefixCls}-text`}>{children}</span>}
+          {!isNullOrUndefined(children) && <span className={`${prefixCls}-text`}>{children}</span>}
         </>
       ) : (
         context.type === 'button' && <span className={`${prefixCls}-button-inner`}>{children}</span>

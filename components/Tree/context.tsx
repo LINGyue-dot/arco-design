@@ -6,8 +6,8 @@ import { NodeProps, TreeDataType, TreeProps, TreeState } from './interface';
 export const TreeContext = createContext<{
   icons?: NodeProps['icons'];
   loadMore?: (node: NodeProps) => void;
-  renderExtra?: (node: NodeProps) => void;
-  renderTitle?: (node: NodeProps) => void;
+  renderExtra?: TreeProps['renderExtra'];
+  renderTitle?: TreeProps['renderTitle'];
   virtualListProps?: AvailableVirtualListProps;
   onSelect?: (_key: string, e) => void;
   onCheck?: (checked: boolean, _key: string, e) => void;
@@ -19,7 +19,7 @@ export const TreeContext = createContext<{
   ) => void;
   key2nodeProps?: { [key: string]: NodeProps };
   actionOnClick?: TreeProps['actionOnClick'];
-  getNodeProps?: (node: NodeProps, expandedKeysSet: Set<string>) => NodeProps;
+  getNodeProps?: <T extends NodeProps | NodeProps[]>(nodes: T, dataSet?) => T;
   getTreeState?: () => TreeState;
   onExpandEnd?: (key: string) => void;
   onNodeDragStart?: (e: DragEvent<HTMLSpanElement>, nodeProps: NodeProps) => void;

@@ -19,6 +19,7 @@ export interface DateInputProps {
   style?: CSSProperties;
   className?: string | string[];
   error?: boolean;
+  status?: 'warning' | 'error';
   disabled?: boolean;
   placeholder?: string;
   value?: Dayjs;
@@ -34,6 +35,7 @@ export interface DateInputProps {
   onChange?: (e) => void;
   suffixIcon?: ReactNode;
   isPlaceholder?: boolean;
+  prefix?: ReactNode;
 }
 
 type DateInputHandle = {
@@ -47,6 +49,7 @@ function DateInput(
     className,
     prefixCls: propPrefixCls,
     allowClear,
+    status,
     error,
     disabled,
     placeholder,
@@ -58,6 +61,7 @@ function DateInput(
     inputValue,
     onPressEnter,
     suffixIcon,
+    prefix,
     onChange,
     popupVisible,
     isPlaceholder,
@@ -65,7 +69,7 @@ function DateInput(
   }: DateInputProps,
   ref
 ) {
-  const { getPrefixCls, size: ctxSize, locale } = useContext(ConfigContext);
+  const { getPrefixCls, size: ctxSize, locale, rtl } = useContext(ConfigContext);
   const input = useRef<HTMLInputElement>(null);
   const size = propSize || ctxSize;
 
@@ -81,7 +85,7 @@ function DateInput(
   function onKeyDown(e) {
     const keyCode = e.keyCode || e.which;
     if (keyCode === Enter.code) {
-      onPressEnter && onPressEnter();
+      onPressEnter?.();
     }
   }
 
@@ -98,19 +102,24 @@ function DateInput(
   const readOnlyProps = editable ? {} : { readOnly: true };
 
   const prefixCls = propPrefixCls || getPrefixCls('picker');
+
+  const inputStatus = status || (error ? 'error' : undefined);
   const classNames = cs(
     prefixCls,
     `${prefixCls}-size-${size}`,
     {
       [`${prefixCls}-focused`]: !!popupVisible,
       [`${prefixCls}-disabled`]: disabled,
-      [`${prefixCls}-error`]: error,
+      [`${prefixCls}-has-prefix`]: prefix,
+      [`${prefixCls}-${inputStatus}`]: inputStatus,
+      [`${prefixCls}-rtl`]: rtl,
     },
     className
   );
 
   return (
     <div style={style} className={classNames} {...omit(rest, ['onChange', 'onPressEnter'])}>
+      {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
       <div
         className={cs(`${prefixCls}-input`, { [`${prefixCls}-input-placeholder`]: isPlaceholder })}
       >

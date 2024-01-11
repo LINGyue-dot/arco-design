@@ -48,12 +48,24 @@ export function isUndefined(obj: any): obj is undefined {
   return obj === undefined;
 }
 
+export function isNull(obj: any): obj is null {
+  return obj === null;
+}
+
+export function isNullOrUndefined(obj: any): boolean {
+  return obj === null || obj === undefined;
+}
+
 export function isFunction(obj: any): obj is (...args: any[]) => any {
   return typeof obj === 'function';
 }
 
 export function isEmptyObject(obj: any): boolean {
   return isObject(obj) && Object.keys(obj).length === 0;
+}
+
+export function isEmptyReactNode(node: any): boolean {
+  return !node && (node === null || node === undefined || node === '' || node === false);
 }
 
 export function isExist(obj: any): boolean {
@@ -77,4 +89,8 @@ export function isDayjs(time): time is Dayjs {
       '$s' in time) ||
       time._isAMomentObject) // 兼容 moment 的验证
   );
+}
+
+export function isBoolean(value: any): value is Boolean {
+  return typeof value === 'boolean';
 }

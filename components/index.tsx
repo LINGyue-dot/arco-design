@@ -43,6 +43,9 @@ export { default as Checkbox } from './Checkbox';
 export type { CollapseProps, CollapseItemProps } from './Collapse/interface';
 export { default as Collapse } from './Collapse';
 
+export type { ColorPickerProps } from './ColorPicker/interface';
+export { default as ColorPicker } from './ColorPicker';
+
 export type { CommentProps } from './Comment/interface';
 export { default as Comment } from './Comment';
 
@@ -70,7 +73,7 @@ export { default as Empty } from './Empty';
 export type { FormProps, FormItemProps, FormListProps, FormInstance, RulesProps } from './Form/interface';
 export { default as Form } from './Form';
 
-export type { RowProps, ColProps } from './Grid/interface';
+export type { RowProps, ColProps, GridProps, GridItemProps } from './Grid/interface';
 export { default as Grid } from './Grid';
 
 export { default as Icon } from './Icon';
@@ -84,6 +87,10 @@ export { default as InputTag } from './InputTag';
 export type { InputNumberProps } from './InputNumber/interface';
 export { default as InputNumber } from './InputNumber';
 
+
+export type { VerificationCodeProps } from './VerificationCode/interface';
+export { default as VerificationCode } from './VerificationCode';
+
 export type { LayoutProps, HeaderProps, FooterProps, SiderProps, ContentProps } from './Layout/interface';
 export { default as Layout } from './Layout';
 
@@ -93,16 +100,16 @@ export { default as Link } from './Link';
 export type { ListProps, ListItemProps, ListItemMetaProps } from './List/interface';
 export { default as List } from './List';
 
-export type { MessageProps } from './Message/interface';
+export type { MessageProps, MessageHookReturnType } from './Message/interface';
 export { default as Message } from './Message';
 
 export type { MenuProps, MenuSubMenuProps, MenuItemProps, MenuItemGroupProps } from './Menu/interface';
 export { default as Menu } from './Menu';
 
-export type { ModalProps } from './Modal/interface';
+export type { ModalProps, ModalHookReturnType } from './Modal/interface';
 export { default as Modal } from './Modal';
 
-export type { NotificationProps } from './Notification/interface';
+export type { NotificationProps, NotificationHookReturnType } from './Notification/interface';
 export { default as Notification } from './Notification';
 
 export type { PageHeaderProps } from './PageHeader/interface';
@@ -159,6 +166,7 @@ export type { SwitchProps } from './Switch/interface';
 export { default as Switch } from './Switch';
 
 export type { TableProps, RowSelectionProps as TableRowSelectionProps, ColumnProps as TableColumnProps } from './Table/interface';
+export type { TableInstance } from './Table/table';
 export { default as Table } from './Table';
 
 export type { TabsProps } from './Tabs/interface';
@@ -197,5 +205,11 @@ export { default as Upload } from './Upload';
 export type { MentionsProps } from './Mentions/interface';
 export { default as Mentions } from './Mentions';
 
+
+export type { WatermarkProps } from './Watermark/interface';
+export { default as Watermark } from './Watermark';
+
 export type { ImageProps, ImagePreviewProps, ImagePreviewActionProps, ImagePreviewGroupProps } from './Image/interface';
 export { default as Image } from './Image';
+
+export const version = '2.58.2';

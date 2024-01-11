@@ -3,6 +3,7 @@ import 'dayjs/locale/ja';
 const Calendar = {
   formatYear: 'YYYY',
   formatMonth: 'MMM YYYY',
+  monthBeforeYear: true,
   today: '今日',
   view: {
     month: '月',
@@ -210,5 +211,10 @@ export default {
         false: '`false` であると期待します',
       },
     },
+  },
+  ColorPicker: {
+    history: '最近使用した色',
+    preset: 'システムのデフォルトの色',
+    empty: '空の',
   },
 };

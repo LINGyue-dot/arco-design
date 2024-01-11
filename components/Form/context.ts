@@ -16,6 +16,7 @@ export const FormContext = createContext<FormContextProps>({
   requiredSymbol: true,
   getFormElementId: () => 'arco-',
   store: {
+    clearFields: NOOP,
     getFieldsValue: NOOP,
     getFieldValue: NOOP,
     getFieldError: NOOP,
@@ -28,9 +29,13 @@ export const FormContext = createContext<FormContextProps>({
     resetFields: NOOP,
     submit: NOOP,
     validate: NOOP,
+    getFieldsState: NOOP,
     scrollToField: NOOP,
     getInnerMethods: () => ({
       registerField: NOOP,
+      innerGetStore: NOOP,
+      registerStateWatcher: NOOP,
+      registerWatcher: NOOP,
     }),
   } as any,
 });
@@ -46,4 +51,8 @@ export const FormProviderContext = createContext<{
   register?: (name: string, form: FormInstance) => void;
   onFormValuesChange?: (id: string | undefined, changedValues) => void;
   onFormSubmit?: (id: string | undefined, values) => void;
+}>({});
+
+export const FormListContext = createContext<{
+  getItemKey?: (key) => string;
 }>({});

@@ -1,3 +1,168 @@
+## 2.55.0
+
+2023-10-27
+
+### 🆕 Feature
+
+- The format parameter of the `DatePicker.RangePicker` component supports array.([#2327](https://github.com/arco-design/arco-design/pull/2327))
+
+### 🐛 BugFix
+
+- Fixed the bug that the Tab key switching focus of the `DatePicker.RangePicker` component was misaligned.([#2323](https://github.com/arco-design/arco-design/pull/2323))
+
+## 2.54.2
+
+2023-10-20
+
+### 🐛 BugFix
+
+- Fixed `DatePicker.RangePicker` setting `shortcuts={[]}` unexpectedly displayed 0.([#2302](https://github.com/arco-design/arco-design/pull/2302))
+
+## 2.50.2
+
+2023-07-21
+
+### 💎 Enhancement
+
+- Optimize the experience of `DatePicker` when jumping quickly in the panel.([#2094](https://github.com/arco-design/arco-design/pull/2094))
+
+## 2.49.2
+
+2023-06-16
+
+### 🐛 BugFix
+
+- Fix `showTime.defaultValue` of `DatePicker` component shows inaccurate bug after setting timezone.([#2036](https://github.com/arco-design/arco-design/pull/2036))
+
+## 2.48.2
+
+2023-05-26
+
+### 🐛 BugFix
+
+- Fix `DatePicker` component, after setting the timezone, the input time is not converted correctly.([#1992](https://github.com/arco-design/arco-design/pull/1992))
+
+## 2.48.0
+
+2023-05-12
+
+### 🐛 BugFix
+
+- Fix `DatePicker` component `disabledDate` in the shortcut selection panel, disabling the date should not be disabled.([#1961](https://github.com/arco-design/arco-design/pull/1961))
+
+## 2.47.0
+
+2023-04-14
+
+### 🐛 BugFix
+
+- Fix `DatePicker.RangePicker` when reopening, panel date changes but does not trigger `onPickerValueChange` bug.([#1920](https://github.com/arco-design/arco-design/pull/1920))
+- Fix the bug that when the `DatePicker.RangePicker` component is opened and the `mode` is switched, the date will keep increasing.([#1919](https://github.com/arco-design/arco-design/pull/1919))
+
+## 2.45.1
+
+2023-03-01
+
+### 💎 Enhancement
+
+- `DatePicker` component no longer sorts the panel when selecting a date.([#1814](https://github.com/arco-design/arco-design/pull/1814))
+
+## 2.43.0
+
+2022-12-23
+
+### 🆕 Feature
+
+- `DatePicker` supports setting prefix by `prefix`.([#1668](https://github.com/arco-design/arco-design/pull/1668))
+
+## 2.42.2
+
+2022-12-09
+
+### 🐛 BugFix
+
+- Fix `DatePicker` week selector compatibility with moment.js.([#1631](https://github.com/arco-design/arco-design/pull/1631))
+
+## 2.41.3
+
+2022-11-18
+
+### 🐛 BugFix
+
+- Fix `DatePicker.Range` component when the panel is open, the panel date is incorrect bug when switching `mode`.([#1580](https://github.com/arco-design/arco-design/pull/1580))
+
+## 2.39.3
+
+2022-09-02
+
+### 🐛 BugFix
+
+- Fixed `DatePicker` component error in `de-DE` language.([#1358](https://github.com/arco-design/arco-design/pull/1358))
+
+## 2.39.2
+
+2022-08-26
+
+### 🐛 BugFix
+
+- Fix the bug that the `DatePicker.RangePicker` component dynamically modifies `disabled`, and the disabled date is not updated in time.([#1336](https://github.com/arco-design/arco-design/pull/1336))
+
+## 2.39.1
+
+2022-08-19
+
+### 🐛 BugFix
+
+- Fixed the bug that the `panelRender` of the `DatePicker.RangePicker` component did not work.([#1293](https://github.com/arco-design/arco-design/pull/1293))
+
+## 2.39.0
+
+2022-08-12
+
+### 🐛 BugFix
+
+- Fix the problem that the `DatePicker.RangePicker` component is wrong to judge whether it is out of range in a critical situation.([#1273](https://github.com/arco-design/arco-design/pull/1273))
+
+## 2.38.1
+
+2022-08-05
+
+### 🐛 BugFix
+
+- Fix the bug of inconsistent week display between `DatePicker.WeekPicker` input box and panel.([#1238](https://github.com/arco-design/arco-design/pull/1238))
+
+## 2.38.0
+
+2022-07-29
+
+### 🐛 BugFix
+
+- Fix `DatePicker.RangePicker` can't change mode from month to year.([#1188](https://github.com/arco-design/arco-design/pull/1188))
+
+## 2.36.0
+
+2022-06-24
+
+### 🐛 BugFix
+
+- Fixed a bug where the selection range of the `DatePicker` component was invalid in rare cases.([#1041](https://github.com/arco-design/arco-design/pull/1041))
+
+## 2.35.0
+
+2022-06-10
+
+### 💎 Enhancement
+
+- The default value of the `dayStartOfWeek` of the `DatePicker` component is determined by the locale set, no longer default to `0`.([#982](https://github.com/arco-design/arco-design/pull/982))
+
+## 2.34.0
+
+2022-05-27
+
+### 🆕 Feature
+
+- Added `panelRender` parameter to the `DatePicker` component.([#914](https://github.com/arco-design/arco-design/pull/914))
+
 ## 2.32.2
 
 2022-04-29

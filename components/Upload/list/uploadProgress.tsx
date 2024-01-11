@@ -8,6 +8,8 @@ import IconUpload from '../../../icon/react-icon/IconUpload';
 import IconPlayArrowFill from '../../../icon/react-icon/IconPlayArrowFill';
 import IconPause from '../../../icon/react-icon/IconPause';
 import Tooltip from '../../Tooltip';
+import { isFunction } from '../../_util/is';
+import useKeyboardEvent from '../../_util/hooks/useKeyboardEvent';
 
 const UploadProgress: FC<
   {
@@ -20,12 +22,13 @@ const UploadProgress: FC<
     onAbort?: UploadListProps['onAbort'];
   } & CustomIconType
 > = (props) => {
-  const { file, prefixCls, progressProps } = props;
+  const keyboardEvents = useKeyboardEvent();
+  const { file, prefixCls, progressProps, progressRender } = props;
   const { locale } = useContext(ConfigContext);
   const { status, percent = 0 } = file;
   const cls = `${prefixCls}-list`;
   const widthStyle = progressProps && progressProps.width ? { width: progressProps.width } : {};
-  return (
+  const dom = (
     <>
       {status === STATUS.fail && props.reuploadIcon !== null && (
         <span
@@ -33,6 +36,14 @@ const UploadProgress: FC<
           onClick={() => {
             props.onReupload && props.onReupload(file);
           }}
+          tabIndex={0}
+          role="button"
+          aria-label={locale.Upload.reupload}
+          {...keyboardEvents({
+            onPressEnter: () => {
+              props.onReupload && props.onReupload(file);
+            },
+          })}
         >
           {props.reuploadIcon ||
             (props.listType === 'picture-card' ? <IconUpload /> : locale.Upload.reupload)}
@@ -58,10 +69,18 @@ const UploadProgress: FC<
           />
           {status === STATUS.init && props.startIcon !== null && (
             <span
+              tabIndex={0}
+              role="button"
+              aria-label={locale.Upload.start}
               className={`${prefixCls}-list-start-icon`}
               onClick={() => {
                 props.onUpload && props.onUpload(file);
               }}
+              {...keyboardEvents({
+                onPressEnter: () => {
+                  props.onUpload && props.onUpload(file);
+                },
+              })}
             >
               {props.startIcon || (
                 <Tooltip content={locale.Upload.start}>
@@ -77,6 +96,13 @@ const UploadProgress: FC<
               onClick={() => {
                 props.onAbort && props.onAbort(file);
               }}
+              tabIndex={0}
+              aria-label={locale.Upload.cancel}
+              {...keyboardEvents({
+                onPressEnter: () => {
+                  props.onAbort && props.onAbort(file);
+                },
+              })}
             >
               {props.cancelIcon || (
                 <Tooltip content={locale.Upload.cancel}>
@@ -89,6 +115,8 @@ const UploadProgress: FC<
       )}
     </>
   );
+
+  return isFunction(progressRender) ? progressRender(file, dom) : dom;
 };
 
 export default UploadProgress;

@@ -1,3 +1,120 @@
+## 2.57.0
+
+2023-12-08
+
+### 🐛 BugFix
+
+- Fixed the issue  that `Upload` would add the folder to the list as a file when `directory = false`([#2425](https://github.com/arco-design/arco-design/pull/2425))
+
+## 2.56.0
+
+2023-11-17
+
+### 🐛 BugFix
+
+- Fixed the issue that the uploaded file status was overwritten to init during batch upload([#2362](https://github.com/arco-design/arco-design/pull/2362))
+
+## 2.55.0
+
+2023-10-27
+
+### 🆕 Feature
+
+- `Upload` supports custom upload method([#2297](https://github.com/arco-design/arco-design/pull/2297))
+
+## 2.53.0
+
+2023-09-08
+
+### 🆕 Feature
+
+- `Upload` supports setting the `accept` attribute through `accept.strict` to follow the browser's native behavior and does not strictly match and filter file extensions.([#2218](https://github.com/arco-design/arco-design/pull/2218) )
+- The `onRemove` method of the `Upload` component supports passing the callback parameter into the current file list([#2218](https://github.com/arco-design/arco-design/pull/2218) )
+- boolean \([#2218](https://github.com/arco-design/arco-design/pull/2218) )
+
+## 2.45.0
+
+2023-02-17
+
+### 🐛 BugFix
+
+- Fix `Upload` component verification duplicate `uid` warning logic exception([#1783](https://github.com/arco-design/arco-design/pull/1783))
+
+## 2.44.2
+
+2023-02-10
+
+### 🐛 BugFix
+
+- Fix the bug that uploading files in batches does not take effect in the strict mode of `Upload` component react 18.([#1767](https://github.com/arco-design/arco-design/pull/1767))
+
+## 2.43.0
+
+2022-12-23
+
+### 🐛 BugFix
+
+- Fix the bug that mp3 files cannot be uploaded normally when the `Upload` component is set to `accept=audio/mp3`.([#1669](https://github.com/arco-design/arco-design/pull/1669))
+
+## 2.42.0
+
+2022-11-25
+
+### 🆕 Feature
+
+- `Upload` supports turning off drag upload by setting `drag=false`([#1613](https://github.com/arco-design/arco-design/pull/1613))
+
+## 2.41.3
+
+2022-11-18
+
+### 🐛 BugFix
+
+- Fixed a bug that the `Upload` component incorrectly filters files with uppercase suffixes.([#1572](https://github.com/arco-design/arco-design/pull/1572))
+
+## 2.41.0
+
+2022-10-28
+
+### 🆕 Feature
+
+- The `Upload` component supports enabling built-in image preview functionality via the `imagePreview` property.([#1459](https://github.com/arco-design/arco-design/pull/1459))
+- `Upload` component supports `onDragLeave` and `onDragOver` event callbacks([#1459](https://github.com/arco-design/arco-design/pull/1459))
+
+## 2.38.1
+
+2022-08-05
+
+### 🐛 BugFix
+
+- fix `accept=*` does not work in `Upload`([#1233](https://github.com/arco-design/arco-design/pull/1233))
+
+## 2.37.0
+
+2022-07-08
+
+### 🆕 Feature
+
+- The `Upload` component supports listening to the `onDrop` event([#1071](https://github.com/arco-design/arco-design/pull/1071))
+
+### 🐛 BugFix
+
+- fix `Upload` can upload file type not in accept([#1097](https://github.com/arco-design/arco-design/pull/1097))
+
+## 2.34.0
+
+2022-05-27
+
+### 🆕 Feature
+
+- The `Upload` component supports rendering images via the `showUploadList.imageRender` property.([#925](https://github.com/arco-design/arco-design/pull/925))
+- The `Upload` component supports rendering upload progress nodes via the `showUploadList.progressRender` property.([#925](https://github.com/arco-design/arco-design/pull/925))
+- The `Upload` component supports `children` passed in the function type to render the node content that triggers the upload.([#925](https://github.com/arco-design/arco-design/pull/925))
+
+### 💅 Style
+
+- The default gray background has been added to the picture display area in the photo wall mode of the `Upload` component.([#925](https://github.com/arco-design/arco-design/pull/925))
+
 ## 2.33.0
 
 2022-05-13

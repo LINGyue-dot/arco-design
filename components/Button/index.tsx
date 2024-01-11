@@ -39,6 +39,7 @@ function Button(baseProps: ButtonProps, ref) {
     size: ctxSize,
     autoInsertSpaceInButton,
     componentConfig,
+    rtl,
   } = useContext(ConfigContext);
   const props = useMergeProps<ButtonProps>(baseProps, defaultProps, componentConfig?.Button);
   const {
@@ -97,12 +98,13 @@ function Button(baseProps: ButtonProps, ref) {
       [`${prefixCls}-icon-only`]: iconOnly || (!children && children !== 0 && iconNode),
       [`${prefixCls}-disabled`]: disabled,
       [`${prefixCls}-two-chinese-chars`]: isTwoCNChar,
+      [`${prefixCls}-rtl`]: rtl,
     },
     className
   );
 
   const handleClick: React.MouseEventHandler<HTMLElement> = (event: any): void => {
-    if (loading) {
+    if (loading || disabled) {
       typeof event?.preventDefault === 'function' && event.preventDefault();
       return;
     }

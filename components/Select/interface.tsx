@@ -86,6 +86,16 @@ export interface SelectProps extends SelectViewCommonProps {
    */
   defaultActiveFirstOption?: boolean;
   /**
+   * @zh 是否允许通过输入创建新的选项。
+   * @en Whether to allow new options to be created by input.
+   * @version 2.13.0, `{ formatter }` in 2.54.0
+   */
+  allowCreate?:
+    | boolean
+    | {
+        formatter: (inputValue: string, creating: boolean) => SelectProps['options'][number];
+      };
+  /**
    * @zh 是否在隐藏的时候销毁 DOM 结构
    * @en Whether to destroy the DOM when hiding
    * @defaultValue true
@@ -164,8 +174,14 @@ export interface SelectProps extends SelectViewCommonProps {
    */
   onChange?: (value, option: OptionInfo | OptionInfo[]) => void;
   /**
+   * @zh 选中选项时触发的回调，(只在 `multiple` 模式下触发)。
+   * @en Called when an option is selected. Only called for `multiple` mode.
+   * @version 2.52.0
+   */
+  onSelect?: (value: string | number | LabeledValue, option: OptionInfo) => void;
+  /**
    * @zh 取消选中的时候触发的回调，(只在 `multiple` 模式下触发)。
-   * @en Called when a option is deselected.Only called for `multiple` mode.
+   * @en Called when an option is deselected. Only called for `multiple` mode.
    */
   onDeselect?: (value: string | number | LabeledValue, option: OptionInfo) => void;
   /**
@@ -220,6 +236,7 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLLIElement>, 'classN
   style?: CSSProperties;
   children?: ReactNode;
   prefixCls?: string;
+  rtl?: boolean;
   className?: string | string[];
   wrapperClassName?: string | string[];
   /**
@@ -241,6 +258,8 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLLIElement>, 'classN
   // Some user may use isSelectOption to hack, Do NOT change it to _isSelectOption
   isSelectOption?: boolean;
   _isMultipleMode?: boolean;
+  _isUserCreatedOption?: boolean;
+  _isUserCreatingOption?: boolean;
   _valueActive?: OptionProps['value'];
   _valueSelect?: SelectInnerStateValue;
   _onClick?: (value: OptionProps['value'], disabled: boolean) => void;
@@ -303,4 +322,10 @@ export type SelectHandle = {
    * @en Get the option info by its value
    */
   getOptionInfoByValue: (value: OptionProps['value']) => OptionInfo;
+  /**
+   * @zh 将下拉列表滚动至指定选项
+   * @en Scroll the drop-down list to the specified option
+   * @version 2.46.0
+   */
+  scrollIntoView: (value: OptionProps['value'], options?: ScrollIntoViewOptions) => void;
 };

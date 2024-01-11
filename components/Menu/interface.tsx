@@ -67,7 +67,11 @@ export interface MenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'classNa
    * @defaultValue true
    * @version 2.24.0
    */
-  ellipsis?: boolean;
+  ellipsis?:
+    | boolean
+    | {
+        text?: ReactNode;
+      };
   /**
    * @zh 是否自动滚动选中项目到可见区域
    * @en Whether to automatically scroll the selected item to the visible area
@@ -117,6 +121,12 @@ export interface MenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'classNa
    * @en Callback when menu collapse status changed
    */
   onCollapseChange?: (collapse: boolean) => void;
+  /**
+   * @zh 水平菜单自动超出省略发生变化时的回调
+   * @en Callback when horizontal-menu ellipsis status changed
+   * @version 2.57.0
+   */
+  onEllipsisChange?: (status: { lastVisibleIndex: number; overflowNodes: ReactNode[] }) => void;
 
   /**
    * @zh
@@ -141,7 +151,7 @@ export interface MenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'classNa
 /**
  * @title Menu.SubMenu
  */
-export interface MenuSubMenuProps {
+export interface MenuSubMenuProps extends Omit<HTMLAttributes<HTMLElement>, 'title' | 'className'> {
   children?: ReactNode;
   style?: CSSProperties;
   className?: string | string[];
@@ -217,9 +227,15 @@ export interface MenuItemProps extends Omit<HTMLAttributes<HTMLElement>, 'classN
   disabled?: boolean;
   /**
    * @zh 配置最外层标签，可以是 html 标签或是组件
-   * @en Configure the outermost label, which can be an html label or a component
+   * @en Configure the outermost label, which can be a html label or a component
    * @defaultValue div
    * @version 2.16.0
    */
   wrapper?: string | React.FC<any> | React.ComponentClass<any>;
+  /**
+   * @zh 菜单折叠时，指定在 Tooltip 中展示的菜单项节点
+   * @en Set the menu item displayed in Tooltip when menu is collapsed
+   * @version 2.51.0
+   */
+  renderItemInTooltip?: () => ReactNode;
 }

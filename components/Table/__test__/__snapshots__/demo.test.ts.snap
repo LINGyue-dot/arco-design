@@ -400,6 +400,7 @@ exports[`renders Table/demo/attribution.md correctly 1`] = `
               >
                 <div
                   class="arco-radio-group arco-radio-group-type-button arco-radio-size-default arco-radio-mode-outline"
+                  role="radiogroup"
                 >
                   <label
                     class="arco-radio-button arco-radio-checked"
@@ -484,6 +485,7 @@ exports[`renders Table/demo/attribution.md correctly 1`] = `
               >
                 <div
                   class="arco-radio-group arco-radio-group-type-button arco-radio-size-default arco-radio-mode-outline"
+                  role="radiogroup"
                 >
                   <label
                     class="arco-radio-button arco-radio-checked"
@@ -1166,6 +1168,7 @@ exports[`renders Table/demo/attribution.md correctly 1`] = `
                 <li
                   aria-label="上一页"
                   class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+                  tabindex="-1"
                 >
                   <svg
                     aria-hidden="true"
@@ -1185,12 +1188,14 @@ exports[`renders Table/demo/attribution.md correctly 1`] = `
                   aria-current="true"
                   aria-label="第 1 页"
                   class="arco-pagination-item arco-pagination-item-active"
+                  tabindex="0"
                 >
                   1
                 </li>
                 <li
                   aria-label="下一页"
                   class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+                  tabindex="-1"
                 >
                   <svg
                     aria-hidden="true"
@@ -1598,6 +1603,7 @@ exports[`renders Table/demo/basic.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -1617,12 +1623,14 @@ exports[`renders Table/demo/basic.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -2131,6 +2139,7 @@ exports[`renders Table/demo/data-children.md correctly 1`] = `
               <li
                 aria-label="上一页"
                 class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -2150,12 +2159,14 @@ exports[`renders Table/demo/data-children.md correctly 1`] = `
                 aria-current="true"
                 aria-label="第 1 页"
                 class="arco-pagination-item arco-pagination-item-active"
+                tabindex="0"
               >
                 1
               </li>
               <li
                 aria-label="下一页"
                 class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -2567,6 +2578,7 @@ exports[`renders Table/demo/drag.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -2586,12 +2598,14 @@ exports[`renders Table/demo/drag.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -3355,6 +3369,7 @@ exports[`renders Table/demo/drag-handle.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -3374,12 +3389,14 @@ exports[`renders Table/demo/drag-handle.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -3896,6 +3913,7 @@ exports[`renders Table/demo/expand-sub-table.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -3915,12 +3933,14 @@ exports[`renders Table/demo/expand-sub-table.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -4419,6 +4439,7 @@ exports[`renders Table/demo/expandable.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -4438,12 +4459,14 @@ exports[`renders Table/demo/expandable.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -4947,6 +4970,7 @@ exports[`renders Table/demo/expandprops.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -4966,12 +4990,14 @@ exports[`renders Table/demo/expandprops.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -5394,6 +5420,7 @@ exports[`renders Table/demo/filter-dropdown.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -5413,12 +5440,14 @@ exports[`renders Table/demo/filter-dropdown.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -5444,7 +5473,7 @@ exports[`renders Table/demo/filter-dropdown.md correctly 1`] = `
 
 exports[`renders Table/demo/fixed-column.md correctly 1`] = `
 <div
-  class="arco-table arco-table-size-default arco-table-border arco-table-hover arco-table-layout-fixed"
+  class="arco-table arco-table-size-default arco-table-border arco-table-hover arco-table-layout-fixed arco-table-fixed-column"
 >
   <div
     class="arco-spin"
@@ -6445,6 +6474,7 @@ exports[`renders Table/demo/fixed-column.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -6464,12 +6494,14 @@ exports[`renders Table/demo/fixed-column.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -6495,7 +6527,7 @@ exports[`renders Table/demo/fixed-column.md correctly 1`] = `
 
 exports[`renders Table/demo/group-columns.md correctly 1`] = `
 <div
-  class="arco-table arco-table-size-default arco-table-border arco-table-border-cell arco-table-hover arco-table-layout-fixed"
+  class="arco-table arco-table-size-default arco-table-border arco-table-border-cell arco-table-hover arco-table-layout-fixed arco-table-fixed-column"
 >
   <div
     class="arco-spin"
@@ -6527,6 +6559,9 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                 <col />
                 <col
                   style="width:120px"
+                />
+                <col
+                  style="width:110px"
                 />
               </colgroup>
               <thead>
@@ -6579,7 +6614,7 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                   <th
                     class="arco-table-th arco-table-col-fixed-right arco-table-col-fixed-right-first"
                     rowspan="3"
-                    style="right:0"
+                    style="right:110px"
                   >
                     <div
                       class="arco-table-th-item"
@@ -6588,6 +6623,21 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                         class="arco-table-th-item-title"
                       >
                         Salary
+                      </span>
+                    </div>
+                  </th>
+                  <th
+                    class="arco-table-th arco-table-col-fixed-right"
+                    rowspan="3"
+                    style="right:0"
+                  >
+                    <div
+                      class="arco-table-th-item"
+                    >
+                      <span
+                        class="arco-table-th-item-title"
+                      >
+                        Gender
                       </span>
                     </div>
                   </th>
@@ -6794,7 +6844,7 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                   </td>
                   <td
                     class="arco-table-td arco-table-col-fixed-right arco-table-col-fixed-right-first"
-                    style="right:0"
+                    style="right:110px"
                   >
                     <div
                       class="arco-table-cell"
@@ -6803,6 +6853,20 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                         class="arco-table-cell-wrap-value"
                       >
                         23000
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-fixed-right"
+                    style="right:0"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        female
                       </span>
                     </div>
                   </td>
@@ -6904,7 +6968,7 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                   </td>
                   <td
                     class="arco-table-td arco-table-col-fixed-right arco-table-col-fixed-right-first"
-                    style="right:0"
+                    style="right:110px"
                   >
                     <div
                       class="arco-table-cell"
@@ -6913,6 +6977,20 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                         class="arco-table-cell-wrap-value"
                       >
                         25000
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-fixed-right"
+                    style="right:0"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        female
                       </span>
                     </div>
                   </td>
@@ -7014,7 +7092,7 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                   </td>
                   <td
                     class="arco-table-td arco-table-col-fixed-right arco-table-col-fixed-right-first"
-                    style="right:0"
+                    style="right:110px"
                   >
                     <div
                       class="arco-table-cell"
@@ -7023,6 +7101,20 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                         class="arco-table-cell-wrap-value"
                       >
                         22000
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-fixed-right"
+                    style="right:0"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        male
                       </span>
                     </div>
                   </td>
@@ -7124,7 +7216,7 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                   </td>
                   <td
                     class="arco-table-td arco-table-col-fixed-right arco-table-col-fixed-right-first"
-                    style="right:0"
+                    style="right:110px"
                   >
                     <div
                       class="arco-table-cell"
@@ -7133,6 +7225,20 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                         class="arco-table-cell-wrap-value"
                       >
                         17000
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-fixed-right"
+                    style="right:0"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        female
                       </span>
                     </div>
                   </td>
@@ -7234,7 +7340,7 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                   </td>
                   <td
                     class="arco-table-td arco-table-col-fixed-right arco-table-col-fixed-right-first"
-                    style="right:0"
+                    style="right:110px"
                   >
                     <div
                       class="arco-table-cell"
@@ -7243,6 +7349,20 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
                         class="arco-table-cell-wrap-value"
                       >
                         27000
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-fixed-right"
+                    style="right:0"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        male
                       </span>
                     </div>
                   </td>
@@ -7264,6 +7384,7 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -7283,12 +7404,14 @@ exports[`renders Table/demo/group-columns.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -7714,6 +7837,7 @@ exports[`renders Table/demo/header-sticky.md correctly 1`] = `
               <li
                 aria-label="上一页"
                 class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -7733,12 +7857,14 @@ exports[`renders Table/demo/header-sticky.md correctly 1`] = `
                 aria-current="true"
                 aria-label="第 1 页"
                 class="arco-pagination-item arco-pagination-item-active"
+                tabindex="0"
               >
                 1
               </li>
               <li
                 aria-label="下一页"
                 class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -7763,9 +7889,751 @@ exports[`renders Table/demo/header-sticky.md correctly 1`] = `
 </div>
 `;
 
+exports[`renders Table/demo/multiple-sorter.md correctly 1`] = `
+<div
+  class="arco-table arco-table-size-default arco-table-border arco-table-hover"
+>
+  <div
+    class="arco-spin"
+  >
+    <div
+      class="arco-spin-children"
+    >
+      <div
+        class="arco-table-container"
+      >
+        <div
+          class="arco-table-content-scroll"
+        >
+          <div
+            class="arco-table-content-inner"
+          >
+            <table>
+              <colgroup>
+                <col />
+                <col />
+                <col />
+                <col />
+                <col />
+              </colgroup>
+              <thead>
+                <tr
+                  class="arco-table-tr"
+                >
+                  <th
+                    class="arco-table-th"
+                  >
+                    <div
+                      class="arco-table-th-item arco-table-col-has-sorter"
+                    >
+                      <div
+                        class="arco-table-cell-with-sorter"
+                      >
+                        <span
+                          class="arco-table-th-item-title"
+                        >
+                          Name
+                        </span>
+                        <div
+                          class="arco-table-sorter"
+                        >
+                          <div
+                            class="arco-table-sorter-icon"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-up"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M23.063 13.171a1.2 1.2 0 0 1 1.875 0l13.503 16.88c.628.785.069 1.949-.937 1.949H10.497c-1.006 0-1.565-1.164-.937-1.95l13.503-16.879Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                          <div
+                            class="arco-table-sorter-icon"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-down"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M24.938 34.829a1.2 1.2 0 0 1-1.875 0L9.56 17.949c-.628-.785-.069-1.949.937-1.949h27.007c1.006 0 1.565 1.164.937 1.95L24.937 34.829Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th
+                    class="arco-table-th"
+                  >
+                    <div
+                      class="arco-table-th-item arco-table-col-has-sorter"
+                    >
+                      <div
+                        class="arco-table-cell-with-sorter"
+                      >
+                        <span
+                          class="arco-table-th-item-title"
+                        >
+                          Age
+                        </span>
+                        <div
+                          class="arco-table-sorter"
+                        >
+                          <div
+                            class="arco-table-sorter-icon"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-up"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M23.063 13.171a1.2 1.2 0 0 1 1.875 0l13.503 16.88c.628.785.069 1.949-.937 1.949H10.497c-1.006 0-1.565-1.164-.937-1.95l13.503-16.879Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                          <div
+                            class="arco-table-sorter-icon"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-down"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M24.938 34.829a1.2 1.2 0 0 1-1.875 0L9.56 17.949c-.628-.785-.069-1.949.937-1.949h27.007c1.006 0 1.565 1.164.937 1.95L24.937 34.829Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th
+                    class="arco-table-th arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-th-item arco-table-col-has-sorter"
+                    >
+                      <div
+                        class="arco-table-cell-with-sorter"
+                      >
+                        <span
+                          class="arco-table-th-item-title"
+                        >
+                          Score A
+                        </span>
+                        <div
+                          class="arco-table-sorter"
+                        >
+                          <div
+                            class="arco-table-sorter-icon"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-up"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M23.063 13.171a1.2 1.2 0 0 1 1.875 0l13.503 16.88c.628.785.069 1.949-.937 1.949H10.497c-1.006 0-1.565-1.164-.937-1.95l13.503-16.879Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                          <div
+                            class="arco-table-sorter-icon arco-table-sorter-icon-active"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-down"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M24.938 34.829a1.2 1.2 0 0 1-1.875 0L9.56 17.949c-.628-.785-.069-1.949.937-1.949h27.007c1.006 0 1.565 1.164.937 1.95L24.937 34.829Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th
+                    class="arco-table-th arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-th-item arco-table-col-has-sorter"
+                    >
+                      <div
+                        class="arco-table-cell-with-sorter"
+                      >
+                        <span
+                          class="arco-table-th-item-title"
+                        >
+                          Score B
+                        </span>
+                        <div
+                          class="arco-table-sorter"
+                        >
+                          <div
+                            class="arco-table-sorter-icon arco-table-sorter-icon-active"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-up"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M23.063 13.171a1.2 1.2 0 0 1 1.875 0l13.503 16.88c.628.785.069 1.949-.937 1.949H10.497c-1.006 0-1.565-1.164-.937-1.95l13.503-16.879Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                          <div
+                            class="arco-table-sorter-icon"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-down"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M24.938 34.829a1.2 1.2 0 0 1-1.875 0L9.56 17.949c-.628-.785-.069-1.949.937-1.949h27.007c1.006 0 1.565 1.164.937 1.95L24.937 34.829Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th
+                    class="arco-table-th"
+                  >
+                    <div
+                      class="arco-table-th-item arco-table-col-has-sorter"
+                    >
+                      <div
+                        class="arco-table-cell-with-sorter"
+                      >
+                        <span
+                          class="arco-table-th-item-title"
+                        >
+                          Score C
+                        </span>
+                        <div
+                          class="arco-table-sorter"
+                        >
+                          <div
+                            class="arco-table-sorter-icon"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-up"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M23.063 13.171a1.2 1.2 0 0 1 1.875 0l13.503 16.88c.628.785.069 1.949-.937 1.949H10.497c-1.006 0-1.565-1.164-.937-1.95l13.503-16.879Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                          <div
+                            class="arco-table-sorter-icon"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="arco-icon arco-icon-caret-down"
+                              fill="none"
+                              focusable="false"
+                              stroke="currentColor"
+                              stroke-width="4"
+                              viewBox="0 0 48 48"
+                            >
+                              <path
+                                d="M24.938 34.829a1.2 1.2 0 0 1-1.875 0L9.56 17.949c-.628-.785-.069-1.949.937-1.949h27.007c1.006 0 1.565 1.164.937 1.95L24.937 34.829Z"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class="arco-table-tr"
+                >
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        A
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        18
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        100
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        60
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        70
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="arco-table-tr"
+                >
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        C
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        19
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        100
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        70
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        60
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="arco-table-tr"
+                >
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        B
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        17
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        100
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        90
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        80
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="arco-table-tr"
+                >
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        D
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        15
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        80
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        70
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        100
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="arco-table-tr"
+                >
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        E
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        20
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        80
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td arco-table-col-sorted"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        70
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="arco-table-td"
+                  >
+                    <div
+                      class="arco-table-cell"
+                    >
+                      <span
+                        class="arco-table-cell-wrap-value"
+                      >
+                        90
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div
+        class="arco-table-pagination"
+      >
+        <div
+          class="arco-pagination arco-pagination-size-default"
+        >
+          <ul
+            class="arco-pagination-list"
+          >
+            <li
+              aria-label="上一页"
+              class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
+            >
+              <svg
+                aria-hidden="true"
+                class="arco-icon arco-icon-left"
+                fill="none"
+                focusable="false"
+                stroke="currentColor"
+                stroke-width="4"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  d="M32 8.4 16.444 23.956 32 39.513"
+                />
+              </svg>
+            </li>
+            <li
+              aria-current="true"
+              aria-label="第 1 页"
+              class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
+            >
+              1
+            </li>
+            <li
+              aria-label="下一页"
+              class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
+            >
+              <svg
+                aria-hidden="true"
+                class="arco-icon arco-icon-right"
+                fill="none"
+                focusable="false"
+                stroke="currentColor"
+                stroke-width="4"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  d="m16 39.513 15.556-15.557L16 8.4"
+                />
+              </svg>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`renders Table/demo/operations.md correctly 1`] = `
 <div
-  class="arco-table arco-table-size-default arco-table-border arco-table-hover arco-table-layout-fixed"
+  class="arco-table arco-table-size-default arco-table-border arco-table-hover arco-table-layout-fixed arco-table-fixed-column"
 >
   <div
     class="arco-spin"
@@ -8521,6 +9389,7 @@ exports[`renders Table/demo/operations.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -8540,12 +9409,14 @@ exports[`renders Table/demo/operations.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -9654,6 +10525,7 @@ exports[`renders Table/demo/pagination.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -9673,30 +10545,35 @@ exports[`renders Table/demo/pagination.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="第 2 页"
               class="arco-pagination-item"
+              tabindex="0"
             >
               2
             </li>
             <li
               aria-label="第 3 页"
               class="arco-pagination-item"
+              tabindex="0"
             >
               3
             </li>
             <li
               aria-label="第 4 页"
               class="arco-pagination-item"
+              tabindex="0"
             >
               4
             </li>
             <li
               aria-label="第 5 页"
               class="arco-pagination-item"
+              tabindex="0"
             >
               5
             </li>
@@ -9726,12 +10603,14 @@ exports[`renders Table/demo/pagination.md correctly 1`] = `
             <li
               aria-label="第 10 页"
               class="arco-pagination-item"
+              tabindex="0"
             >
               10
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next"
+              tabindex="0"
             >
               <svg
                 aria-hidden="true"
@@ -9754,7 +10633,6 @@ exports[`renders Table/demo/pagination.md correctly 1`] = `
           >
             <div
               aria-autocomplete="list"
-              aria-controls="arco-select-popup-0"
               aria-expanded="false"
               aria-haspopup="listbox"
               class="arco-select arco-select-single arco-select-size-default"
@@ -9765,18 +10643,22 @@ exports[`renders Table/demo/pagination.md correctly 1`] = `
                 class="arco-select-view"
                 title="10 条/页"
               >
-                <input
-                  aria-hidden="true"
-                  autocomplete="off"
-                  class="arco-select-view-input arco-select-hidden"
-                  style="width:100%;pointer-events:none"
-                  tabindex="-1"
-                  value="10 条/页"
-                />
                 <span
-                  class="arco-select-view-value"
+                  class="arco-select-view-selector"
                 >
-                  10 条/页
+                  <input
+                    aria-hidden="true"
+                    autocomplete="off"
+                    class="arco-select-view-input arco-select-hidden"
+                    style="width:100%;pointer-events:none"
+                    tabindex="-1"
+                    value=""
+                  />
+                  <span
+                    class="arco-select-view-value"
+                  >
+                    10 条/页
+                  </span>
                 </span>
                 <div
                   aria-hidden="true"
@@ -9926,7 +10808,7 @@ exports[`renders Table/demo/render.md correctly 1`] = `
                           >
                             $
                           </span>
-                           23000
+                          23000
                         </span>
                       </span>
                     </div>
@@ -9989,7 +10871,7 @@ exports[`renders Table/demo/render.md correctly 1`] = `
                           >
                             $
                           </span>
-                           25000
+                          25000
                         </span>
                       </span>
                     </div>
@@ -10052,7 +10934,7 @@ exports[`renders Table/demo/render.md correctly 1`] = `
                           >
                             $
                           </span>
-                           22000
+                          22000
                         </span>
                       </span>
                     </div>
@@ -10115,7 +10997,7 @@ exports[`renders Table/demo/render.md correctly 1`] = `
                           >
                             $
                           </span>
-                           17000
+                          17000
                         </span>
                       </span>
                     </div>
@@ -10178,7 +11060,7 @@ exports[`renders Table/demo/render.md correctly 1`] = `
                           >
                             $
                           </span>
-                           27000
+                          27000
                         </span>
                       </span>
                     </div>
@@ -10227,6 +11109,7 @@ exports[`renders Table/demo/render.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -10246,12 +11129,14 @@ exports[`renders Table/demo/render.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -10672,6 +11557,7 @@ exports[`renders Table/demo/resizable.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -10691,12 +11577,14 @@ exports[`renders Table/demo/resizable.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -11053,6 +11941,7 @@ exports[`renders Table/demo/rowspan.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -11072,12 +11961,14 @@ exports[`renders Table/demo/rowspan.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -11105,6 +11996,7 @@ exports[`renders Table/demo/selection.md correctly 1`] = `
 <div>
   <div
     class="arco-radio-group arco-radio-group-type-button arco-radio-size-default arco-radio-mode-outline"
+    role="radiogroup"
     style="margin-bottom:20px"
   >
     <label
@@ -11735,6 +12627,7 @@ exports[`renders Table/demo/selection.md correctly 1`] = `
               <li
                 aria-label="上一页"
                 class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -11754,12 +12647,14 @@ exports[`renders Table/demo/selection.md correctly 1`] = `
                 aria-current="true"
                 aria-label="第 1 页"
                 class="arco-pagination-item arco-pagination-item-active"
+                tabindex="0"
               >
                 1
               </li>
               <li
                 aria-label="下一页"
                 class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -12263,6 +13158,7 @@ exports[`renders Table/demo/sorter.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -12282,12 +13178,14 @@ exports[`renders Table/demo/sorter.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -12697,6 +13595,7 @@ exports[`renders Table/demo/style.md correctly 1`] = `
             <li
               aria-label="上一页"
               class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -12716,12 +13615,14 @@ exports[`renders Table/demo/style.md correctly 1`] = `
               aria-current="true"
               aria-label="第 1 页"
               class="arco-pagination-item arco-pagination-item-active"
+              tabindex="0"
             >
               1
             </li>
             <li
               aria-label="下一页"
               class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+              tabindex="-1"
             >
               <svg
                 aria-hidden="true"
@@ -12748,7 +13649,7 @@ exports[`renders Table/demo/style.md correctly 1`] = `
 exports[`renders Table/demo/summary.md correctly 1`] = `
 <div>
   <div
-    class="arco-table arco-table-size-default arco-table-border arco-table-border-cell arco-table-hover"
+    class="arco-table arco-table-size-default arco-table-border arco-table-border-cell arco-table-hover arco-table-fixed-column"
   >
     <div
       class="arco-spin"
@@ -13170,6 +14071,7 @@ exports[`renders Table/demo/summary.md correctly 1`] = `
               <li
                 aria-label="上一页"
                 class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -13189,12 +14091,14 @@ exports[`renders Table/demo/summary.md correctly 1`] = `
                 aria-current="true"
                 aria-label="第 1 页"
                 class="arco-pagination-item arco-pagination-item-active"
+                tabindex="0"
               >
                 1
               </li>
               <li
                 aria-label="下一页"
                 class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -13217,7 +14121,7 @@ exports[`renders Table/demo/summary.md correctly 1`] = `
     </div>
   </div>
   <div
-    class="arco-table arco-table-size-default arco-table-border arco-table-border-cell arco-table-hover arco-table-layout-fixed"
+    class="arco-table arco-table-size-default arco-table-border arco-table-border-cell arco-table-hover arco-table-layout-fixed arco-table-fixed-column"
     style="margin-top:20px"
   >
     <div
@@ -13787,6 +14691,7 @@ exports[`renders Table/demo/summary.md correctly 1`] = `
               <li
                 aria-label="上一页"
                 class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -13806,12 +14711,14 @@ exports[`renders Table/demo/summary.md correctly 1`] = `
                 aria-current="true"
                 aria-label="第 1 页"
                 class="arco-pagination-item arco-pagination-item-active"
+                tabindex="0"
               >
                 1
               </li>
               <li
                 aria-label="下一页"
                 class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -13834,7 +14741,7 @@ exports[`renders Table/demo/summary.md correctly 1`] = `
     </div>
   </div>
   <div
-    class="arco-table arco-table-size-default arco-table-border arco-table-border-cell arco-table-hover arco-table-layout-fixed"
+    class="arco-table arco-table-size-default arco-table-border arco-table-border-cell arco-table-hover arco-table-layout-fixed arco-table-fixed-column"
     style="margin-top:20px"
   >
     <div
@@ -14296,6 +15203,7 @@ exports[`renders Table/demo/summary.md correctly 1`] = `
               <li
                 aria-label="上一页"
                 class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -14315,12 +15223,14 @@ exports[`renders Table/demo/summary.md correctly 1`] = `
                 aria-current="true"
                 aria-label="第 1 页"
                 class="arco-pagination-item arco-pagination-item-active"
+                tabindex="0"
               >
                 1
               </li>
               <li
                 aria-label="下一页"
                 class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -14861,6 +15771,7 @@ Array [
               <li
                 aria-label="上一页"
                 class="arco-pagination-item arco-pagination-item-prev arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -14880,12 +15791,14 @@ Array [
                 aria-current="true"
                 aria-label="第 1 页"
                 class="arco-pagination-item arco-pagination-item-active"
+                tabindex="0"
               >
                 1
               </li>
               <li
                 aria-label="下一页"
                 class="arco-pagination-item arco-pagination-item-next arco-pagination-item-disabled"
+                tabindex="-1"
               >
                 <svg
                   aria-hidden="true"
@@ -14911,156 +15824,169 @@ Array [
 `;
 
 exports[`renders Table/demo/virtualized.md correctly 1`] = `
-<div
-  class="arco-table arco-table-size-default arco-table-border arco-table-hover arco-table-layout-fixed arco-table-virtualized"
->
+<div>
+  <button
+    class="arco-btn arco-btn-primary arco-btn-size-default arco-btn-shape-square"
+    style="margin-bottom:10px"
+    type="button"
+  >
+    <span>
+      滚动到第 500 条
+    </span>
+  </button>
   <div
-    class="arco-spin"
+    class="arco-table arco-table-size-default arco-table-border arco-table-hover arco-table-layout-fixed arco-table-fixed-column arco-table-virtualized"
   >
     <div
-      class="arco-spin-children"
+      class="arco-spin"
     >
       <div
-        class="arco-table-container"
+        class="arco-spin-children"
       >
         <div
-          class="arco-table-content-scroll"
+          class="arco-table-container"
         >
           <div
-            class="arco-table-content-inner"
+            class="arco-table-content-scroll"
           >
             <div
-              class="arco-table-header"
-            >
-              <table>
-                <colgroup>
-                  <col
-                    class="arco-table-selection-col"
-                  />
-                  <col
-                    style="width:140px"
-                  />
-                  <col
-                    style="width:100px"
-                  />
-                  <col />
-                  <col />
-                </colgroup>
-                <thead>
-                  <tr
-                    class="arco-table-tr"
-                  >
-                    <th
-                      class="arco-table-th arco-table-operation arco-table-checkbox"
-                    >
-                      <div
-                        class="arco-table-th-item"
-                      >
-                        <label
-                          aria-disabled="false"
-                          class="arco-checkbox"
-                        >
-                          <input
-                            type="checkbox"
-                          />
-                          <span
-                            class="arco-icon-hover arco-checkbox-icon-hover arco-checkbox-mask-wrapper"
-                          >
-                            <div
-                              class="arco-checkbox-mask"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                class="arco-checkbox-mask-icon"
-                                fill="currentColor"
-                                focusable="false"
-                                height="200"
-                                viewBox="0 0 1024 1024"
-                                width="200"
-                              >
-                                <path
-                                  d="M877.44815445 206.10060629a64.72691371 64.72691371 0 0 0-95.14856334 4.01306852L380.73381888 685.46812814 235.22771741 533.48933518a64.72691371 64.72691371 0 0 0-92.43003222-1.03563036l-45.82665557 45.82665443a64.72691371 64.72691371 0 0 0-0.90617629 90.61767965l239.61903446 250.10479331a64.72691371 64.72691371 0 0 0 71.19960405 15.14609778 64.33855261 64.33855261 0 0 0 35.08198741-21.23042702l36.24707186-42.71976334 40.5190474-40.77795556-3.36579926-3.49525333 411.40426297-486.74638962a64.72691371 64.72691371 0 0 0-3.88361443-87.64024149l-45.3088404-45.43829334z"
-                                  p-id="840"
-                                />
-                              </svg>
-                            </div>
-                          </span>
-                        </label>
-                      </div>
-                    </th>
-                    <th
-                      class="arco-table-th"
-                    >
-                      <div
-                        class="arco-table-th-item"
-                      >
-                        <span
-                          class="arco-table-th-item-title"
-                        >
-                          Name
-                        </span>
-                      </div>
-                    </th>
-                    <th
-                      class="arco-table-th"
-                    >
-                      <div
-                        class="arco-table-th-item"
-                      >
-                        <span
-                          class="arco-table-th-item-title"
-                        >
-                          Salary
-                        </span>
-                      </div>
-                    </th>
-                    <th
-                      class="arco-table-th"
-                    >
-                      <div
-                        class="arco-table-th-item"
-                      >
-                        <span
-                          class="arco-table-th-item-title"
-                        >
-                          Address
-                        </span>
-                      </div>
-                    </th>
-                    <th
-                      class="arco-table-th"
-                    >
-                      <div
-                        class="arco-table-th-item"
-                      >
-                        <span
-                          class="arco-table-th-item-title"
-                        >
-                          Email
-                        </span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-            <div
-              class="arco-table-body"
+              class="arco-table-content-inner"
             >
               <div
-                style="overflow-y:auto;overflow-anchor:none;min-width:100%;max-height:500px"
+                class="arco-table-header"
+              >
+                <table
+                  style="width:1000px"
+                >
+                  <colgroup>
+                    <col
+                      class="arco-table-selection-col"
+                    />
+                    <col
+                      style="width:140px"
+                    />
+                    <col
+                      style="width:100px"
+                    />
+                    <col />
+                    <col />
+                  </colgroup>
+                  <thead>
+                    <tr
+                      class="arco-table-tr"
+                    >
+                      <th
+                        class="arco-table-th arco-table-operation arco-table-checkbox arco-table-col-fixed-left"
+                        style="left:0"
+                      >
+                        <div
+                          class="arco-table-th-item"
+                        >
+                          <label
+                            aria-disabled="false"
+                            class="arco-checkbox"
+                          >
+                            <input
+                              type="checkbox"
+                            />
+                            <span
+                              class="arco-icon-hover arco-checkbox-icon-hover arco-checkbox-mask-wrapper"
+                            >
+                              <div
+                                class="arco-checkbox-mask"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="arco-checkbox-mask-icon"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="200"
+                                  viewBox="0 0 1024 1024"
+                                  width="200"
+                                >
+                                  <path
+                                    d="M877.44815445 206.10060629a64.72691371 64.72691371 0 0 0-95.14856334 4.01306852L380.73381888 685.46812814 235.22771741 533.48933518a64.72691371 64.72691371 0 0 0-92.43003222-1.03563036l-45.82665557 45.82665443a64.72691371 64.72691371 0 0 0-0.90617629 90.61767965l239.61903446 250.10479331a64.72691371 64.72691371 0 0 0 71.19960405 15.14609778 64.33855261 64.33855261 0 0 0 35.08198741-21.23042702l36.24707186-42.71976334 40.5190474-40.77795556-3.36579926-3.49525333 411.40426297-486.74638962a64.72691371 64.72691371 0 0 0-3.88361443-87.64024149l-45.3088404-45.43829334z"
+                                    p-id="840"
+                                  />
+                                </svg>
+                              </div>
+                            </span>
+                          </label>
+                        </div>
+                      </th>
+                      <th
+                        class="arco-table-th arco-table-col-fixed-left arco-table-col-fixed-left-last"
+                        style="left:40px"
+                      >
+                        <div
+                          class="arco-table-th-item"
+                        >
+                          <span
+                            class="arco-table-th-item-title"
+                          >
+                            Name
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        class="arco-table-th"
+                      >
+                        <div
+                          class="arco-table-th-item"
+                        >
+                          <span
+                            class="arco-table-th-item-title"
+                          >
+                            Salary
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        class="arco-table-th"
+                      >
+                        <div
+                          class="arco-table-th-item"
+                        >
+                          <span
+                            class="arco-table-th-item-title"
+                          >
+                            Address
+                          </span>
+                        </div>
+                      </th>
+                      <th
+                        class="arco-table-th"
+                      >
+                        <div
+                          class="arco-table-th-item"
+                        >
+                          <span
+                            class="arco-table-th-item-title"
+                          >
+                            Email
+                          </span>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div
+                class="arco-table-body"
+                style="overflow-y:auto;overflow-anchor:none;max-height:500px"
               >
                 <div
-                  style="height:3200000px;position:relative;overflow:hidden;z-index:0"
+                  style="height:3200000px;position:relative;overflow:visible;z-index:0;width:1000px;min-width:100%"
                 >
                   <div
-                    style="display:flex;flex-direction:column;transform:translateY(0px);position:absolute;left:0;right:0;top:0"
+                    style="display:flex;flex-direction:column;transform:translateY(0px);position:absolute;left:0;right:auto;top:0;min-width:100%"
                   >
                     <div
                       class="arco-table-tr"
                     >
                       <div
-                        class="arco-table-td arco-table-operation arco-table-checkbox arco-table-selection-col"
+                        class="arco-table-td arco-table-operation arco-table-checkbox arco-table-selection-col arco-table-col-fixed-left"
+                        style="left:0"
                       >
                         <label
                           class="arco-checkbox"
@@ -15094,8 +16020,8 @@ exports[`renders Table/demo/virtualized.md correctly 1`] = `
                         </label>
                       </div>
                       <div
-                        class="arco-table-td"
-                        style="width:140px;min-width:140px;max-width:140px"
+                        class="arco-table-td arco-table-col-fixed-left arco-table-col-fixed-left-last"
+                        style="left:40px;width:140px;min-width:140px;max-width:140px"
                       >
                         <div
                           class="arco-table-cell"

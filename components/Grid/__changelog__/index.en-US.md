@@ -1,3 +1,56 @@
+## 2.48.0
+
+2023-05-12
+
+### 💎 Enhancement
+
+- Export the `GridProps`, `GridItemProps` typedefs for the `Grid` component.([#1957](https://github.com/arco-design/arco-design/pull/1957))
+
+## 2.47.2
+
+2023-05-06
+
+### 🐛 BugFix
+
+- Fix the bug of `Grid` that `xxxl` property in responsive layout  does not work.([#1955](https://github.com/arco-design/arco-design/pull/1955))
+
+## 2.47.0
+
+2023-04-14
+
+### 🆕 Feature
+
+- Adjust the 'Grid.GridItem' ts definition([#1897](https://github.com/arco-design/arco-design/pull/1897))
+- `Grid.Grid` supports `children` of function type([#1897](https://github.com/arco-design/arco-design/pull/1897))
+
+### 🐛 BugFix
+
+- Fixed `Grid.GridItem` transparently passing `overflow` attribute to native DOM tags and causing console warnings([#1922](https://github.com/arco-design/arco-design/pull/1922))
+
+## 2.46.0
+
+2023-03-17
+
+### 🆕 Feature
+
+- `Grid` supports `css grid` for layout([#1801](https://github.com/arco-design/arco-design/pull/1801))
+
+## 2.40.0
+
+2022-09-16
+
+### 🆕 Feature
+
+- `Grid` responsive breakpoints support `xxxl` (width > 2000px).([#1396](https://github.com/arco-design/arco-design/pull/1396))
+
+## 2.39.1
+
+2022-08-19
+
+### 🐛 BugFix
+
+- Fix the bug that setting `md = 0` in the `Grid.Col` would cause it to not display on larger window sizes.([#1307](https://github.com/arco-design/arco-design/pull/1307))
+
 ## 2.28.2
 
 2022-01-21

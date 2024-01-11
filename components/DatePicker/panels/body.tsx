@@ -17,7 +17,6 @@ type RowType = {
 
 export interface PanelBodyProps {
   showWeekList?: boolean;
-  dayStartOfWeek?: number;
   isWeek?: boolean;
   prefixCls?: string;
   onSelectDate?: (timeString: string, time: Dayjs) => void;
@@ -30,7 +29,6 @@ export interface PanelBodyProps {
   value?: CalendarValue;
   isSameTime?: (current: Dayjs, target: Dayjs) => boolean;
   mode?: 'date' | 'week' | 'month' | 'year' | 'quarter';
-  originMode?: 'date' | 'week' | 'month' | 'year' | 'quarter';
   format?: string;
   hideNotInViewDates?: boolean;
   valueShowHover?: Dayjs[];
@@ -45,17 +43,15 @@ function Body(props: PanelBodyProps) {
     dateRender,
     onMouseEnterCell,
     onMouseLeaveCell,
-    dayStartOfWeek,
     CALENDAR_LOCALE,
     rows,
     showWeekList,
     isSameTime,
     format,
     mode,
-    originMode,
   } = props;
 
-  const { utcOffset, timezone } = useContext(PickerContext);
+  const { utcOffset, timezone, weekStart } = useContext(PickerContext);
 
   const getCellClassName = useCellClassName({
     ...props,
@@ -65,7 +61,7 @@ function Body(props: PanelBodyProps) {
   function renderRow(row: RowType[]) {
     return row.map((col, index) => {
       if (col.time) {
-        const disabled = isDisabledDate(col.time, disabledDate, mode, originMode);
+        const disabled = isDisabledDate(col.time, disabledDate, mode);
         const onClickHandler = () => !disabled && onSelectDate(col.time.format(format), col.time);
 
         return (
@@ -103,7 +99,7 @@ function Body(props: PanelBodyProps) {
       {showWeekList && (
         <WeekList
           prefixCls={prefixCls}
-          dayStartOfWeek={dayStartOfWeek}
+          weekStart={weekStart}
           isWeek={isWeek}
           CALENDAR_LOCALE={CALENDAR_LOCALE}
         />

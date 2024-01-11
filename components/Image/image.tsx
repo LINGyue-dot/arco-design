@@ -11,10 +11,11 @@ import useShowFooter from './utils/hooks/useShowFooter';
 import useImageStatus from './utils/hooks/useImageStatus';
 import useMergeValue from '../_util/hooks/useMergeValue';
 import omit from '../_util/omit';
-import { isNumber } from '../_util/is';
+import { isObject, isNumber, isUndefined } from '../_util/is';
 import { PreviewGroupContext } from './previewGroupContext';
-import { isServerRendering } from '../_util/dom';
 import useMergeProps from '../_util/hooks/useMergeProps';
+import useKeyboardEvent from '../_util/hooks/useKeyboardEvent';
+import useInView from '../_util/hooks/useInView';
 
 type ImagePropsType = ImageProps & { _index?: number };
 
@@ -26,7 +27,7 @@ const defaultProps: ImagePropsType = {
 };
 
 function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
-  const { getPrefixCls, componentConfig } = useContext(ConfigContext);
+  const { getPrefixCls, componentConfig, rtl } = useContext(ConfigContext);
   const props = useMergeProps<ImagePropsType>(baseProps, defaultProps, componentConfig?.Image);
   const {
     style,
@@ -43,21 +44,34 @@ function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
     loaderClassName,
     error,
     preview,
-    previewProps = {} as ImagePreviewProps,
+    previewProps: _propsPreviewProps,
     alt,
     onClick,
     index,
     _index,
+    onError,
+    onLoad,
+    lazyload,
     ...restProps
   } = props;
 
+  const getKeyboardEvents = useKeyboardEvent();
+
   const {
     previewGroup,
-    setVisible: setGroupPreviewVisible,
+    handleVisibleChange: handleGroupVisibleChange,
     registerPreviewUrl,
+    registerPreviewProps,
     setCurrentIndex,
   } = useContext(PreviewGroupContext);
-  const previewSrc = previewProps.src || src;
+
+  const previewProps = useMemo(() => {
+    return isObject(_propsPreviewProps) ? _propsPreviewProps : ({} as ImagePreviewProps);
+  }, [_propsPreviewProps]);
+
+  const intersectionInitOptions = useMemo(() => {
+    return isObject(lazyload) ? lazyload : {};
+  }, [lazyload]);
 
   const id = useMemo(() => {
     if (isNumber(index) || isNumber(_index)) {
@@ -67,56 +81,57 @@ function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
     return uuid++;
   }, []);
 
+  const previewSrc = previewProps.src || src;
   const [showFooter] = useShowFooter({ title, description, actions });
-  const { isLoading, isError, isLoaded, setStatus } = useImageStatus('beforeLoad');
+  const { isLoading, isError, isLoaded, isLazyLoad, isBeforeLoad, setStatus } =
+    useImageStatus('beforeLoad');
   const [previewVisible, setPreviewVisible] = useMergeValue(false, {
     defaultValue: previewProps.defaultVisible,
     value: previewProps.visible,
   });
 
-  // Props passed directly into Preivew component
-  const availablePreviewProps = omit(previewProps, [
-    'visible',
-    'defaultVisible',
-    'src',
-    'onVisibleChange',
-  ]);
+  // Props passed directly into Preview component
+  const availablePreviewProps = useMemo(() => {
+    return omit(previewProps, ['visible', 'defaultVisible', 'src', 'onVisibleChange']);
+  }, [previewProps]);
 
   const prefixCls = getPrefixCls('image');
+  const isControlled = !isUndefined(previewProps.visible);
   const classNames = cs(
     prefixCls,
     {
+      [`${prefixCls}-rtl`]: rtl,
       [`${prefixCls}-simple`]: simple,
+      [`${prefixCls}-before-load`]: isBeforeLoad,
       [`${prefixCls}-loading`]: isLoading,
       [`${prefixCls}-loading-error`]: isError,
       [`${prefixCls}-with-footer-inner`]: isLoaded && showFooter && footerPosition === 'inner',
       [`${prefixCls}-with-footer-outer`]: isLoaded && showFooter && footerPosition === 'outer',
+      [`${prefixCls}-with-preview`]: isLoaded && preview && !isError && !isControlled,
     },
     className
   );
 
   const refImg = useRef<HTMLImageElement>();
 
-  function onImgLoaded() {
+  function onImgLoaded(e) {
     setStatus('loaded');
+    onLoad && onLoad(e);
   }
 
-  function onImgLoadError() {
+  function onImgLoadError(e) {
     setStatus('error');
+    onError && onError(e);
   }
 
   function onImgClick(e) {
     if (preview && previewGroup) {
       setCurrentIndex(id);
-      setGroupPreviewVisible(true);
+      handleGroupVisibleChange(true);
     } else if (preview) {
       togglePreviewVisible(true);
     }
     onClick && onClick(e);
-  }
-
-  function onPreviewVisibleChange(visible) {
-    togglePreviewVisible(visible);
   }
 
   function togglePreviewVisible(newVisible) {
@@ -124,24 +139,37 @@ function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
     setPreviewVisible(newVisible);
   }
 
+  const { inView } = useInView({
+    target: refImg.current,
+    defaultInView: !lazyload,
+    ...intersectionInitOptions,
+  });
+
   useEffect(() => {
-    if (isServerRendering || !refImg.current) return;
-    refImg.current.src = src;
-    setStatus('loading');
-  }, [src]);
+    if (refImg.current) {
+      if (inView) {
+        // avoid set img.src to undefined when its doesn't have [src] attribute
+        if ((refImg.current.src || src) && refImg.current.src !== src) {
+          refImg.current.src = src;
+          setStatus('loading');
+        }
+      } else {
+        setStatus('lazyload');
+      }
+    }
+  }, [src, inView]);
+
+  useEffect(() => {
+    if (!previewGroup) return;
+    const unRegister = registerPreviewProps(id, availablePreviewProps);
+    return () => unRegister(id);
+  }, [id, previewGroup, availablePreviewProps]);
 
   useEffect(() => {
     if (!previewGroup) return;
     const unRegister = registerPreviewUrl(id, previewSrc, preview);
-    return () => {
-      unRegister(id);
-    };
-  }, [previewGroup]);
-
-  useEffect(() => {
-    if (!previewGroup) return;
-    registerPreviewUrl(id, previewSrc, preview);
-  }, [previewSrc, preview, previewGroup]);
+    return () => unRegister(id);
+  }, [id, previewGroup, previewSrc, preview]);
 
   const defaultError = (
     <div className={`${prefixCls}-error`}>
@@ -153,7 +181,7 @@ function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
   );
 
   const defaultLoader = (
-    <div className={`${prefixCls}-loader`}>
+    <div className={cs(`${prefixCls}-loader`, loaderClassName)}>
       <div className={`${prefixCls}-loader-spin`}>
         <IconLoading />
         <div className={`${prefixCls}-loader-spin-text`}>Loading</div>
@@ -163,8 +191,12 @@ function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
 
   const renderLoader = () => {
     if (loader === true) return defaultLoader;
-    if (loaderClassName) return <div className={cs(`${prefixCls}-loader`, loaderClassName)} />;
-    return loader || null;
+    const loadElem: React.ReactNode = loader || defaultLoader;
+    // 懒加载展示占位。
+    if (lazyload || loader) {
+      return loadElem;
+    }
+    return null;
   };
 
   return (
@@ -172,7 +204,12 @@ function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
       <img
         ref={refImg}
         className={`${prefixCls}-img`}
+        tabIndex={0}
+        {...getKeyboardEvents({
+          onPressEnter: onImgClick,
+        })}
         {...restProps}
+        {...(lazyload || src === undefined ? {} : { src })}
         title={title}
         width={width}
         height={height}
@@ -184,7 +221,7 @@ function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
       {!isLoaded && (
         <div className={`${prefixCls}-overlay`}>
           {isError && (error || defaultError)}
-          {isLoading && renderLoader()}
+          {(isLoading || isLazyLoad) && renderLoader()}
         </div>
       )}
       {isLoaded && showFooter && (
@@ -201,7 +238,7 @@ function Image(baseProps: ImagePropsType, ref: LegacyRef<HTMLDivElement>) {
           visible={previewVisible}
           src={previewSrc}
           {...availablePreviewProps}
-          onVisibleChange={onPreviewVisibleChange}
+          onVisibleChange={togglePreviewVisible}
         />
       )}
     </div>

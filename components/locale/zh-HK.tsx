@@ -3,6 +3,8 @@ import 'dayjs/locale/zh-hk';
 const Calendar = {
   formatYear: 'YYYY 年',
   formatMonth: 'YYYY 年 MM 月',
+  // 月份在前
+  monthBeforeYear: false,
   today: '今天',
   view: {
     month: '月',
@@ -210,5 +212,10 @@ export default {
         false: '期望是 `false`',
       },
     },
+  },
+  ColorPicker: {
+    history: '最近使用顏色',
+    preset: '系統預設顏色',
+    empty: '暫無',
   },
 };

@@ -37,6 +37,7 @@ In addition to installing through npm, you can also directly use CDN resources. 
 * Development: https://unpkg.com/@arco-design/web-react@latest/dist/arco.development.js
 * Production: https://unpkg.com/@arco-design/web-react@latest/dist/arco.min.js
    * Icon: https://unpkg.com/@arco-design/web-react@latest/dist/arco-icon.min.js
+   * Style: https://unpkg.com/@arco-design/web-react@latest/dist/css/arco.min.css
 
 However, we do not recommend using CDN, because CDN will download the entire library, which will affect the page loading speed.
 
@@ -86,6 +87,7 @@ The plugin functions provided by `Arco`'s [official plugin library](https://gith
 
 > For specific usage, please click the plugin link to view the details page
 
+  - [@arco-plugins/unplugin-react 🚧](https://github.com/arco-design/arco-plugins/blob/main/packages/unplugin-react/README.zh-CN.md) Unplugin for Arco react components
   - [@arco-plugins/webpack-react](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-webpack-react/README.md) webpack plugin for Arco react components
   - [@arco-plugins/vite-react](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-vite-react/README.md) vite plugin for Arco react component library
   - [@arco-plugins/vite-vue](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-vite-vue/README.md) vite plugin for Arco vue component library

@@ -3,6 +3,7 @@ import 'dayjs/locale/de';
 const Calendar = {
   formatYear: 'YYYY',
   formatMonth: 'MMM YYYY',
+  monthBeforeYear: true,
   today: 'Heute',
   view: {
     month: 'Monat',
@@ -66,7 +67,7 @@ const Calendar = {
 
 export default {
   locale: 'de-DE',
-  dateLocale: 'de',
+  dayjsLocale: 'de',
   Calendar,
   DatePicker: {
     Calendar,

@@ -1,3 +1,84 @@
+## 2.58.1
+
+2024-01-05
+
+### 🐛 BugFix
+
+- Adjust the `InputNumber` component to only prevent specific keyboard events from bubbling up([#2479](https://github.com/arco-design/arco-design/pull/2479))
+
+## 2.54.0
+
+2023-10-09
+
+### 🐛 BugFix
+
+- Fixed the abnormal increase and decrease of `InputNumber` caused by the jitter of the button event when the button is long pressed.([#2255](https://github.com/arco-design/arco-design/pull/2255) [@bestlyg](https://github.com/bestlyg))
+
+## 2.51.1
+
+2023-08-04
+
+### 🐛 BugFix
+
+- Fix the error that may be reported when the initial `value` of `InputNumber` is set to `undefined`.([#2120](https://github.com/arco-design/arco-design/pull/2120))
+
+## 2.45.1
+
+2023-03-01
+
+### 💎 Enhancement
+
+- Compatible with older browsers that don't support `BigInt`.([#1810](https://github.com/arco-design/arco-design/pull/1810))
+
+## 2.43.1
+
+2022-12-30
+
+### 🐛 BugFix
+
+- Fix the page crash issue when the `InputNumber` passes a decimal with a precision greater than 100 (e.g. 1e-200).([#1688](https://github.com/arco-design/arco-design/pull/1688))
+- Fix SSR warning for `InputNumber` component due to `useLayoutEffect`.([#1672](https://github.com/arco-design/arco-design/pull/1672))
+
+## 2.42.0
+
+2022-11-25
+
+### 🆕 Feature
+
+- `InputNumber` adds `strictMode` to support large numbers and high precision decimals.([#1603](https://github.com/arco-design/arco-design/pull/1603))
+
+## 2.41.2
+
+2022-11-11
+
+### 💎 Enhancement
+
+- Optimize the problem that the `InputNumber` with `formatter` automatically move back to the end of the text when the user is typing.([#1559](https://github.com/arco-design/arco-design/pull/1559))
+
+## 2.41.0
+
+2022-10-28
+
+### 🆕 Feature
+
+- The `InputNumber` component `formatter` adds a parameter to mark the user-typing state.([#1516](https://github.com/arco-design/arco-design/pull/1516))
+
+## 2.37.1
+
+2022-07-14
+
+### 🐛 BugFix
+
+- Fixed the bug that when the `InputNumber` component is `readOnly=true`, clicking the up and down keys can still change the value.([#1141](https://github.com/arco-design/arco-design/pull/1141))
+
+## 2.36.0
+
+2022-06-24
+
+### 🐛 BugFix
+
+- Fixed a bug where `InputNumber` was affected by the global configuration of `Input`.([#1042](https://github.com/arco-design/arco-design/pull/1042))
+
 ## 2.33.0
 
 2022-05-13

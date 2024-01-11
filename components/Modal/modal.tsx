@@ -14,7 +14,7 @@ import { CSSTransition } from 'react-transition-group';
 import FocusLock from 'react-focus-lock';
 import IconClose from '../../icon/react-icon/IconClose';
 import cs from '../_util/classNames';
-import { isServerRendering } from '../_util/dom';
+import { isServerRendering, contains } from '../_util/dom';
 import { Esc } from '../_util/keycode';
 import Button from '../Button';
 import Portal from '../Portal';
@@ -103,11 +103,19 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
 
   const modalWrapperRef = useRef<HTMLDivElement>(null);
   const contentWrapper = useRef<HTMLDivElement>(null);
-  const [wrapperVisible, setWrapperVisible] = useState(visible);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [wrapperVisible, setWrapperVisible] = useState<boolean>();
   const [popupZIndex, setPopupZIndex] = useState<number>();
   const cursorPositionRef = useRef<CursorPositionType>(null);
   const haveOriginTransformOrigin = useRef<boolean>(false);
   const maskClickRef = useRef(false);
+
+  // 标识是否是处于第一次 visible 之前
+  const beforeFirstVisible = useRef<boolean>(true);
+
+  if (visible && beforeFirstVisible.current) {
+    beforeFirstVisible.current = false;
+  }
 
   const dialogIndex = useRef<number>();
 
@@ -121,7 +129,7 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
   });
 
   const prefixCls = context.getPrefixCls('modal', props.prefixCls);
-  const { locale } = context;
+  const { locale, rtl } = context;
 
   // 简洁模式下默认不显示关闭按钮
   const defaultClosable = !simple;
@@ -181,7 +189,10 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
     let timer = null;
     if (escToExit) {
       timer = setTimeout(() => {
-        modalWrapperRef.current?.focus();
+        // https://github.com/arco-design/arco-design/pull/1439
+        if (contains(document.body, modalWrapperRef.current)) {
+          modalWrapperRef.current?.focus();
+        }
       });
     }
     return () => {
@@ -189,7 +200,7 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
     };
   }, [visible, escToExit]);
 
-  useEffect(() => {
+  const initPopupZIndex = () => {
     if (visible && popupZIndex === undefined) {
       if (modalWrapperRef.current) {
         // 根据wrapper的zindex，设置内部所有弹出型组件的zindex。
@@ -199,7 +210,7 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
         }
       }
     }
-  }, [visible, popupZIndex]);
+  };
 
   const renderFooter = () => {
     if (footer === null) return;
@@ -214,15 +225,14 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
         {okText || locale.Modal.okText}
       </Button>
     );
-    let footerContent = footer || (
-      <>
-        {!hideCancel && cancelButtonNode}
-        {okButtonNode}
-      </>
-    );
-    if (isFunction(footer)) {
-      footerContent = footer(cancelButtonNode, okButtonNode);
-    }
+    const footerContent = isFunction(footer)
+      ? footer(cancelButtonNode, okButtonNode)
+      : footer || (
+          <>
+            {!hideCancel && cancelButtonNode}
+            {okButtonNode}
+          </>
+        );
 
     return <div className={`${prefixCls}-footer`}>{footerContent}</div>;
   };
@@ -281,18 +291,22 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
   const modalDom = (
     <div
       role="dialog"
+      aria-modal="true"
       {...ariaProps}
       className={cs(
         prefixCls,
         {
           [`${prefixCls}-simple`]: simple,
+          [`${prefixCls}-rtl`]: rtl,
         },
         className
       )}
       style={style}
+      ref={modalRef}
     >
       {innerFocusLock ? (
         <FocusLock
+          crossFrame={false}
           disabled={!visible}
           autoFocus={innerAutoFocus}
           lockProps={{
@@ -303,7 +317,7 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
           {element}
         </FocusLock>
       ) : (
-        element
+        <>{element}</>
       )}
     </div>
   );
@@ -320,8 +334,12 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
     e.style.transformOrigin = transformOrigin;
   };
 
-  return (
-    <Portal visible={visible} forceRender={!mountOnEnter} getContainer={getPopupContainer}>
+  // mountOnEnter 只在第一次visible=true之前生效。
+  // 使用 modalRef.current 而不是 mountOnExit 是因为动画结束后，modalRef.current 会变成 null，此时再去销毁dom结点，避免动画问题
+  const forceRender = beforeFirstVisible.current ? !mountOnEnter : !!modalRef.current;
+
+  return visible || forceRender ? (
+    <Portal visible={visible} forceRender={forceRender} getContainer={getPopupContainer}>
       <div ref={ref}>
         {mask ? (
           <CSSTransition
@@ -355,12 +373,16 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
             'prefixCls',
           ])}
           tabIndex={!innerFocusLock || !innerAutoFocus ? -1 : null}
-          ref={modalWrapperRef}
+          ref={(node) => {
+            modalWrapperRef.current = node;
+            initPopupZIndex();
+          }}
           className={cs(
             `${prefixCls}-wrapper`,
             {
               [`${prefixCls}-wrapper-no-mask`]: !mask,
               [`${prefixCls}-wrapper-align-center`]: alignCenter,
+              [`${prefixCls}-wrapper-rtl`]: rtl,
             },
             wrapClassName
           )}
@@ -389,11 +411,13 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
               cursorPositionRef.current = cursorPosition;
               haveOriginTransformOrigin.current = !!e.style.transformOrigin;
               setTransformOrigin(e);
+
+              modalRef.current = e;
             }}
             onEntered={(e: HTMLDivElement) => {
               setTransformOrigin(e);
               cursorPositionRef.current = null;
-              afterOpen && afterOpen();
+              afterOpen?.();
             }}
             onExit={() => {
               inExit.current = true;
@@ -401,8 +425,11 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
             onExited={(e) => {
               setWrapperVisible(false);
               setTransformOrigin(e);
-              afterClose && afterClose();
+              afterClose?.();
               inExit.current = false;
+              if (unmountOnExit) {
+                modalRef.current = null;
+              }
             }}
           >
             {React.cloneElement(
@@ -420,7 +447,7 @@ function Modal(baseProps: PropsWithChildren<ModalProps>, ref) {
         </div>
       </div>
     </Portal>
-  );
+  ) : null;
 }
 
 export interface ModalComponent extends ForwardRefExoticComponent<PropsWithChildren<ModalProps>> {

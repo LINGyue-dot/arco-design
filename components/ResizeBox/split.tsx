@@ -30,13 +30,16 @@ function Split(props: SplitProps, ref) {
     disabled,
     trigger,
   } = props;
-  const { getPrefixCls } = useContext(ConfigContext);
+  const { getPrefixCls, rtl } = useContext(ConfigContext);
   const prefixCls = getPrefixCls('resizebox-split');
-  const isHorizontal = direction === DIRECTION_HORIZONTAL;
+  const isHorizontal = direction.includes(DIRECTION_HORIZONTAL);
+  const isReverse = direction.includes('reverse');
+  const rtlReverse = isHorizontal && rtl;
   const isTriggerHorizontal = !isHorizontal;
   const classNames = cs(
     prefixCls,
     `${prefixCls}-${isHorizontal ? DIRECTION_HORIZONTAL : DIRECTION_VERTICAL}`,
+    { [`${prefixCls}-rtl`]: rtl },
     className
   );
   const [firstPane, secondPane] = panes;
@@ -67,12 +70,25 @@ function Split(props: SplitProps, ref) {
     return parseFloat(numerator) / parseFloat(denominator);
   }
 
+  // startSize:  size of the total ResizeBox
+  // startOffset: size of the first Panel
+  // startPosition: position at the end of last moving
+  // currentPosition: position at the end of current moving
   function getOffset(startSize, startOffset, startPosition, currentPosition) {
-    const minOffset = min ? parseFloat(min as string) : 0;
-    const maxOffset = max ? parseFloat(max as string) : isPxSize ? startSize : 1;
+    //  0 < minOffsetRatio, maxOffsetRatio <1
+    const minOffsetRatio =
+      typeof min === 'string' ? px2percent(parseFloat(min), startSize) : min || 0;
+    const maxOffsetRatio =
+      typeof max === 'string' ? px2percent(parseFloat(max), startSize) : max || 1;
+    let ratio = isReverse ? -1 : 1;
+    const rtlRatio = rtlReverse ? -1 : 1;
+    ratio *= rtlRatio;
     let moveOffset = isPxSize
-      ? startOffset + (currentPosition - startPosition)
-      : px2percent(startSize * startOffset + currentPosition - startPosition, startSize);
+      ? startOffset + (currentPosition - startPosition) * ratio
+      : px2percent(startSize * startOffset + (currentPosition - startPosition) * ratio, startSize);
+
+    const minOffset = isPxSize ? minOffsetRatio * startSize : minOffsetRatio;
+    const maxOffset = isPxSize ? maxOffsetRatio * startSize : maxOffsetRatio;
     moveOffset = Math.max(moveOffset, minOffset);
     moveOffset = Math.min(moveOffset, maxOffset);
     return moveOffset;
@@ -162,17 +178,34 @@ function Split(props: SplitProps, ref) {
   }, [size]);
 
   const Tag = component as any;
+
+  const firstPaneNode = (
+    <div
+      className={cs(`${prefixCls}-pane`, 'first-pane')}
+      style={{ flexBasis: getFirstPaneSize() }}
+      ref={(el) => {
+        paneContainers.current[0] = el;
+      }}
+    >
+      {firstPane}
+    </div>
+  );
+
+  const secondPaneNode = (
+    <div
+      className={cs(`${prefixCls}-pane`, 'second-pane')}
+      ref={(el) => {
+        paneContainers.current[1] = el;
+      }}
+    >
+      {secondPane}
+    </div>
+  );
+  const paneNodeArr = isReverse ? [secondPaneNode, firstPaneNode] : [firstPaneNode, secondPaneNode];
+
   return (
     <Tag style={style} className={classNames} ref={wrapperRef}>
-      <div
-        className={cs(`${prefixCls}-pane`, 'first-pane')}
-        style={{ flexBasis: getFirstPaneSize() }}
-        ref={(el) => {
-          paneContainers.current[0] = el;
-        }}
-      >
-        {firstPane}
-      </div>
+      {paneNodeArr[0]}
       {!disabled && (
         <ResizeTrigger
           className={`${prefixCls}-trigger`}
@@ -184,13 +217,7 @@ function Split(props: SplitProps, ref) {
           {trigger}
         </ResizeTrigger>
       )}
-      <div
-        className={cs(`${prefixCls}-pane`, 'second-pane')}
-        ref={(el) => {
-          paneContainers.current[1] = el;
-        }}>
-        {secondPane}
-      </div>
+      {paneNodeArr[1]}
     </Tag>
   );
 }

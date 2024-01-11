@@ -16,7 +16,7 @@ const defaultProps: AlertProps = {
 };
 
 function Alert(baseProps: AlertProps, ref) {
-  const { getPrefixCls, componentConfig } = useContext(ConfigContext);
+  const { getPrefixCls, componentConfig, rtl } = useContext(ConfigContext);
   const props = useMergeProps<AlertProps>(baseProps, defaultProps, componentConfig?.Alert);
   const {
     style,
@@ -33,6 +33,7 @@ function Alert(baseProps: AlertProps, ref) {
     onClose,
     closeElement,
     banner,
+    ...rest
   } = props;
 
   const prefixCls = getPrefixCls('alert');
@@ -58,7 +59,7 @@ function Alert(baseProps: AlertProps, ref) {
 
   function onHandleClose(e) {
     setVisible(false);
-    onClose && onClose(e);
+    onClose?.(e);
   }
 
   const classNames = cs(
@@ -67,6 +68,7 @@ function Alert(baseProps: AlertProps, ref) {
     {
       [`${prefixCls}-with-title`]: title,
       [`${prefixCls}-banner`]: banner,
+      [`${prefixCls}-rtl`]: rtl,
     },
     className
   );
@@ -79,10 +81,10 @@ function Alert(baseProps: AlertProps, ref) {
       classNames="zoomInTop"
       unmountOnExit
       onExited={() => {
-        afterClose && afterClose();
+        afterClose?.();
       }}
     >
-      <div ref={ref} style={style} className={classNames} role="alert">
+      <div ref={ref} style={style} className={classNames} role="alert" {...rest}>
         {showIcon && <div className={`${prefixCls}-icon-wrapper`}>{renderIcon(type)}</div>}
         <div className={`${prefixCls}-content-wrapper`}>
           {title && <div className={`${prefixCls}-title`}>{title}</div>}
@@ -90,7 +92,7 @@ function Alert(baseProps: AlertProps, ref) {
         </div>
         {action && <div className={`${prefixCls}-action`}>{action}</div>}
         {_closable && (
-          <button onClick={onHandleClose} className={`${prefixCls}-close-btn`}>
+          <button type="button" onClick={onHandleClose} className={`${prefixCls}-close-btn`}>
             {closeElement || <IconClose />}
           </button>
         )}

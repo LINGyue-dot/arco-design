@@ -1,3 +1,61 @@
+## 2.56.2
+
+2023-12-01
+
+### 🐛 BugFix
+
+- Fixed an issue where the `Tree` component onCheck callback parameter extra.checkedNodes failed to return information about all selected nodes in virtual scrolling scenarios.
+
+## 2.56.0
+
+2023-11-17
+
+### 🐛 BugFix
+
+- Fixed an issue where the connection line style was incorrect when the `size` of the `Tree` component was not `default`.([#2365](https://github.com/arco-design/arco-design/pull/2365))
+
+## 2.55.2
+
+2023-11-10
+
+### 🐛 BugFix
+
+- Fixed the bug where `Tree` would flicker when expanded or collapsed under react 18.([#2338](https://github.com/arco-design/arco-design/pull/2338))
+- Fixed the bug that the expansion and collapse animation of `Tree` did not take effect when controlled.([#2338](https://github.com/arco-design/arco-design/pull/2338))
+
+## 2.52.0
+
+2023-08-18
+
+### 💎 Enhancement
+
+- Optimize the problem that the Tree component is stuck interactively under large data. (There will be a more significant improvement after manually enabling `__ArcoAdapterMode__ `, but after enabling it, the parameter whose callback parameter type is NodeInstance will become `FakeNodeInstance` type([#2158](https://github.com/arco-design/arco-design/pull/2158))
+
+## 2.50.0
+
+2023-06-30
+
+### 🐛 BugFix
+
+- Fix the bug of `scrollIntoView` method execution error caused by the boundary condition of `Tree` component.([#2057](https://github.com/arco-design/arco-design/pull/2057))
+
+## 2.47.1
+
+2023-04-21
+
+### 🐛 BugFix
+
+- Fix the bug that the parent node of the disabled node cannot be selected after the child node of the disabled node is selected when the echo mode of the `Tree` component is set to `child`.([#1938](https://github.com/arco-design/arco-design/pull/1938))
+- Fix the bug that `Tree` component was updated wrongly when the child node of the disabled node was checked, and then unchecked, the checked state of the parent node of the disabled node was incorrectly updated.([#1938](https://github.com/arco-design/arco-design/pull/1938))
+
+## 2.44.1
+
+2023-02-03
+
+### 💎 Enhancement
+
+- Optimize the problem of unnecessary vertical scrollbars in certain cases when virtual scrolling is enabled for the `Tree` component([#1739](https://github.com/arco-design/arco-design/pull/1739))
+
 ## 2.30.0
 
 2022-03-04

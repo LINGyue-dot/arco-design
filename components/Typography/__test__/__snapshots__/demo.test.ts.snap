@@ -18,7 +18,7 @@ exports[`renders Typography/demo/basic.md correctly 1`] = `
   <div
     class="arco-typography"
   >
-    In some cases, the direct construction of an object without an explicit prior plan (such as in craftwork, some engineering, coding, and graphic design) may also be considered 
+    In some cases, the direct construction of an object without an explicit prior plan (such as in craftwork, some engineering, coding, and graphic design) may also be considered
     <span
       class="arco-typography"
     >
@@ -72,7 +72,7 @@ exports[`renders Typography/demo/basic.md correctly 1`] = `
         product
       </code>
     </span>
-     or 
+     or
     <span
       class="arco-typography"
     >
@@ -132,66 +132,33 @@ exports[`renders Typography/demo/basic.md correctly 1`] = `
 `;
 
 exports[`renders Typography/demo/ellipsis.md correctly 1`] = `
-Array [
-  <button
-    aria-checked="true"
-    class="arco-switch arco-switch-type-circle arco-switch-checked"
-    role="switch"
-    type="button"
+<div>
+  <h4
+    class="arco-typography"
   >
-    <div
-      class="arco-switch-dot"
-    />
-  </button>,
-  <div>
-    <h4
-      class="arco-typography arco-typography-simple-ellipsis"
-    >
+    <span>
        A design is a plan or specification for the construction of an object or system or for the implementation of an activity or process.
-    </h4>
-    <div
-      class="arco-typography"
-    >
+    </span>
+  </h4>
+  <div
+    class="arco-typography"
+  >
+    <span>
       A design is a plan or specification for the construction of an object or system or for the implementation of an activity or process, or the result of that plan or specification in the form of a prototype, product or process. The verb to design expresses the process of developing a design. The verb to design expresses the process of developing a design. A design is a plan or specification for the construction of an object or system or for the implementation of an activity or process, or the result of that plan or specification in the form of a prototype, product or process. The verb to design expresses the process of developing a design. The verb to design expresses the process of developing a design.
-      <a
-        class="arco-typography-operation-expand"
-      >
-        展开
-      </a>
-    </div>
-  </div>,
-  <div>
-    <h4
-      class="arco-typography"
-      style="width:240px"
-    >
-      Ellipsis in flex scene
-    </h4>
-    <div
-      style="display:flex"
-    >
-      <div
-        class="arco-typography"
-        style="width:100%"
-      >
-         A design is a plan or specification for the construction of an object or system or for the implementation of an activity or process.----width: 100%
-      </div>
-    </div>
-    <div
-      style="display:flex"
-    >
-      <div
-        class="arco-typography"
-      >
-         A design is a plan or specification for the construction of an object or system or for the implementation of an activity or process.----width: normal
-      </div>
-    </div>
-  </div>,
-]
+    </span>
+  </div>
+  <div
+    class="arco-typography"
+  >
+    <span>
+       A design is a plan or specification for the construction of an object or system or for the implementation of an activity or process.---width: 100%
+    </span>
+  </div>
+</div>
 `;
 
 exports[`renders Typography/demo/ellipsis-controlled.md correctly 1`] = `
-Array [
+<div>
   <div
     class="arco-space arco-space-horizontal arco-space-align-start"
   >
@@ -382,7 +349,7 @@ Array [
                   >
                     <div
                       class="arco-space-item"
-                      style="margin-right:8px"
+                      style="margin-right:16px"
                     >
                       <button
                         class="arco-btn arco-btn-secondary arco-btn-size-small arco-btn-shape-square"
@@ -504,7 +471,7 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
+  </div>
   <div>
     <div
       class="arco-typography"
@@ -513,8 +480,8 @@ Array [
 implementation of an activity or process. A design is a plan or specification for the
 construction of an object or system or for the implementation of an activity or process. 
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`renders Typography/demo/operations.md correctly 1`] = `
@@ -526,7 +493,10 @@ exports[`renders Typography/demo/operations.md correctly 1`] = `
   >
     Click the icon to copy this text.
     <span
+      aria-label="复制"
       class="arco-typography-operation-copy"
+      role="button"
+      tabindex="0"
     >
       <svg
         aria-hidden="true"
@@ -548,7 +518,10 @@ exports[`renders Typography/demo/operations.md correctly 1`] = `
   >
     Click the icon to edit this text.
     <span
+      aria-label="编辑"
       class="arco-typography-operation-edit"
+      role="button"
+      tabindex="0"
     >
       <svg
         aria-hidden="true"
@@ -565,6 +538,162 @@ exports[`renders Typography/demo/operations.md correctly 1`] = `
       </svg>
     </span>
   </div>
+  <h1
+    class="arco-typography"
+    style="margin:0"
+  >
+    H1. The Pragmatic Romanticism
+    <span
+      aria-label="编辑"
+      class="arco-typography-operation-edit"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="arco-icon arco-icon-edit"
+        fill="none"
+        focusable="false"
+        stroke="currentColor"
+        stroke-width="4"
+        viewBox="0 0 48 48"
+      >
+        <path
+          d="m30.48 19.038 5.733-5.734a1 1 0 0 0 0-1.414l-5.586-5.586a1 1 0 0 0-1.414 0l-5.734 5.734m7 7L15.763 33.754a1 1 0 0 1-.59.286l-6.048.708a1 1 0 0 1-1.113-1.069l.477-6.31a1 1 0 0 1 .29-.631l14.7-14.7m7 7-7-7M6 42h36"
+        />
+      </svg>
+    </span>
+  </h1>
+  <h2
+    class="arco-typography"
+    style="margin:0"
+  >
+    H2. The Pragmatic Romanticism
+    <span
+      aria-label="编辑"
+      class="arco-typography-operation-edit"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="arco-icon arco-icon-edit"
+        fill="none"
+        focusable="false"
+        stroke="currentColor"
+        stroke-width="4"
+        viewBox="0 0 48 48"
+      >
+        <path
+          d="m30.48 19.038 5.733-5.734a1 1 0 0 0 0-1.414l-5.586-5.586a1 1 0 0 0-1.414 0l-5.734 5.734m7 7L15.763 33.754a1 1 0 0 1-.59.286l-6.048.708a1 1 0 0 1-1.113-1.069l.477-6.31a1 1 0 0 1 .29-.631l14.7-14.7m7 7-7-7M6 42h36"
+        />
+      </svg>
+    </span>
+  </h2>
+  <h3
+    class="arco-typography"
+    style="margin:0"
+  >
+    H3. The Pragmatic Romanticism
+    <span
+      aria-label="编辑"
+      class="arco-typography-operation-edit"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="arco-icon arco-icon-edit"
+        fill="none"
+        focusable="false"
+        stroke="currentColor"
+        stroke-width="4"
+        viewBox="0 0 48 48"
+      >
+        <path
+          d="m30.48 19.038 5.733-5.734a1 1 0 0 0 0-1.414l-5.586-5.586a1 1 0 0 0-1.414 0l-5.734 5.734m7 7L15.763 33.754a1 1 0 0 1-.59.286l-6.048.708a1 1 0 0 1-1.113-1.069l.477-6.31a1 1 0 0 1 .29-.631l14.7-14.7m7 7-7-7M6 42h36"
+        />
+      </svg>
+    </span>
+  </h3>
+  <h4
+    class="arco-typography"
+    style="margin:0"
+  >
+    H4. The Pragmatic Romanticism
+    <span
+      aria-label="编辑"
+      class="arco-typography-operation-edit"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="arco-icon arco-icon-edit"
+        fill="none"
+        focusable="false"
+        stroke="currentColor"
+        stroke-width="4"
+        viewBox="0 0 48 48"
+      >
+        <path
+          d="m30.48 19.038 5.733-5.734a1 1 0 0 0 0-1.414l-5.586-5.586a1 1 0 0 0-1.414 0l-5.734 5.734m7 7L15.763 33.754a1 1 0 0 1-.59.286l-6.048.708a1 1 0 0 1-1.113-1.069l.477-6.31a1 1 0 0 1 .29-.631l14.7-14.7m7 7-7-7M6 42h36"
+        />
+      </svg>
+    </span>
+  </h4>
+  <h5
+    class="arco-typography"
+    style="margin:0"
+  >
+    H5. The Pragmatic Romanticism
+    <span
+      aria-label="编辑"
+      class="arco-typography-operation-edit"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="arco-icon arco-icon-edit"
+        fill="none"
+        focusable="false"
+        stroke="currentColor"
+        stroke-width="4"
+        viewBox="0 0 48 48"
+      >
+        <path
+          d="m30.48 19.038 5.733-5.734a1 1 0 0 0 0-1.414l-5.586-5.586a1 1 0 0 0-1.414 0l-5.734 5.734m7 7L15.763 33.754a1 1 0 0 1-.59.286l-6.048.708a1 1 0 0 1-1.113-1.069l.477-6.31a1 1 0 0 1 .29-.631l14.7-14.7m7 7-7-7M6 42h36"
+        />
+      </svg>
+    </span>
+  </h5>
+  <h6
+    class="arco-typography"
+    style="margin:0"
+  >
+    H6. The Pragmatic Romanticism
+    <span
+      aria-label="编辑"
+      class="arco-typography-operation-edit"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="arco-icon arco-icon-edit"
+        fill="none"
+        focusable="false"
+        stroke="currentColor"
+        stroke-width="4"
+        viewBox="0 0 48 48"
+      >
+        <path
+          d="m30.48 19.038 5.733-5.734a1 1 0 0 0 0-1.414l-5.586-5.586a1 1 0 0 0-1.414 0l-5.734 5.734m7 7L15.763 33.754a1 1 0 0 1-.59.286l-6.048.708a1 1 0 0 1-1.113-1.069l.477-6.31a1 1 0 0 1 .29-.631l14.7-14.7m7 7-7-7M6 42h36"
+        />
+      </svg>
+    </span>
+  </h6>
 </article>
 `;
 

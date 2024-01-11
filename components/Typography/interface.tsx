@@ -1,4 +1,5 @@
 import { CSSProperties, ReactNode } from 'react';
+import { TooltipProps } from '../Tooltip';
 
 /**
  * @title Typography
@@ -22,6 +23,7 @@ export interface OperationsProps extends Omit<React.HTMLAttributes<HTMLElement>,
         onCopy?: (text: string, e) => void;
         icon?: ReactNode;
         tooltips?: [ReactNode, ReactNode];
+        tooltipProps?: TooltipProps;
       };
   /**
    * @zh 开启可编辑功能
@@ -32,6 +34,7 @@ export interface OperationsProps extends Omit<React.HTMLAttributes<HTMLElement>,
     | boolean
     | {
         editing?: boolean;
+        tooltipProps?: TooltipProps;
         onStart?: (text, e) => void;
         onChange?: (text) => void;
         onEnd?: (text) => void;
@@ -124,6 +127,8 @@ export interface TypographyParagraphProps extends CommonProps {
 
 export interface EditContentProps {
   prefixCls?: string;
+  style?: CSSProperties;
+  className?: string | string[];
   children?: ReactNode;
   setEditing?: (editing: boolean) => void;
   editableConfig?: {
@@ -144,9 +149,9 @@ export type TypographyTextProps = CommonProps;
  */
 export type EllipsisConfig = {
   /**
-   * @zh 自动溢出省略（只支持字符串），在简单的单行省略情况下，会默认使用 css 处理省略，避免复杂计算。
+   * @zh 自动溢出省略（只支持字符串），在大量使用情况下建议开启提高性能。
    * @en Automatic overflow omission (only strings are supported). In the case of simple single-line, css will be used by default to handle ellipsis to avoid complicated calculations.
-   * @defaultValue true
+   * @version `2.36.0` 将默认值改为 `false` 并支持多行CSS省略。
    */
   cssEllipsis?: boolean;
   /**
@@ -202,7 +207,10 @@ export type EllipsisConfig = {
    * @zh 默认展开
    * @en Default expanded state
    * @version `2.33.0`
-   * @defaultValue false
    */
   defaultExpanded?: boolean;
+  // https://github.com/arco-design/arco-design/issues/1185
+  // https://github.com/facebook/react/issues/17256
+  // React.Fragment will cause the page to crash in special scenarios
+  wrapper?: string | React.FC<any> | React.ComponentClass<any>;
 };

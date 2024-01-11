@@ -1,13 +1,5 @@
-import React, {
-  useState,
-  useMemo,
-  useCallback,
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import React, { useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
 import VirtualList, { VirtualListHandle } from '../_class/VirtualList';
-import useUpdate from '../_util/hooks/useUpdate';
 import Node from './node';
 import scrollIntoViewIfNeed from '../_util/scrollIntoView';
 
@@ -23,14 +15,16 @@ function NodeList(props, ref) {
     virtualListProps,
     expandedKeys,
     currentExpandKeys,
-    saveCacheNode,
     nodeList,
     getNodeProps,
+    getDataSet,
   } = props;
   const isVirtual = virtualListProps?.threshold !== null;
   const virtualListRef = useRef<VirtualListHandle>();
   const treeWrapperRef = useRef<HTMLDivElement>();
+  const dataSetRef = useRef<HTMLDivElement>();
   const expandedKeysSet = useMemo(() => new Set(expandedKeys), [expandedKeys]);
+
   const visibleKeys: Set<string> = useMemo(() => {
     const newKeys = new Set<string>();
     const currentExpandKeysSet = new Set(currentExpandKeys);
@@ -47,27 +41,21 @@ function NodeList(props, ref) {
     return newKeys;
   }, [expandedKeysSet, currentExpandKeys, nodeList]);
 
-  const calcChildrenList = useCallback(() => {
+  const calcChildrenList = () => {
     return nodeList.filter((item) => {
       const pass = !filterNode || (filterNode && filterNode(item));
 
       if (pass && visibleKeys.has(item.key)) {
         return true;
       }
-      // 过滤掉的也缓存一下，避免被收起的节点在onSelect回调中，selectedNodes出现undefined
-      saveCacheNode(<Node {...item} {...getNodeProps(item)} key={item.key} />);
       return false;
     });
-  }, [nodeList, filterNode, visibleKeys]);
+  };
 
-  // 默认值不能为nodeList，防止在设置defaultExpandedKeys时，应该被隐藏的节点初始化的时候展示了。
-  const [childrenList, setChildrenList] = useState(() => {
+  // 默认值不能为nodeList，防止在设置defaultExpandedKeys 时，应该被隐藏的节点初始化的时候展示了。
+  const childrenList = useMemo(() => {
     return calcChildrenList();
-  });
-
-  useUpdate(() => {
-    setChildrenList(calcChildrenList());
-  }, [calcChildrenList]);
+  }, [nodeList, filterNode, visibleKeys]);
 
   useImperativeHandle(ref, () => {
     return {
@@ -115,9 +103,12 @@ function NodeList(props, ref) {
       {...props.ariaProps}
       {...virtualListProps}
     >
-      {(item) => {
-        const node = <Node {...item} {...getNodeProps(item, expandedKeysSet)} key={item.key} />;
-        saveCacheNode(node);
+      {(item, _, { itemIndex }) => {
+        if (itemIndex === 0) {
+          dataSetRef.current = getDataSet();
+        }
+        const nodeProps = getNodeProps(item, dataSetRef.current);
+        const node = <Node {...item} key={item.key} {...nodeProps} />;
         return node;
       }}
     </VirtualList>
@@ -132,8 +123,8 @@ function NodeList(props, ref) {
       onMouseDown={props.onMouseDown}
     >
       {childrenList.map((item) => {
-        const node = <Node {...item} {...getNodeProps(item, expandedKeysSet)} key={item.key} />;
-        saveCacheNode(node);
+        const nodeProps = getNodeProps(item);
+        const node = <Node {...nodeProps} key={item.key} />;
         return node;
       })}
     </div>

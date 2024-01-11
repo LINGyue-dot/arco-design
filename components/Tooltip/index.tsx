@@ -9,11 +9,12 @@ import React, {
 import cs from '../_util/classNames';
 import Trigger, { EventsByTriggerNeed } from '../Trigger';
 import { ConfigContext } from '../ConfigProvider';
-import pick from '../_util/pick';
+import pick, { pickDataAttributes } from '../_util/pick';
 import { TooltipProps } from './interface';
 import useMergeProps from '../_util/hooks/useMergeProps';
+import { isFunction } from '../_util/is';
 
-type TooltipHandle = {
+export type TooltipHandle = {
   updatePopupPosition: () => void;
 };
 
@@ -24,6 +25,18 @@ const defaultProps: TooltipProps = {
   unmountOnExit: true,
   blurToHide: true,
   popupHoverStay: true,
+};
+
+const triggerDuration = {
+  enter: 300,
+  exit: 100,
+};
+
+const triggerPopupAlign = {
+  left: 12,
+  right: 12,
+  top: 12,
+  bottom: 12,
 };
 
 function Tooltip(baseProps: PropsWithChildren<TooltipProps>, ref) {
@@ -74,10 +87,11 @@ function Tooltip(baseProps: PropsWithChildren<TooltipProps>, ref) {
   const prefixCls = tooltipPrefixCls || getPrefixCls('tooltip');
   const otherProps: any = {
     ...pick(rest, EventsByTriggerNeed),
+    ...pickDataAttributes(rest),
     ...triggerProps,
   };
 
-  const renderedContent = typeof content === 'function' ? content() : content;
+  const renderedContent = isFunction(content) ? content() : content;
 
   // it is important to note that this method has its limitations
   // it fails in cases such as content = <>&nbsp;&nbsp;</>
@@ -117,10 +131,7 @@ function Tooltip(baseProps: PropsWithChildren<TooltipProps>, ref) {
       className={className}
       ref={refTrigger}
       classNames="zoomInFadeOut"
-      duration={{
-        enter: 300,
-        exit: 100,
-      }}
+      duration={triggerDuration}
       popup={() => {
         return (
           <div
@@ -139,12 +150,7 @@ function Tooltip(baseProps: PropsWithChildren<TooltipProps>, ref) {
       trigger={trigger}
       escToClose={escToClose}
       showArrow
-      popupAlign={{
-        left: 12,
-        right: 12,
-        top: 12,
-        bottom: 12,
-      }}
+      popupAlign={triggerPopupAlign}
       mouseEnterDelay={200}
       mouseLeaveDelay={200}
       unmountOnExit={unmountOnExit}

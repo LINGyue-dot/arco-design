@@ -1,15 +1,14 @@
-import React, { useEffect, createContext } from 'react';
-import defaultLocale from '../locale/default';
+import React, { useEffect } from 'react';
 import { isObject } from '../_util/is';
 import { lighten } from './util';
 import Message from '../Message';
 import Notification from '../Notification';
-import Empty from '../Empty';
 import { setConfigProviderProps } from '../Modal/config';
 import { IconContext } from '../../icon/react-icon/context';
 import { ConfigProviderProps } from './interface';
 import omit from '../_util/omit';
 import useMergeProps from '../_util/hooks/useMergeProps';
+import { ConfigContext, DefaultConfigProviderProps } from './context';
 
 const colorList = {
   primaryColor: {
@@ -58,45 +57,24 @@ function setTheme(theme: ConfigProviderProps['theme']) {
   }
 }
 
-function renderEmpty(componentName?: string) {
-  switch (componentName) {
-    default:
-      return <Empty />;
-  }
-}
-
-const defaultProps: ConfigProviderProps = {
-  locale: defaultLocale,
-  prefixCls: 'arco',
-  getPopupContainer: () => document.body,
-  size: 'default',
-  renderEmpty,
-  focusLock: {
-    modal: { autoFocus: true },
-    drawer: { autoFocus: true },
-  },
-};
+const defaultProps = DefaultConfigProviderProps;
 
 const componentConfig = {};
 
-export const ConfigContext = createContext<ConfigProviderProps>({
-  getPrefixCls: (componentName: string, customPrefix?: string) =>
-    `${customPrefix || 'arco'}-${componentName}`,
-  ...defaultProps,
-});
-
 function ConfigProvider(baseProps: ConfigProviderProps) {
   const props = useMergeProps<ConfigProviderProps>(baseProps, defaultProps, componentConfig);
-  const { theme, prefixCls, children, locale } = props;
+  const { theme, prefixCls, children, locale, rtl, effectGlobalNotice = true } = props;
 
   useEffect(() => {
     setTheme(theme);
   }, [theme]);
 
   useEffect(() => {
-    Message.config({ prefixCls });
-    Notification.config({ prefixCls });
-  }, [prefixCls]);
+    if (effectGlobalNotice) {
+      Message.config({ prefixCls, rtl });
+      Notification.config({ prefixCls, rtl });
+    }
+  }, [prefixCls, rtl, effectGlobalNotice]);
 
   function getPrefixCls(componentName: string, customPrefix?: string) {
     return `${customPrefix || prefixCls}-${componentName}`;
@@ -108,7 +86,7 @@ function ConfigProvider(baseProps: ConfigProviderProps) {
   };
 
   useEffect(() => {
-    setConfigProviderProps({ locale, prefixCls });
+    setConfigProviderProps({ locale, prefixCls, rtl });
   }, [locale, prefixCls]);
 
   let child = children;
@@ -128,4 +106,4 @@ export default ConfigProvider;
 
 export const ConfigConsumer = ConfigContext.Consumer;
 
-export { ConfigProviderProps };
+export { ConfigProviderProps, ConfigContext };

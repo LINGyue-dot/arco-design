@@ -1,3 +1,19 @@
+## 2.55.0
+
+2023-10-27
+
+### 🐛 问题修复
+
+- 修复 `List` 组件滚动时偶现的 `cannot read properties of null (reading 'scrollTop')` 错误。([#2316](https://github.com/arco-design/arco-design/pull/2316))
+
+## 2.52.1
+
+2023-08-25
+
+### 🐛 问题修复
+
+- 修复 `List` 组件设置可翻页时，切换 `pageSize` 的下拉框有时无法展开的问题。([#2186](https://github.com/arco-design/arco-design/pull/2186))
+
 ## 2.33.0
 
 2022-05-13

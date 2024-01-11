@@ -1,3 +1,84 @@
+## 2.57.1
+
+2023-12-15
+
+### 💎 Enhancement
+
+- Optimize `Typography` component node length calculation logic([#2435](https://github.com/arco-design/arco-design/pull/2435))
+
+## 2.57.0
+
+2023-12-08
+
+### 🆕 Feature
+
+- The `Typography` component supports `tooltip` configuration for copy and edit buttons.([#2428](https://github.com/arco-design/arco-design/pull/2428))
+
+## 2.51.0
+
+2023-07-28
+
+### 🐛 BugFix
+
+- Fix the bug that the font style does not inherit the Title style when `Typography.Title` is switched to the edit state.([#2109](https://github.com/arco-design/arco-design/pull/2109) '')
+- Fix the bug that the `className` and `style` attributes passed in by the user are lost when `Typography` is switched to the editing state.([#2109](https://github.com/arco-design/arco-design/pull/2109) '')
+
+## 2.44.2
+
+2023-02-10
+
+### 🐛 BugFix
+
+- Fix the bug that `Typography` cannot be adaptively omitted under `cssEllipsis`([#1766](https://github.com/arco-design/arco-design/pull/1766))
+
+## 2.41.1
+
+2022-11-04
+
+### 🐛 BugFix
+
+- Fixed a bug where `Tooltip`, `Popover`, `Input` styles were not introduced when `Typography` component loads styles on demand.([#1541](https://github.com/arco-design/arco-design/pull/1541))
+
+## 2.39.3
+
+2022-09-02
+
+### 🐛 BugFix
+
+- Fixed a bug where the `Typography` component would jitter in the folding calculation([#1366](https://github.com/arco-design/arco-design/pull/1366))
+
+## 2.37.1
+
+2022-07-14
+
+### 🐛 BugFix
+
+- Fix the problem of `Typography` text omission under different text styles such as `underline`([#1137](https://github.com/arco-design/arco-design/pull/1137))
+
+## 2.37.0
+
+2022-07-08
+
+### 💅 Style
+
+- The `Typography` default style adds `white-space: 'normal'` to remove the parent element's effect on ellipsis.([#1109](https://github.com/arco-design/arco-design/pull/1109))
+
+## 2.34.0
+
+2022-05-27
+
+### 💎 Enhancement
+
+- Reduce the number of computations for `Typography` on first render([#935](https://github.com/arco-design/arco-design/pull/935))
+
+## 2.33.1
+
+2022-05-20
+
+### 🐛 BugFix
+
+- Fixed the bug that the `Expand/Collapse` button of the `Typography` component was displayed at the wrong time([#890](https://github.com/arco-design/arco-design/pull/890))
+
 ## 2.33.0
 
 2022-05-13

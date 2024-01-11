@@ -6,7 +6,6 @@ import MonthPickerPanel from './panels/month';
 import YearPickerPanel from './panels/year';
 import WeekPickerPanel from './panels/week';
 import QuarterPickerPanel from './panels/quarter';
-import '../_util/polyfill/object-assign';
 
 import {
   DatePickerProps,
@@ -16,23 +15,42 @@ import {
   QuarterPickerProps,
   RangePickerProps,
   DatePickerDecorator,
+  ModeType,
 } from './interface';
 
-function wrapper<P = any>(picker: ReactElement<P>, displayName: string) {
+function wrapper<P = any>(
+  picker: ReactElement<P>,
+  options: { displayName: string; mode: ModeType }
+) {
   return class PickerWrapper extends React.Component<P> {
-    static displayName = displayName;
+    static displayName = options.displayName;
 
     render() {
-      return <Picker {...this.props} picker={picker} />;
+      return <Picker {...this.props} picker={picker} mode={options.mode} />;
     }
   };
 }
 
-const DatePicker = wrapper<DatePickerProps>(<DatePickerPanel />, 'DatePicker');
-const MonthPicker = wrapper<MonthPickerProps>(<MonthPickerPanel />, 'MonthPicker');
-const YearPicker = wrapper<YearPickerProps>(<YearPickerPanel />, 'YearPicker');
-const WeekPicker = wrapper<WeekPickerProps>(<WeekPickerPanel />, 'WeekPicker');
-const QuarterPicker = wrapper<QuarterPickerProps>(<QuarterPickerPanel />, 'QuarterPicker');
+const DatePicker = wrapper<DatePickerProps>(<DatePickerPanel />, {
+  displayName: 'DatePicker',
+  mode: 'date',
+});
+const MonthPicker = wrapper<MonthPickerProps>(<MonthPickerPanel />, {
+  displayName: 'MonthPicker',
+  mode: 'month',
+});
+const YearPicker = wrapper<YearPickerProps>(<YearPickerPanel />, {
+  displayName: 'YearPicker',
+  mode: 'year',
+});
+const WeekPicker = wrapper<WeekPickerProps>(<WeekPickerPanel />, {
+  displayName: 'WeekPicker',
+  mode: 'week',
+});
+const QuarterPicker = wrapper<QuarterPickerProps>(<QuarterPickerPanel />, {
+  displayName: 'QuarterPicker',
+  mode: 'quarter',
+});
 
 const RangePicker = PickerRange;
 

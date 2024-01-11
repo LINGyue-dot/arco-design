@@ -8,6 +8,7 @@ import { OptionInfo, SelectProps } from '../Select/interface';
 import { isSelectOption, isSelectOptGroup } from '../Select/utils';
 import { Enter, Esc } from '../_util/keycode';
 import omit from '../_util/omit';
+import { pickDataAttributes } from '../_util/pick';
 import { RefInputType } from '../Input/interface';
 import IconLoading from '../../icon/react-icon/IconLoading';
 import { AutoCompleteProps } from './interface';
@@ -123,24 +124,26 @@ function AutoComplete(baseProps: AutoCompleteProps, ref) {
     value,
     placeholder,
     error,
+    status: props.status,
     disabled,
     allowClear,
     ...inputProps,
+    ...pickDataAttributes(props),
     // Empty tag to ensure the consistency of the dom structure of input, such that input won't accidentally lose focus due to structure change on input.
     suffix: loading ? <IconLoading /> : inputProps?.suffix || <i />,
     onFocus: (event) => {
       setIsFocused(true);
-      onFocus && onFocus(event);
-      inputProps && inputProps.onFocus && inputProps.onFocus(event);
+      onFocus?.(event);
+      inputProps?.onFocus?.(event);
     },
     onBlur: (event) => {
       setIsFocused(false);
-      onBlur && onBlur(event);
-      inputProps && inputProps.onBlur && inputProps.onBlur(event);
+      onBlur?.(event);
+      inputProps?.onBlur?.(event);
     },
     onKeyDown: (event) => {
       const keyCode = event.keyCode || event.which;
-      refSelect.current && refSelect.current.hotkeyHandler(event);
+      refSelect.current?.hotkeyHandler?.(event);
 
       if (keyCode === Enter.code && onPressEnter) {
         let activeOption;
@@ -153,16 +156,16 @@ function AutoComplete(baseProps: AutoCompleteProps, ref) {
       }
 
       if (keyCode === Esc.code) {
-        refInput.current && refInput.current.blur && refInput.current.blur();
+        refInput.current?.blur?.();
       }
 
-      inputProps && inputProps.onKeyDown && inputProps.onKeyDown(event);
+      inputProps?.onKeyDown?.(event);
     },
     onChange: (value, event) => {
       setValue(value);
-      onSearch && onSearch(value);
-      onChange && onChange(value);
-      inputProps && inputProps.onChange && inputProps.onChange(value, event);
+      onSearch?.(value);
+      onChange?.(value);
+      inputProps?.onChange?.(value, event);
     },
   });
 
@@ -188,10 +191,10 @@ function AutoComplete(baseProps: AutoCompleteProps, ref) {
     notFoundContent: null,
     onChange: (value: string, option) => {
       setValue(value);
-      onChange && onChange(value, option as OptionInfo);
-      value && onSelect && onSelect(value, option as OptionInfo);
+      onChange?.(value, option as OptionInfo);
+      value && onSelect?.(value, option as OptionInfo);
       // Blur the input on option change
-      refInput.current && refInput.current.blur && refInput.current.blur();
+      refInput.current?.blur?.();
     },
   };
 

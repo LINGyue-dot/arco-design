@@ -5,6 +5,7 @@ import cs from '../../_util/classNames';
 import useComponent from '../hooks/useComponent';
 import VirtualList from '../../_class/VirtualList';
 import Tr from './tr';
+import { getOriginData } from '../utils';
 
 function TBody<T>(props: TbodyProps<T>) {
   const {
@@ -23,9 +24,14 @@ function TBody<T>(props: TbodyProps<T>) {
     hasFixedColumn,
     tableViewWidth,
     virtualized,
+    virtualListProps,
     getRowKey,
-    saveVirtualWrapperRef,
+    saveVirtualListRef,
   } = props;
+
+  const er = expandedRowRender
+    ? (r, i) => expandedRowRender(getOriginData(r), i)
+    : expandedRowRender;
 
   const { ComponentTbody } = useComponent(components);
 
@@ -44,7 +50,7 @@ function TBody<T>(props: TbodyProps<T>) {
     if ('rowExpandable' in expandProps && typeof expandProps.rowExpandable === 'function') {
       return expandProps.rowExpandable(record);
     }
-    return expandedRowRender && expandedRowRender(record, index) !== null;
+    return er && er(record, index) !== null;
   }
 
   const trProps = {
@@ -79,7 +85,7 @@ function TBody<T>(props: TbodyProps<T>) {
         });
       }
     };
-    if (!expandedRowRender) {
+    if (!er) {
       travel(record[childrenColumnName], getRowKey(record));
     }
 
@@ -117,25 +123,31 @@ function TBody<T>(props: TbodyProps<T>) {
     </tr>
   );
 
+  // https://github.com/arco-design/arco-design/issues/644
+  // except the real scroll container, all parent nodes should not have a overflow style.
   if (virtualized) {
-    return (
-      <div className={`${prefixCls}-body`} ref={(ref) => saveVirtualWrapperRef(ref)}>
-        {data.length > 0 ? (
-          <VirtualList
-            data={data}
-            height={scrollStyleY.maxHeight}
-            isStaticItemHeight={false}
-            style={{ ...scrollStyleX, minWidth: '100%' }}
-          >
-            {(child, index) => (
-              <Tr<T> {...trProps} key={getRowKey(child)} record={child} index={index} level={0} />
-            )}
-          </VirtualList>
-        ) : (
-          <table>
-            <tbody>{noDataTr}</tbody>
-          </table>
+    return data.length > 0 ? (
+      <VirtualList
+        data={data}
+        height={scrollStyleY.maxHeight}
+        isStaticItemHeight={false}
+        // position sticky works
+        outerStyle={{ ...scrollStyleX, minWidth: '100%', overflow: 'visible' }}
+        innerStyle={{ right: 'auto', minWidth: '100%' }}
+        className={`${prefixCls}-body`}
+        ref={(ref) => saveVirtualListRef(ref)}
+        itemKey={getRowKey}
+        {...virtualListProps}
+      >
+        {(child, index) => (
+          <Tr<T> {...trProps} key={getRowKey(child)} record={child} index={index} level={0} />
         )}
+      </VirtualList>
+    ) : (
+      <div className={`${prefixCls}-body`}>
+        <table>
+          <tbody>{noDataTr}</tbody>
+        </table>
       </div>
     );
   }
@@ -165,10 +177,10 @@ function TBody<T>(props: TbodyProps<T>) {
                           className={`${prefixCls}-expand-fixed-row`}
                           style={{ width: tableViewWidth }}
                         >
-                          {expandedRowRender && expandedRowRender(record, index)}
+                          {er && er(record, index)}
                         </div>
                       ) : (
-                        expandedRowRender && expandedRowRender(record, index)
+                        er && er(record, index)
                       )}
                     </td>
                   </tr>

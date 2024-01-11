@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import ReactDOM from 'react-dom';
+import { render as ReactDOMRender } from '../_util/react-dom';
 import Modal, { ModalProps } from './modal';
 import IconInfoCircleFill from '../../icon/react-icon/IconInfoCircleFill';
 import IconCheckCircleFill from '../../icon/react-icon/IconCheckCircleFill';
@@ -26,9 +26,11 @@ function ConfirmModal(props: ConfirmProps) {
 
 // 如果是消息提示型弹出框，那么只有确认按钮
 export const normalizeConfig = (_config: ConfirmProps): ConfirmProps => {
-  if (_config.isNotice) {
-    let icon = _config.icon;
-    if (!icon && icon !== null) {
+  let icon = _config.icon;
+
+  if (!icon && icon !== null) {
+    icon = <IconExclamationCircleFill />;
+    if (_config.isNotice) {
       switch (_config.noticeType) {
         case 'info':
           icon = <IconInfoCircleFill />;
@@ -46,37 +48,41 @@ export const normalizeConfig = (_config: ConfirmProps): ConfirmProps => {
           break;
       }
     }
-    _config.title = (
+  }
+
+  if (_config.isNotice) {
+    _config.hideCancel = true;
+  }
+
+  _config.title =
+    icon === null && _config.title === null ? null : (
       <span>
         {icon}
         {_config.title}
       </span>
     );
-    _config.hideCancel = true;
-  } else {
-    _config.title = (
-      <span>
-        {_config.icon !== null && (_config.icon || <IconExclamationCircleFill />)}
-        {_config.title}
-      </span>
-    );
-  }
+
   return _config;
 };
 
 function confirm(config: ConfirmProps, renderFunc?: (props: ConfirmProps) => void) {
+  let root;
   const div = document.createElement('div');
   document.body.appendChild(div);
 
   const configProviderProps = getConfigProviderProps();
 
   function render(props: ConfirmProps) {
-    ReactDOM.render(
+    const dom = (
       <ConfigProvider {...configProviderProps}>
         <ConfirmModal {...props} onCancel={onCancel} />
-      </ConfigProvider>,
-      div
+      </ConfigProvider>
     );
+    if (root) {
+      root.render(dom);
+    } else {
+      root = ReactDOMRender(dom, div);
+    }
   }
 
   const renderFunction = renderFunc || render;
@@ -117,8 +123,9 @@ function confirm(config: ConfirmProps, renderFunc?: (props: ConfirmProps) => voi
   renderFunction(modalConfig);
 
   function destroy() {
-    const unmountEle = ReactDOM.unmountComponentAtNode(div);
-    if (unmountEle && div.parentNode) {
+    root = root?._unmount();
+
+    if (div.parentNode) {
       div.parentNode.removeChild(div);
     }
     for (let i = 0; i < destroyList.length; i++) {

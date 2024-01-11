@@ -1,3 +1,173 @@
+## 2.57.0
+
+2023-12-08
+
+### 🆕 Feature
+
+- Additional parameters `options` are added to the `showSearch.renderOption` function of the `Cascader` component([#2384](https://github.com/arco-design/arco-design/pull/2384))
+
+## 2.54.0
+
+2023-10-09
+
+### 🆕 Feature
+
+- The `Cascader` component supports setting width adaptation through the `autoWidth` property.([#2274](https://github.com/arco-design/arco-design/pull/2274))
+
+## 2.52.2
+
+2023-09-01
+
+### 🐛 BugFix
+
+- Fixed the issue of abnormal position of panel option arrow in `Cascader` component `rtl` mode.([#2201](https://github.com/arco-design/arco-design/pull/2201))
+
+## 2.52.0
+
+2023-08-18
+
+### 🆕 Feature
+
+- The `Cascader` component supports the `icons` parameter to set icons.([#2062](https://github.com/arco-design/arco-design/pull/2062))
+
+## 2.51.2
+
+2023-08-11
+
+### 🐛 BugFix
+
+- Fix the bug that the `dragToSort` attribute does not take effect when the `Cascader` component is controlled([#2140](https://github.com/arco-design/arco-design/pull/2140))
+
+## 2.50.1
+
+2023-07-14
+
+### 🐛 BugFix
+
+- Fix the bug that the onBlur will be triggered when the node is selected when the `Cascader` component is multi-selected.([#2083](https://github.com/arco-design/arco-design/pull/2083))
+
+## 2.49.1
+
+2023-06-09
+
+### 🐛 BugFix
+
+- Fix the bug that the `Cascader` component cannot delete selected items through keyboard events.([#2024](https://github.com/arco-design/arco-design/pull/2024))
+
+## 2.44.1
+
+2023-02-03
+
+### 🐛 BugFix
+
+- Fix the bug that the keyboard event listener of the `Cascader` component will still be triggered when other elements are Focused.([#1751](https://github.com/arco-design/arco-design/pull/1751))
+
+## 2.42.2
+
+2022-12-09
+
+### 🐛 BugFix
+
+- Fix the bug that empty data may appear in the search result panel when the `Cascader` component searches remotely.([#1639](https://github.com/arco-design/arco-design/pull/1639))
+
+## 2.41.0
+
+2022-10-28
+
+### 🆕 Feature
+
+- The `Cascader` component supports setting the front tag through the `addBefore` property([#1464](https://github.com/arco-design/arco-design/pull/1464))
+
+### 🐛 BugFix
+
+- Optimized the problem that the `title` property of the `Cascader` component option displays `[object object]`.([#1468](https://github.com/arco-design/arco-design/pull/1468))
+- Fixed the bug that the parent node cannot be selected after the child node is selected when the `Cascader` component is set to `changeOnSelect` & `mode=multiple`([#1468](https://github.com/arco-design/arco-design/pull/1468))
+
+## 2.40.0
+
+2022-09-16
+
+### 🆕 Feature
+
+- The `Cascader` component supports listening to the `onKeyDown` callback.([#1360](https://github.com/arco-design/arco-design/pull/1360))
+
+## 2.39.3
+
+2022-09-02
+
+### 🐛 BugFix
+
+- Fixed the jitter of the drop-down list when the `Cascader` component set `expandTrigger` to `hover`.([#1365](https://github.com/arco-design/arco-design/pull/1365))
+- Fixed the bug that when the `Cascader` component has disabled child nodes, when the parent node in the half-selected state is selected, the selected state cannot be switched.([#1354](https://github.com/arco-design/arco-design/pull/1354))
+
+## 2.39.2
+
+2022-08-26
+
+### 🐛 BugFix
+
+- Fixed a bug where the selected node was not scrolled to the viewport correctly when the `Cascader` component opened the virtual list.([#1329](https://github.com/arco-design/arco-design/pull/1329))
+
+## 2.39.1
+
+2022-08-19
+
+### 💎 Enhancement
+
+- Optimize cascader edge case handling([#1304](https://github.com/arco-design/arco-design/pull/1304))
+
+## 2.39.0
+
+2022-08-12
+
+### 🆕 Feature
+
+- The `Cascader` component supports controlling the display of drop-down panels through the `showSearch.panelMode` property([#1267](https://github.com/arco-design/arco-design/pull/1267))
+- The `Cascader` component supports customizing the rendering of search terms via the `showSearch.renderOption` property([#1267](https://github.com/arco-design/arco-design/pull/1267))
+
+### 🐛 BugFix
+
+- Fixed the issue that when virtual scrolling is enabled, when options with the same value exist in the search panel of the `Cascader` component, the options are rendered incorrectly.([#1266](https://github.com/arco-design/arco-design/pull/1266))
+
+## 2.37.0
+
+2022-07-08
+
+### 🆕 Feature
+
+- The `Cascader` component supports customizing the `maxTag` content display through the `maxTagCount` property of the object type([#1112](https://github.com/arco-design/arco-design/pull/1112))
+- `Cascader` supports the default highlighting of the first option after searching by setting the `defaultActiveFirstOption` property.([#1096](https://github.com/arco-design/arco-design/pull/1096))
+
+## 2.36.0
+
+2022-06-24
+
+### 🐛 BugFix
+
+- fix `dragToSort` not works  on `Cascader`([#1029](https://github.com/arco-design/arco-design/pull/1029))
+
+## 2.35.0
+
+2022-06-10
+
+### 🆕 Feature
+
+- `Cascader` supports opening virtual lists via `virtualListProps`([#972](https://github.com/arco-design/arco-design/pull/972))
+- `Cascader` supports custom class name for dropdown menu by setting `dropdownMenuClassname`([#972](https://github.com/arco-design/arco-design/pull/972))
+- `Cascader` supports setting the style of each column of the dropdown menu through `dropdownMenuColumnStyle`([#972](https://github.com/arco-design/arco-design/pull/972))
+
+### 🐛 BugFix
+
+- Fixed the bug of `value` controlled invalidation when the `Cascader` component set the echo mode to `parent`.([#983](https://github.com/arco-design/arco-design/pull/983))
+
+## 2.34.0
+
+2022-05-27
+
+### 🆕 Feature
+
+- The `Cascader` component supports controlling the input box value through the `InputValue` property([#931](https://github.com/arco-design/arco-design/pull/931))
+
 ## 2.32.0
 
 2022-04-15

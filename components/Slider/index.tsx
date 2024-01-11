@@ -1,5 +1,6 @@
 import React, { forwardRef, memo, useContext, CSSProperties, useRef, useMemo } from 'react';
-import { plus, times, divide } from 'number-precision';
+import NP, { plus, times, divide } from 'number-precision';
+import omit from '../_util/omit';
 import SliderButton from './button';
 import Marks from './marks';
 import Dots from './dots';
@@ -17,11 +18,7 @@ import useInterval from './hooks/useInterval';
 import useMergeProps from '../_util/hooks/useMergeProps';
 import useUpdate from '../_util/hooks/useUpdate';
 
-function isSameOrder(firstNums: number[], secondNums) {
-  const diff1 = firstNums[0] - firstNums[1];
-  const diff2 = secondNums[0] - secondNums[1];
-  return diff1 <= 0 === diff2 <= 0;
-}
+NP.enableBoundaryChecking(false);
 
 const defaultProps: SliderProps = {
   max: 100,
@@ -30,7 +27,7 @@ const defaultProps: SliderProps = {
 };
 
 function Slider(baseProps: SliderProps, ref) {
-  const { getPrefixCls, componentConfig } = useContext(ConfigContext);
+  const { getPrefixCls, componentConfig, rtl } = useContext(ConfigContext);
   const props = useMergeProps<SliderProps>(baseProps, defaultProps, componentConfig?.Slider);
   const {
     className,
@@ -49,10 +46,12 @@ function Slider(baseProps: SliderProps, ref) {
     showInput,
     reverse,
     getIntervalConfig,
+    ...rest
   } = props;
 
   const range = !!propRange;
   const rangeConfig = isObject(propRange) ? { ...propRange } : { draggableBar: false };
+  const isReverse = rtl ? !reverse : reverse;
 
   const { intervalConfigs, markList } = useInterval({
     min,
@@ -63,7 +62,7 @@ function Slider(baseProps: SliderProps, ref) {
     getIntervalConfig,
   });
 
-  const { getLegalValue, getLegalRangeValue, isLegalValue } = useLegalValue({
+  const { getLegalValue, getLegalRangeValue, isLegalValue, getNextMarkValue } = useLegalValue({
     isRange: range,
     min,
     max,
@@ -83,14 +82,14 @@ function Slider(baseProps: SliderProps, ref) {
   const curVal = getLegalRangeValue(value);
   const lastVal = useRef<number[]>(curVal);
   let [beginVal, endVal] = curVal;
+  const reverseOrder = useRef(beginVal > endVal);
 
   // value变化后 更新lastVal
   useUpdate(() => {
     lastVal.current = getLegalRangeValue(value);
   }, [value, getLegalRangeValue]);
 
-  if (!isSameOrder(curVal, lastVal.current)) {
-    // 保持顺序
+  if (reverseOrder.current) {
     [beginVal, endVal] = [endVal, beginVal];
   }
   // 偏移比例
@@ -130,15 +129,22 @@ function Slider(baseProps: SliderProps, ref) {
     let [newBeginVal, newEndVal] = val;
     newBeginVal = getLegalValue(newBeginVal);
     newEndVal = getLegalValue(newEndVal);
-
     lastVal.current = [newBeginVal, newEndVal];
-    const emitParams = getEmitParams([newBeginVal, newEndVal]);
-    setValue(emitParams);
-    return emitParams;
+    return [newBeginVal, newEndVal];
   }
 
-  function onChange(val) {
-    const emitParams = updateValue(val);
+  function onChange(val, reason?: 'mousemove' | 'jumpToClick' | 'inputValueChange') {
+    const [newBeginVal, newEndVal] = updateValue(val);
+    const emitParams = getEmitParams([newBeginVal, newEndVal]);
+    setValue(emitParams);
+
+    // 在手动修改的情况下才可能出现反序问题。
+    if (reason === 'inputValueChange') {
+      reverseOrder.current = newBeginVal > newEndVal;
+    } else {
+      // 在mousemove 跟 jumpToClick 顺序会保持 [begin,end]
+      reverseOrder.current = false;
+    }
     if (isFunction(props.onChange)) {
       props.onChange(emitParams);
     }
@@ -163,10 +169,10 @@ function Slider(baseProps: SliderProps, ref) {
   function getValueByCoords(x: number, y: number): number {
     const { left, top, width, height } = position.current;
     let roadLength = width;
-    let diff = reverse ? left + width - x : x - left;
+    let diff = isReverse ? left + width - x : x - left;
     if (vertical) {
       roadLength = height;
-      diff = reverse ? y - top : top + height - y;
+      diff = isReverse ? y - top : top + height - y;
     }
     if (roadLength <= 0) {
       return 0;
@@ -200,19 +206,19 @@ function Slider(baseProps: SliderProps, ref) {
     const endOffset = formatPercent(1 - end);
     return vertical
       ? {
-          [reverse ? 'top' : 'bottom']: beginOffset,
-          [reverse ? 'bottom' : 'top']: endOffset,
+          [isReverse ? 'top' : 'bottom']: beginOffset,
+          [isReverse ? 'bottom' : 'top']: endOffset,
         }
       : {
-          [reverse ? 'right' : 'left']: beginOffset,
-          [reverse ? 'left' : 'right']: endOffset,
+          [isReverse ? 'right' : 'left']: beginOffset,
+          [isReverse ? 'left' : 'right']: endOffset,
         };
   }
 
   function getBtnStyle(offset: number): CSSProperties {
     return vertical
-      ? { [reverse ? 'top' : 'bottom']: formatPercent(offset) }
-      : { [reverse ? 'right' : 'left']: formatPercent(offset) };
+      ? { [isReverse ? 'top' : 'bottom']: formatPercent(offset) }
+      : { [isReverse ? 'right' : 'left']: formatPercent(offset) };
   }
 
   function getTooltipProps() {
@@ -256,33 +262,46 @@ function Slider(baseProps: SliderProps, ref) {
 
     const value = getLegalValue(val);
     if (range && endVal - value > value - beginVal) {
-      onChange([value, endVal]);
+      onChange([value, endVal], 'jumpToClick');
     } else {
-      onChange([beginVal, value]);
+      onChange([beginVal, value], 'jumpToClick');
     }
     onMouseUp();
   }
 
   function handleInputChange(val) {
-    onChange(val);
+    onChange(val, 'inputValueChange');
     onMouseUp();
   }
 
   // 拖动开始节点
   function handleBeginMove(x: number, y: number) {
     isDragging.current = true;
-    onChange([getValueByCoords(x, y), endVal]);
+    onChange([getValueByCoords(x, y), endVal], 'mousemove');
   }
 
   // 拖动结束节点
   function handleEndMove(x: number, y: number) {
     isDragging.current = true;
-    onChange([beginVal, getValueByCoords(x, y)]);
+    onChange([beginVal, getValueByCoords(x, y)], 'mousemove');
   }
 
   function handleMoveEnd() {
     isDragging.current = false;
     onMouseUp();
+  }
+
+  // 结束节点的 arrow event
+  function handleEndArrowEvent(type: 'addition' | 'subtraction') {
+    if (disabled) return;
+
+    onChange([beginVal, getNextMarkValue(endVal, type)]);
+  }
+
+  // 起始节点的 arrow event
+  function handleBeginArrowEvent(type: 'addition' | 'subtraction') {
+    if (disabled) return;
+    onChange([getNextMarkValue(beginVal, type), endVal]);
   }
 
   // bar 移动中
@@ -293,7 +312,7 @@ function Slider(baseProps: SliderProps, ref) {
     const newEndVal = endVal + offsetVal;
 
     if (isLegalValue(newBeginVal) && isLegalValue(newEndVal)) {
-      onChange([newBeginVal, newEndVal]);
+      onChange([newBeginVal, newEndVal], 'mousemove');
     }
   }
 
@@ -306,12 +325,21 @@ function Slider(baseProps: SliderProps, ref) {
 
   return (
     <div
+      {...omit(rest, [
+        'defaultValue',
+        'value',
+        'onChange',
+        'getTooltipContainer',
+        'formatTooltip',
+        'onAfterChange',
+      ])}
       className={cs(
         prefixCls,
         {
           [`${prefixCls}-vertical`]: vertical,
           [`${prefixCls}-with-marks`]: marks,
-          [`${prefixCls}-reverse`]: reverse,
+          [`${prefixCls}-reverse`]: isReverse,
+          [`${prefixCls}-rtl`]: rtl,
         },
         className
       )}
@@ -336,7 +364,7 @@ function Slider(baseProps: SliderProps, ref) {
               value={[beginVal, endVal]}
               prefixCls={prefixCls}
               vertical={vertical}
-              reverse={reverse}
+              reverse={isReverse}
             />
           )}
           <Dots
@@ -345,7 +373,7 @@ function Slider(baseProps: SliderProps, ref) {
             value={[beginVal, endVal]}
             vertical={vertical}
             prefixCls={prefixCls}
-            reverse={reverse}
+            reverse={isReverse}
             onMouseDown={handleJumpClick}
           />
           <Marks
@@ -353,7 +381,7 @@ function Slider(baseProps: SliderProps, ref) {
             intervalConfigs={intervalConfigs}
             vertical={vertical}
             prefixCls={prefixCls}
-            reverse={reverse}
+            reverse={isReverse}
             onMouseDown={handleJumpClick}
           />
           {range && (
@@ -369,6 +397,7 @@ function Slider(baseProps: SliderProps, ref) {
               onMoveBegin={getPosition}
               onMoving={handleBeginMove}
               onMoveEnd={handleMoveEnd}
+              onArrowEvent={handleBeginArrowEvent}
             />
           )}
           <SliderButton
@@ -383,6 +412,7 @@ function Slider(baseProps: SliderProps, ref) {
             onMoveBegin={getPosition}
             onMoving={handleEndMove}
             onMoveEnd={handleMoveEnd}
+            onArrowEvent={handleEndArrowEvent}
           />
         </div>
         {isShowInput && (

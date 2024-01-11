@@ -46,6 +46,16 @@ originDayjs.extend(QuarterOfYear);
 
 export const dayjs = originDayjs;
 
+function startOfWeekTimestamp(date, weekStart: number) {
+  // 计算 date 与前一个 weekStart 日期的间隔
+  const diff = (date.day() - weekStart + 7) % 7;
+  const startOfWeek = date.clone().startOf('day').subtract(diff, 'day');
+  return startOfWeek.valueOf();
+}
+function isSameWeekMoment(date1, date2, weekStart: number) {
+  return startOfWeekTimestamp(date1, weekStart) === startOfWeekTimestamp(date2, weekStart);
+}
+
 // 兼容 moment
 export const methods = {
   add(time, value: number, unit: UnitType) {
@@ -65,7 +75,7 @@ export const methods = {
   },
   isSameWeek(date1, date2, weekStart: number, localeName) {
     return isMoment
-      ? date1.locale(localeName, { week: { dow: weekStart } }).isSame(date2, 'week')
+      ? isSameWeekMoment(date1, date2, weekStart)
       : date1.locale({ ...dayjs.Ls[localeName], weekStart }).isSame(date2, 'week');
   },
 };
@@ -192,14 +202,6 @@ export function toLocal(time: Dayjs, utcOffset?: number, timezone?: string): Day
   return toTimezone(time, utcOffset, timezone, true);
 }
 
-export function initializeDateLocale(localeName: string, weekStart: number) {
-  if (isMoment) {
-    (dayjs as any).updateLocale(localeName, { week: { dow: weekStart } });
-  } else {
-    dayjs.locale({ ...dayjs.Ls[localeName], weekStart });
-  }
-}
-
 export function getTimeFormat(format) {
   const units = ['H', 'h', 'm', 's', 'A', 'a'];
   let timeFormat = '';
@@ -213,16 +215,21 @@ export function getTimeFormat(format) {
   return timeFormat || 'HH:mm:ss';
 }
 
-export function getDayjsValue(time, format: string, utcOffset?: number, timezone?: string) {
+export function getDayjsValue(
+  time,
+  format: string | string[],
+  utcOffset?: number,
+  timezone?: string
+) {
   if (!time) {
     return undefined;
   }
-  const formatValue = (value) => {
+  const formatValue = (value, i) => {
     if (isDayjs(value)) {
       return dayjs(value.valueOf());
     }
     if (typeof value === 'string') {
-      const dv = dayjs(value, format);
+      const dv = dayjs(value, isArray(format) ? format[i] : format);
 
       return dv.isValid() ? dv : dayjs(value, 'YYYY-MM-DD');
     }
@@ -230,16 +237,16 @@ export function getDayjsValue(time, format: string, utcOffset?: number, timezone
   };
 
   // if set a timezone, convert to timezone date
-  const getRealTime = (t) =>
+  const getRealTime = (t, i) =>
     utcOffset !== undefined || timezone
-      ? toTimezone(formatValue(t), utcOffset, timezone)
-      : formatValue(t);
+      ? toTimezone(formatValue(t, i), utcOffset, timezone)
+      : formatValue(t, i);
 
   if (isArray(time)) {
-    return time.map((t) => (t ? getRealTime(t) : undefined));
+    return time.map((t, i) => (t ? getRealTime(t, i) : undefined));
   }
 
-  return getRealTime(time);
+  return getRealTime(time, 0);
 }
 
 export function getValueWithTime(date: Dayjs, time?: Dayjs): Dayjs {
@@ -296,6 +303,9 @@ export function isDayjsArrayChange(
   );
 }
 
-export function isValidTimeString(str: string, format) {
-  return typeof str === 'string' && dayjs(str, format).format(format) === str;
+export function isValidTimeString(str: string, format: string | string[], index?: number) {
+  return (
+    typeof str === 'string' &&
+    dayjs(str, format).format(isArray(format) ? format[index] : format) === str
+  );
 }

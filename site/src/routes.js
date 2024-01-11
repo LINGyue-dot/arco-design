@@ -5,6 +5,7 @@ const Palette = lazyLoad(() => import('./pages/palette'));
 const Version = lazyLoad(() => import('./pages/changelog/v2'));
 const Icon = lazyLoad(() => import('./pages/icon'));
 const OverView = lazyLoad(() => import('./pages/overview'));
+const Token = lazyLoad(() => import('./pages/token'));
 
 export default function getRoutes(lang = 'zh', t) {
   const suffix = lang === 'zh-CN' ? '.zh-CN' : '.en-US';
@@ -29,6 +30,11 @@ export default function getRoutes(lang = 'zh', t) {
           name: t['routes.palette'],
           path: 'docs/palette',
           component: Palette,
+        },
+        {
+          name: t['routes.token'],
+          path: 'docs/token',
+          component: Token,
         },
         {
           name: t['routes.i18n'],
@@ -241,6 +247,12 @@ export default function getRoutes(lang = 'zh', t) {
               component: lazyLoad(() => import(`../../components/Checkbox/README${suffix}.md`)),
             },
             {
+              name: t['routes.color-picker'],
+              path: 'components/color-picker',
+              component: lazyLoad(() => import(`../../components/ColorPicker/README${suffix}.md`)),
+              new: true,
+            },
+            {
               name: t['routes.date-picker'],
               path: 'components/date-picker',
               component: lazyLoad(() => import(`../../components/DatePicker/README${suffix}.md`)),
@@ -264,6 +276,14 @@ export default function getRoutes(lang = 'zh', t) {
               name: t['routes.input-number'],
               path: 'components/input-number',
               component: lazyLoad(() => import(`../../components/InputNumber/README${suffix}.md`)),
+            },
+            {
+              name: t['routes.verification-code'],
+              path: 'components/verification-code',
+              component: lazyLoad(() =>
+                import(`../../components/VerificationCode/README${suffix}.md`)
+              ),
+              new: true,
             },
             {
               name: t['routes.mentions'],
@@ -371,6 +391,12 @@ export default function getRoutes(lang = 'zh', t) {
               path: 'components/skeleton',
               component: lazyLoad(() => import(`../../components/Skeleton/README${suffix}.md`)),
             },
+            {
+              name: t['routes.watermark'],
+              path: 'components/watermark',
+              component: lazyLoad(() => import(`../../components/Watermark/README${suffix}.md`)),
+              new: true,
+            },
           ],
         },
         {
@@ -446,6 +472,28 @@ export default function getRoutes(lang = 'zh', t) {
               component: lazyLoad(() => import(`../../components/Trigger/README${suffix}.md`)),
             },
           ],
+        },
+      ],
+    },
+    {
+      name: t['routes.hooks'],
+      key: 'hooks',
+      module: 'react',
+      hide: true,
+      children: [
+        {
+          name: 'useVerificationCode',
+          path: 'hooks/useVerificationCode',
+          component: lazyLoad(() =>
+            import(`../../components/_hooks/useVerificationCode/README${suffix}.md`)
+          ),
+        },
+        {
+          name: 'useWatermark',
+          path: 'hooks/useWatermark',
+          component: lazyLoad(() =>
+            import(`../../components/_hooks/useWatermark/README${suffix}.md`)
+          ),
         },
       ],
     },
@@ -717,6 +765,11 @@ export default function getRoutes(lang = 'zh', t) {
           path: 'designlab/use-theme-package',
           component: lazyLoad(() => import(`../docs/designlab/use-theme-package${suffix}.md`)),
         },
+        {
+          name: t['routes.use-config-provider'],
+          path: 'designlab/use-config-provider',
+          component: lazyLoad(() => import(`../docs/designlab/use-config-provider${suffix}.md`)),
+        },
       ],
     },
     {
@@ -775,6 +828,11 @@ export default function getRoutes(lang = 'zh', t) {
               path: 'material/qa',
               component: lazyLoad(() => import(`../docs/material/start.qa${suffix}.md`)),
             },
+            {
+              name: t['routes.material.spec'],
+              path: 'material/spec',
+              component: lazyLoad(() => import(`../docs/material/start.spec${suffix}.md`)),
+            },
           ],
         },
         {
@@ -831,7 +889,7 @@ export default function getRoutes(lang = 'zh', t) {
             {
               name: t['routes.material.command'],
               path: 'material/command',
-              component: lazyLoad(() => import(`../docs/material/advanced.command.zn-CN.md`)),
+              component: lazyLoad(() => import(`../docs/material/advanced.command${suffix}.md`)),
             },
             {
               name: t['routes.material.develop-template'],

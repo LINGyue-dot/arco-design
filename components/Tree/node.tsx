@@ -160,13 +160,16 @@ function TreeNode(props: PropsWithChildren<NodeProps>, ref) {
     [treeContext.onNodeDragOver]
   );
 
-  const handleCheck = (checked, e) => {
-    const { disableCheckbox, disabled } = props;
-    if (disableCheckbox || disabled) {
-      return;
-    }
-    treeContext.onCheck && treeContext.onCheck(checked, _key, e);
-  };
+  const handleCheck = useCallback(
+    (checked, e) => {
+      const { disableCheckbox, disabled } = props;
+      if (disableCheckbox || disabled) {
+        return;
+      }
+      treeContext.onCheck && treeContext.onCheck(checked, _key, e);
+    },
+    [props.disabled, props.disableCheckbox]
+  );
 
   return (
     <>
@@ -177,6 +180,7 @@ function TreeNode(props: PropsWithChildren<NodeProps>, ref) {
         role="treeitem"
         aria-disabled={disabled}
         aria-expanded={expanded}
+        aria-level={props._level}
       >
         <span className={`${prefixCls}-indent`} aria-hidden>
           {[...Array(props._level)].map((_, i) => (

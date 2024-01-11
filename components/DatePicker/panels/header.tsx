@@ -6,6 +6,7 @@ import IconDoubleLeft from '../../../icon/react-icon/IconDoubleLeft';
 import IconDoubleRight from '../../../icon/react-icon/IconDoubleRight';
 import cs from '../../_util/classNames';
 import { ModeType, IconsType } from '../interface';
+import { Locale } from '../../locale/interface';
 
 export interface HeaderProps {
   prefixCls?: string;
@@ -18,6 +19,8 @@ export interface HeaderProps {
   value?: Dayjs;
   onChangePanel?: (mode?: ModeType) => void;
   icons?: IconsType;
+  rtl?: boolean;
+  DATEPICKER_LOCALE?: Locale['DatePicker'];
 }
 
 function Header(props: HeaderProps) {
@@ -32,6 +35,8 @@ function Header(props: HeaderProps) {
     value,
     onChangePanel,
     icons = {},
+    rtl,
+    DATEPICKER_LOCALE,
   } = props;
 
   const showPrev = typeof onPrev === 'function';
@@ -47,16 +52,29 @@ function Header(props: HeaderProps) {
     if (title) {
       return title;
     }
+
     if (mode === 'date' || mode === 'week') {
-      return (
+      const { monthBeforeYear } = DATEPICKER_LOCALE?.Calendar || {};
+
+      const yearNode = (
+        <span className={`${prefixCls}-header-label`} onClick={() => onChangePanel('year')}>
+          {value.format('YYYY')}
+        </span>
+      );
+
+      const monthNode = (
+        <span className={`${prefixCls}-header-label`} onClick={() => onChangePanel('month')}>
+          {value.format('MM')}
+        </span>
+      );
+
+      return monthBeforeYear ? (
         <>
-          <span className={`${prefixCls}-header-label`} onClick={() => onChangePanel('year')}>
-            {value.format('YYYY')}
-          </span>
-          -
-          <span className={`${prefixCls}-header-label`} onClick={() => onChangePanel('month')}>
-            {value.format('MM')}
-          </span>
+          {monthNode}/{yearNode}
+        </>
+      ) : (
+        <>
+          {yearNode}-{monthNode}
         </>
       );
     }
@@ -78,23 +96,29 @@ function Header(props: HeaderProps) {
     <div className={`${prefixCls}-header`}>
       {!prevDoubleNull && (
         <div className={getIconClassName(showSuperPrev)} onClick={onSuperPrev}>
-          {showSuperPrev && (prevDoubleNull ? null : icons.prevDouble || <IconDoubleLeft />)}
+          {showSuperPrev &&
+            (prevDoubleNull
+              ? null
+              : icons.prevDouble || (rtl ? <IconDoubleRight /> : <IconDoubleLeft />))}
         </div>
       )}
       {!prevNull && (
         <div className={getIconClassName(showPrev)} onClick={onPrev}>
-          {showPrev && (prevNull ? null : icons.prev || <IconLeft />)}
+          {showPrev && (prevNull ? null : icons.prev || (rtl ? <IconRight /> : <IconLeft />))}
         </div>
       )}
       <div className={`${prefixCls}-header-value`}>{renderHeaderLabel()}</div>
       {!nextNull && (
         <div className={getIconClassName(showNext)} onClick={onNext}>
-          {showNext && (nextNull ? null : icons.next || <IconRight />)}
+          {showNext && (nextNull ? null : icons.next || (rtl ? <IconLeft /> : <IconRight />))}
         </div>
       )}
       {!nextDoubleNull && (
         <div className={getIconClassName(showSuperNext)} onClick={onSuperNext}>
-          {showSuperNext && (nextDoubleNull ? null : icons.nextDouble || <IconDoubleRight />)}
+          {showSuperNext &&
+            (nextDoubleNull
+              ? null
+              : icons.nextDouble || (rtl ? <IconDoubleLeft /> : <IconDoubleRight />))}
         </div>
       )}
     </div>

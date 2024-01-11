@@ -3,106 +3,152 @@
 exports[`renders InputTag/demo/basic.md correctly 1`] = `
 <div>
   <div
+    class="arco-space arco-space-horizontal arco-space-align-center"
     style="margin-bottom:20px"
   >
     <div
-      class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
-      style="max-width:350px;margin-right:20px"
+      class="arco-space-item"
+      style="margin-right:8px"
     >
       <div
-        class="arco-input-tag-view"
+        class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
+        style="width:350px"
       >
         <div
-          class="arco-input-tag-inner"
+          class="arco-input-tag-view"
         >
-          <input
-            autocomplete="off"
-            class="arco-input-tag-input arco-input-tag-input-size-default"
-            placeholder="Input and press Enter"
-            value=""
-          />
-          <span
-            class="arco-input-tag-input-mirror"
+          <div
+            class="arco-input-tag-inner"
           >
-            Input and press Enter
-          </span>
+            <input
+              autocomplete="off"
+              class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+              placeholder="Input and press Enter"
+              value=""
+            />
+            <span
+              class="arco-input-tag-input-mirror"
+            >
+              Input and press Enter
+            </span>
+          </div>
         </div>
       </div>
     </div>
     <div
-      class="arco-input-tag arco-input-tag-size-default arco-input-tag-disabled arco-input-tag-has-placeholder"
-      style="max-width:350px"
+      class="arco-space-item"
     >
       <div
-        class="arco-input-tag-view"
+        class="arco-input-tag arco-input-tag-size-default arco-input-tag-disabled arco-input-tag-has-placeholder"
+        style="width:350px"
       >
         <div
-          class="arco-input-tag-inner"
+          class="arco-input-tag-view"
         >
-          <input
-            autocomplete="off"
-            class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-disabled"
-            disabled=""
-            placeholder="Disabled"
-            value=""
-          />
-          <span
-            class="arco-input-tag-input-mirror"
+          <div
+            class="arco-input-tag-inner"
           >
-            Disabled
-          </span>
+            <input
+              autocomplete="off"
+              class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-disabled arco-input-tag-input-autowidth"
+              disabled=""
+              placeholder="Disabled"
+              value=""
+            />
+            <span
+              class="arco-input-tag-input-mirror"
+            >
+              Disabled
+            </span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div>
+  <div
+    class="arco-space arco-space-horizontal arco-space-align-center"
+    style="margin-bottom:20px"
+  >
     <div
-      class="arco-input-tag arco-input-tag-size-default arco-input-tag-readonly arco-input-tag-has-placeholder"
-      style="max-width:350px;margin-right:20px"
+      class="arco-space-item"
+      style="margin-right:8px"
     >
       <div
-        class="arco-input-tag-view"
+        class="arco-input-tag arco-input-tag-size-default arco-input-tag-readonly arco-input-tag-has-placeholder"
+        style="width:350px"
       >
         <div
-          class="arco-input-tag-inner"
+          class="arco-input-tag-view"
         >
-          <input
-            autocomplete="off"
-            class="arco-input-tag-input arco-input-tag-input-size-default"
-            placeholder="Readonly"
-            readonly=""
-            value=""
-          />
-          <span
-            class="arco-input-tag-input-mirror"
+          <div
+            class="arco-input-tag-inner"
           >
-            Readonly
-          </span>
+            <input
+              autocomplete="off"
+              class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+              placeholder="Readonly"
+              readonly=""
+              value=""
+            />
+            <span
+              class="arco-input-tag-input-mirror"
+            >
+              Readonly
+            </span>
+          </div>
         </div>
       </div>
     </div>
     <div
-      class="arco-input-tag arco-input-tag-size-default arco-input-tag-error arco-input-tag-has-placeholder"
-      style="max-width:350px"
+      class="arco-space-item"
     >
       <div
-        class="arco-input-tag-view"
+        class="arco-input-tag arco-input-tag-size-default arco-input-tag-error arco-input-tag-has-placeholder"
+        style="width:350px"
       >
         <div
-          class="arco-input-tag-inner"
+          class="arco-input-tag-view"
         >
-          <input
-            autocomplete="off"
-            class="arco-input-tag-input arco-input-tag-input-size-default"
-            placeholder="Error"
-            value=""
-          />
-          <span
-            class="arco-input-tag-input-mirror"
+          <div
+            class="arco-input-tag-inner"
           >
-            Error
-          </span>
+            <input
+              autocomplete="off"
+              class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+              placeholder="Error"
+              value=""
+            />
+            <span
+              class="arco-input-tag-input-mirror"
+            >
+              Error
+            </span>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="arco-input-tag arco-input-tag-size-default arco-input-tag-warning arco-input-tag-has-placeholder"
+    style="width:350px"
+  >
+    <div
+      class="arco-input-tag-view"
+    >
+      <div
+        class="arco-input-tag-inner"
+      >
+        <input
+          autocomplete="off"
+          class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+          placeholder="Warning"
+          value=""
+        />
+        <span
+          class="arco-input-tag-input-mirror"
+        >
+          Warning
+        </span>
       </div>
     </div>
   </div>
@@ -130,10 +176,10 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
         >
           <div
             class="arco-tag arco-tag-checked arco-tag-size-default arco-input-tag-tag"
+            title="a"
           >
             <span
-              class="arco-input-tag-tag-content"
-              title="a"
+              class="arco-tag-content"
             >
               a
             </span>
@@ -141,6 +187,7 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
               aria-label="Close"
               class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
               role="button"
+              tabindex="0"
             >
               <svg
                 aria-hidden="true"
@@ -165,10 +212,10 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
         >
           <div
             class="arco-tag arco-tag-checked arco-tag-size-default arco-input-tag-tag"
+            title="b"
           >
             <span
-              class="arco-input-tag-tag-content"
-              title="b"
+              class="arco-tag-content"
             >
               b
             </span>
@@ -176,6 +223,7 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
               aria-label="Close"
               class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
               role="button"
+              tabindex="0"
             >
               <svg
                 aria-hidden="true"
@@ -200,10 +248,10 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
         >
           <div
             class="arco-tag arco-tag-checked arco-tag-size-default arco-input-tag-tag"
+            title="c"
           >
             <span
-              class="arco-input-tag-tag-content"
-              title="c"
+              class="arco-tag-content"
             >
               c
             </span>
@@ -211,6 +259,7 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
               aria-label="Close"
               class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
               role="button"
+              tabindex="0"
             >
               <svg
                 aria-hidden="true"
@@ -235,10 +284,10 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
         >
           <div
             class="arco-tag arco-tag-checked arco-tag-size-default arco-input-tag-tag"
+            title="d"
           >
             <span
-              class="arco-input-tag-tag-content"
-              title="d"
+              class="arco-tag-content"
             >
               d
             </span>
@@ -246,6 +295,7 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
               aria-label="Close"
               class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
               role="button"
+              tabindex="0"
             >
               <svg
                 aria-hidden="true"
@@ -270,7 +320,7 @@ exports[`renders InputTag/demo/draggable.md correctly 1`] = `
         >
           <input
             autocomplete="off"
-            class="arco-input-tag-input arco-input-tag-input-size-default"
+            class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
             placeholder=""
             value=""
           />
@@ -318,10 +368,10 @@ exports[`renders InputTag/demo/labelInValue.md correctly 1`] = `
     >
       <div
         class="arco-tag arco-tag-checked arco-tag-size-default arco-input-tag-tag"
+        title="a"
       >
         <span
-          class="arco-input-tag-tag-content"
-          title="a"
+          class="arco-tag-content"
         >
           a
         </span>
@@ -329,6 +379,7 @@ exports[`renders InputTag/demo/labelInValue.md correctly 1`] = `
           aria-label="Close"
           class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
           role="button"
+          tabindex="0"
         >
           <svg
             aria-hidden="true"
@@ -347,7 +398,7 @@ exports[`renders InputTag/demo/labelInValue.md correctly 1`] = `
       </div>
       <input
         autocomplete="off"
-        class="arco-input-tag-input arco-input-tag-input-size-default"
+        class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
         placeholder=""
         value=""
       />
@@ -380,6 +431,192 @@ exports[`renders InputTag/demo/labelInValue.md correctly 1`] = `
 </div>
 `;
 
+exports[`renders InputTag/demo/prefix.md correctly 1`] = `
+<div>
+  <div
+    class="arco-grid"
+    style="gap:12px 12px;grid-template-columns:repeat(2, minmax(0px, 1fr));max-width:600px"
+  >
+    <div
+      class="arco-grid-item"
+      style="grid-column:span 1 / span 1;display:none"
+    >
+      <div
+        class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
+      >
+        <div
+          class="arco-input-tag-view"
+        >
+          <div
+            class="arco-input-tag-prefix"
+          >
+            ¥
+          </div>
+          <div
+            class="arco-input-tag-inner"
+          >
+            <input
+              autocomplete="off"
+              class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+              value=""
+            />
+            <span
+              class="arco-input-tag-input-mirror"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="arco-grid-item"
+      style="grid-column:span 1 / span 1;display:none"
+    >
+      <div
+        class="arco-input-tag-wrapper"
+      >
+        <div
+          class="arco-input-tag-addbefore"
+        >
+          <svg
+            aria-hidden="true"
+            class="arco-icon arco-icon-user"
+            fill="none"
+            focusable="false"
+            stroke="currentColor"
+            stroke-width="4"
+            viewBox="0 0 48 48"
+          >
+            <path
+              d="M7 37c0-4.97 4.03-8 9-8h16c4.97 0 9 3.03 9 8v3a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-3Z"
+            />
+            <circle
+              cx="24"
+              cy="15"
+              r="8"
+            />
+          </svg>
+        </div>
+        <div
+          class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
+        >
+          <div
+            class="arco-input-tag-view"
+          >
+            <div
+              class="arco-input-tag-inner"
+            >
+              <input
+                autocomplete="off"
+                class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+                value=""
+              />
+              <span
+                class="arco-input-tag-input-mirror"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="arco-grid-item"
+      style="grid-column:span 1 / span 1;display:none"
+    >
+      <div
+        class="arco-input-tag-wrapper"
+      >
+        <div
+          class="arco-input-tag-addbefore"
+        >
+          <svg
+            aria-hidden="true"
+            class="arco-icon arco-icon-user"
+            fill="none"
+            focusable="false"
+            stroke="currentColor"
+            stroke-width="4"
+            viewBox="0 0 48 48"
+          >
+            <path
+              d="M7 37c0-4.97 4.03-8 9-8h16c4.97 0 9 3.03 9 8v3a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-3Z"
+            />
+            <circle
+              cx="24"
+              cy="15"
+              r="8"
+            />
+          </svg>
+        </div>
+        <div
+          class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
+        >
+          <div
+            class="arco-input-tag-view"
+          >
+            <div
+              class="arco-input-tag-prefix"
+            >
+              ¥
+            </div>
+            <div
+              class="arco-input-tag-inner"
+            >
+              <input
+                autocomplete="off"
+                class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+                value=""
+              />
+              <span
+                class="arco-input-tag-input-mirror"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="arco-grid-item"
+      style="grid-column:span 1 / span 1;display:none"
+    >
+      <div
+        class="arco-input-tag-wrapper"
+      >
+        <div
+          class="arco-input-tag-addbefore"
+        >
+          www.
+        </div>
+        <div
+          class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
+        >
+          <div
+            class="arco-input-tag-view"
+          >
+            <div
+              class="arco-input-tag-inner"
+            >
+              <input
+                autocomplete="off"
+                class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+                value=""
+              />
+              <span
+                class="arco-input-tag-input-mirror"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="arco-input-tag-addafter"
+        >
+          .com
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`renders InputTag/demo/render-tag.md correctly 1`] = `
 <div
   class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-suffix"
@@ -395,11 +632,16 @@ exports[`renders InputTag/demo/render-tag.md correctly 1`] = `
         class="arco-tag arco-tag-arcoblue arco-tag-checked arco-tag-size-default"
         style="margin:2px 6px 2px 0"
       >
-        arcoblue
+        <span
+          class="arco-tag-content"
+        >
+          arcoblue
+        </span>
         <span
           aria-label="Close"
           class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
           role="button"
+          tabindex="0"
         >
           <svg
             aria-hidden="true"
@@ -420,11 +662,16 @@ exports[`renders InputTag/demo/render-tag.md correctly 1`] = `
         class="arco-tag arco-tag-orange arco-tag-checked arco-tag-size-default"
         style="margin:2px 6px 2px 0"
       >
-        orange
+        <span
+          class="arco-tag-content"
+        >
+          orange
+        </span>
         <span
           aria-label="Close"
           class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
           role="button"
+          tabindex="0"
         >
           <svg
             aria-hidden="true"
@@ -445,11 +692,16 @@ exports[`renders InputTag/demo/render-tag.md correctly 1`] = `
         class="arco-tag arco-tag-lime arco-tag-checked arco-tag-size-default"
         style="margin:2px 6px 2px 0"
       >
-        lime
+        <span
+          class="arco-tag-content"
+        >
+          lime
+        </span>
         <span
           aria-label="Close"
           class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
           role="button"
+          tabindex="0"
         >
           <svg
             aria-hidden="true"
@@ -468,7 +720,7 @@ exports[`renders InputTag/demo/render-tag.md correctly 1`] = `
       </div>
       <input
         autocomplete="off"
-        class="arco-input-tag-input arco-input-tag-input-size-default"
+        class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
         placeholder=""
         value=""
       />
@@ -514,14 +766,14 @@ exports[`renders InputTag/demo/save-on-blur.md correctly 1`] = `
     >
       <input
         autocomplete="off"
-        class="arco-input-tag-input arco-input-tag-input-size-default"
+        class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
         placeholder="Input and blur directly"
         value=""
       />
       <span
         class="arco-input-tag-input-mirror"
       >
-        Input and blur directly
+        Input and blur directly
       </span>
     </div>
   </div>
@@ -532,6 +784,7 @@ exports[`renders InputTag/demo/size.md correctly 1`] = `
 <div>
   <div
     class="arco-radio-group arco-radio-group-type-button arco-radio-size-default arco-radio-mode-outline"
+    role="radiogroup"
     style="margin-bottom:20px;border-radius:4px"
   >
     <label
@@ -605,10 +858,10 @@ exports[`renders InputTag/demo/size.md correctly 1`] = `
       >
         <div
           class="arco-tag arco-tag-checked arco-tag-size-default arco-input-tag-tag"
+          title="Beijing"
         >
           <span
-            class="arco-input-tag-tag-content"
-            title="Beijing"
+            class="arco-tag-content"
           >
             Beijing
           </span>
@@ -616,6 +869,7 @@ exports[`renders InputTag/demo/size.md correctly 1`] = `
             aria-label="Close"
             class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
             role="button"
+            tabindex="0"
           >
             <svg
               aria-hidden="true"
@@ -634,10 +888,10 @@ exports[`renders InputTag/demo/size.md correctly 1`] = `
         </div>
         <div
           class="arco-tag arco-tag-checked arco-tag-size-default arco-input-tag-tag"
+          title="Shanghai"
         >
           <span
-            class="arco-input-tag-tag-content"
-            title="Shanghai"
+            class="arco-tag-content"
           >
             Shanghai
           </span>
@@ -645,6 +899,7 @@ exports[`renders InputTag/demo/size.md correctly 1`] = `
             aria-label="Close"
             class="arco-icon-hover arco-tag-icon-hover arco-tag-close-btn"
             role="button"
+            tabindex="0"
           >
             <svg
               aria-hidden="true"
@@ -663,7 +918,7 @@ exports[`renders InputTag/demo/size.md correctly 1`] = `
         </div>
         <input
           autocomplete="off"
-          class="arco-input-tag-input arco-input-tag-input-size-default"
+          class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
           placeholder=""
           value=""
         />
@@ -697,28 +952,119 @@ exports[`renders InputTag/demo/size.md correctly 1`] = `
 </div>
 `;
 
-exports[`renders InputTag/demo/validate.md correctly 1`] = `
-<div
-  class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
-  style="max-width:350px"
->
+exports[`renders InputTag/demo/tokenSeparator.md correctly 1`] = `
+<div>
   <div
-    class="arco-input-tag-view"
+    class="arco-typography"
+  >
+    Beijing,Shenzhen|Nanjing/Xi'an
+    <span
+      aria-label="复制"
+      class="arco-typography-operation-copy"
+      role="button"
+      tabindex="0"
+    >
+      <svg
+        aria-hidden="true"
+        class="arco-icon arco-icon-copy"
+        fill="none"
+        focusable="false"
+        stroke="currentColor"
+        stroke-width="4"
+        viewBox="0 0 48 48"
+      >
+        <path
+          d="M20 6h18a2 2 0 0 1 2 2v22M8 16v24c0 1.105.891 2 1.996 2h20.007A1.99 1.99 0 0 0 32 40.008V15.997A1.997 1.997 0 0 0 30 14H10a2 2 0 0 0-2 2Z"
+        />
+      </svg>
+    </span>
+  </div>
+  <div
+    class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
+    style="width:350px"
   >
     <div
-      class="arco-input-tag-inner"
+      class="arco-input-tag-view"
     >
-      <input
-        autocomplete="off"
-        class="arco-input-tag-input arco-input-tag-input-size-default"
-        placeholder="Please input"
-        value=""
-      />
-      <span
-        class="arco-input-tag-input-mirror"
+      <div
+        class="arco-input-tag-inner"
       >
-        Please input
-      </span>
+        <input
+          autocomplete="off"
+          class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+          placeholder="Paste text here"
+          value=""
+        />
+        <span
+          class="arco-input-tag-input-mirror"
+        >
+          Paste text here
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders InputTag/demo/validate.md correctly 1`] = `
+<div
+  class="arco-space arco-space-horizontal arco-space-align-center"
+>
+  <div
+    class="arco-space-item"
+    style="margin-right:8px"
+  >
+    <div
+      class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
+      style="width:350px"
+    >
+      <div
+        class="arco-input-tag-view"
+      >
+        <div
+          class="arco-input-tag-inner"
+        >
+          <input
+            autocomplete="off"
+            class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+            placeholder="Please input"
+            value=""
+          />
+          <span
+            class="arco-input-tag-input-mirror"
+          >
+            Please input
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="arco-space-item"
+  >
+    <div
+      class="arco-input-tag arco-input-tag-size-default arco-input-tag-has-placeholder"
+      style="width:350px"
+    >
+      <div
+        class="arco-input-tag-view"
+      >
+        <div
+          class="arco-input-tag-inner"
+        >
+          <input
+            autocomplete="off"
+            class="arco-input-tag-input arco-input-tag-input-size-default arco-input-tag-input-autowidth"
+            placeholder="Format user input"
+            value=""
+          />
+          <span
+            class="arco-input-tag-input-mirror"
+          >
+            Format user input
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

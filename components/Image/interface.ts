@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, HTMLAttributes, ImgHTMLAttributes } from 'react';
+import { CSSProperties, ReactNode, HTMLAttributes, ImgHTMLAttributes, ReactElement } from 'react';
 
 /**
  * @title Image
@@ -79,6 +79,12 @@ export interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'c
    * @version 2.23.0
    */
   index?: number;
+  /**
+   * @zh 开启懒加载 [Intersection_Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
+   * @en lazyload loading [Intersection_Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
+   * @version 2.47.0
+   */
+  lazyload?: boolean | IntersectionObserverInit;
 }
 
 /**
@@ -92,6 +98,18 @@ export interface ImagePreviewProps {
    * @en Image path, The default in Image is the src of Image
    */
   src: string;
+  /**
+   * @zh 图片属性，透传至预览弹窗中的 `img` 标签上
+   * @en Image props, passthrough to the `img` tag in the preview modal
+   * @version 2.39.0
+   */
+  imgAttributes?: Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'>;
+  /**
+   * @zh 自定义图片预览区域的额外节点
+   * @en Additional nodes add to the image preview area
+   * @version 2.53.0
+   */
+  extra?: ReactNode;
   /**
    * @zh 是否可见，受控属性
    * @en Whether is visible
@@ -158,6 +176,12 @@ export interface ImagePreviewProps {
    * @version 2.24.0
    */
   escToExit?: boolean;
+  /**
+   * @zh 自定义 IMG 元素的渲染
+   * @en Rendering of custom IMG elements
+   * @version 2.58.0
+   */
+  imageRender?: (originalNode: ReactElement) => ReactNode;
 }
 
 export type PartialImagePreviewProps = Partial<ImagePreviewProps>;
@@ -188,6 +212,12 @@ export interface ImagePreviewGroupProps extends Omit<PartialImagePreviewProps, '
    * @en Whether to loop infinitely
    */
   infinite?: boolean;
+  /**
+   * @zh 是否渲染图片列表，用于提前加载图片
+   * @en Whether to render the image list for loading images in advance
+   * @version 2.58.0
+   */
+  forceRender?: boolean;
   /**
    * @zh 切换图片触发的事件
    * @en Callback when image switches
@@ -227,7 +257,6 @@ export interface ImagePreviewActionProps extends HTMLAttributes<HTMLDivElement> 
   /**
    * @zh 是否禁用
    * @en Whether disabled
-   * @defaultValue false
    */
   disabled?: boolean;
 }

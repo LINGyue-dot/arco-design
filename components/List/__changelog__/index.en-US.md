@@ -1,3 +1,19 @@
+## 2.55.0
+
+2023-10-27
+
+### 🐛 BugFix
+
+- Fix the `cannot read properties of null (reading 'scrollTop')` error that occasionally occurs when the `List` component is scrolling.([#2316](https://github.com/arco-design/arco-design/pull/2316))
+
+## 2.52.1
+
+2023-08-25
+
+### 🐛 BugFix
+
+- Fix the issue that the drop-down for switching `pageSize` sometimes cannot be expanded when `List` enables pagination.([#2186](https://github.com/arco-design/arco-design/pull/2186))
+
 ## 2.33.0
 
 2022-05-13

@@ -50,10 +50,16 @@ export interface InputNumberProps
    */
   readOnly?: boolean;
   /**
+   * @zh 严格模式下，`onChange` 回调将返回字符串类型
+   * @en `onChange` will return a string in strict mode
+   * @version 2.42.0
+   */
+  strictMode?: boolean;
+  /**
    * @zh 初始值
    * @en To set default value
    */
-  defaultValue?: number;
+  defaultValue?: number | string;
   /**
    * @zh 当前值
    * @en To set value
@@ -88,8 +94,9 @@ export interface InputNumberProps
   /**
    * @zh 定义输入框展示值
    * @en Specifies the format of the value presented
+   * @version Param `info` in `2.41.0`
    */
-  formatter?: (value: number | string) => string;
+  formatter?: (value: number | string, info: { userTyping: boolean; input: string }) => string;
   /**
    * @zh 从 formatter 转换为数字，和 formatter 搭配使用。
    * @en Specifies the value extracted from formatter

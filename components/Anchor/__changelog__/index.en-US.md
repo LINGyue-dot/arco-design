@@ -1,3 +1,35 @@
+## 2.52.0
+
+2023-08-18
+
+### 🐛 BugFix
+
+- Fix the problem that the blue-line position of the active anchor is not updated after the sub-anchor of the `Anchor` component is removed.([#2161](https://github.com/arco-design/arco-design/pull/2161))
+
+## 2.51.0
+
+2023-07-28
+
+### 🆕 Feature
+
+- Support horizontal `Anchor`([#2108](https://github.com/arco-design/arco-design/pull/2108) '')
+
+## 2.43.1
+
+2022-12-30
+
+### 🐛 BugFix
+
+- Optimize the `Anchor` component. When the height of the anchor element is large, the scroll target container may have a bug that activates `Anchor.Link` calculation inaccurately.([#1676](https://github.com/arco-design/arco-design/pull/1676))
+
+## 2.33.1
+
+2022-05-20
+
+### 🐛 BugFix
+
+- When the `title` of `Anchor.Link` is empty, the clickable area `<a/>` under it is not displayed([#878](https://github.com/arco-design/arco-design/pull/878))
+
 ## 2.33.0
 
 2022-05-13

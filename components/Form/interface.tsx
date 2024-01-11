@@ -2,8 +2,9 @@
 // TS泛型默认值需要，忽略显式`any`定义
 
 import { ValidateMessagesTemplateType } from 'b-validate';
-import { ReactNode, CSSProperties, HTMLAttributes, FormHTMLAttributes } from 'react';
+import { ReactNode, CSSProperties, HTMLAttributes, ReactElement, FormHTMLAttributes } from 'react';
 import { Options as ScrollIntoViewOptions } from 'scroll-into-view-if-needed';
+import { TooltipProps } from '..';
 import { ColProps } from '../Grid/col';
 import Store from './store';
 
@@ -129,10 +130,10 @@ export interface FormProps<
    */
   disabled?: boolean;
   /**
-   * @zh 是否显示标签后的一个冒号，优先级小于 `Form.Item` 中 `colon` 的优先级。
-   * @en Whether show colon after `label`. Priority is lower than `colon` in `Form.Item`.
+   * @zh 是否显示标签后的一个冒号，优先级小于 `Form.Item` 中 `colon` 的优先级。(`ReactNode` in `v2.41.0`)
+   * @en Whether show colon after `label`. Priority is lower than `colon` in `Form.Item`.(`ReactNode` in `v2.41.0`)
    */
-  colon?: boolean;
+  colon?: boolean | ReactNode;
   /**
    * @zh 验证失败后滚动到第一个错误字段。(`ScrollIntoViewOptions` 类型在 `2.19.0` 开始支持)
    * @en Whether scroll to first error item after validation fails. (`ScrollIntoViewOptions` is supported at `2.19.0`)
@@ -145,8 +146,10 @@ export interface FormProps<
    */
   validateMessages?: Partial<{
     [key in keyof ValidateMessagesTemplateType]: ValidateMessagesTemplateType[key] extends string
-      ? ValidateMessagesTemplateType[key]
-      : Record<keyof ValidateMessagesTemplateType[key], (data, { label }) => any | string>;
+      ? ValidateMessagesTemplateType[key] | ((data, { label }) => any)
+      : Partial<
+          Record<keyof ValidateMessagesTemplateType[key], string | ((data, { label }) => any)>
+        >;
   }>;
   /**
    * @zh 数据验证成功后回调事件
@@ -194,6 +197,12 @@ export interface RulesProps<FieldValue = any> {
   message?: ReactNode;
 }
 
+export type FormItemChildrenFn<
+  FormData = any,
+  FieldValue = FormData[keyof FormData],
+  FieldKey extends KeyType = keyof FormData
+> = (formData: any, form: FormInstance<FormData, FieldValue, FieldKey>) => React.ReactNode;
+
 /**
  * @title Form.Item
  */
@@ -201,7 +210,7 @@ export interface FormItemProps<
   FormData = any,
   FieldValue = FormData[keyof FormData],
   FieldKey extends KeyType = keyof FormData
-> extends Omit<HTMLAttributes<any>, 'className'> {
+> extends Omit<HTMLAttributes<any>, 'className' | 'children'> {
   style?: CSSProperties;
   className?: string | string[];
   prefixCls?: string;
@@ -222,6 +231,12 @@ export interface FormItemProps<
    */
   label?: ReactNode;
   /**
+   * @zh 提示文本
+   * @en Tooltip text
+   * @version 2.43.0
+   */
+  tooltip?: ReactNode | (TooltipProps & { icon?: ReactElement });
+  /**
    * @zh
    * `<label>`标签布局，同[<Grid.Col>](/react/components/grid)组件接收的参数相同，可以配置`span`和`offset`值，会覆盖全局的`labelCol`设置
    * @en
@@ -235,10 +250,10 @@ export interface FormItemProps<
    */
   wrapperCol?: ColProps;
   /**
-   * @zh 是否显示标签后的一个冒号
-   * @en Whether to add a colon after label
+   * @zh 是否显示标签后的一个冒号，优先级小于 `Form.Item` 中 `colon` 的优先级。(`ReactNode` in `v2.41.0`)
+   * @en Whether show colon after `label`. Priority is lower than `colon` in `Form.Item`.(`ReactNode` in `v2.41.0`)
    */
-  colon?: boolean;
+  colon?: boolean | ReactNode;
   /**
    * @zh 是否禁用，优先级高于 `Form` 的 `disabled` 属性
    * @en Whether the FormItem is disabled. Priority is higher than the `disabled` prop of `Form`
@@ -339,6 +354,12 @@ export interface FormItemProps<
    */
   formatter?: (value: FieldValue | undefined) => any;
   /**
+   * @zh 设置依赖字段。当依赖的字段值改变时，触发自身的校验。如果是想动态渲染某个表单控件/表单区域，使用 shouldUpdate
+   * @en the dependency fields. When the value of the dependent field changes, trigger its own validation.If you want to dynamically render a form control/form area, use shouldUpdate
+   * @version 2.40.0
+   */
+  dependencies?: string[];
+  /**
    * @zh 是否在其他控件值改变时候重新渲染当前区域。设置为true时候，表单的任意改变都会重新渲染该区域。
    * @en Whether to re-render when other FormItem value change. When set to true, any changes to the Form will re-render.
    */
@@ -368,6 +389,7 @@ export interface FormItemProps<
    */
   requiredSymbol?: boolean | { position: 'start' | 'end' };
   isFormList?: boolean;
+  children?: React.ReactNode | FormItemChildrenFn<FormData, FieldValue, FieldKey>;
 }
 
 export interface FormControlProps<
@@ -377,7 +399,9 @@ export interface FormControlProps<
 > {
   /** 受控组件的唯一标示。 */
   field?: FieldKey;
+  _key?: FieldKey;
   initialValue?: FieldValue;
+  dependencies?: FormItemProps['dependencies'];
   getValueFromEvent?: FormItemProps['getValueFromEvent'];
   rules?: RulesProps<FieldValue>[];
   /** 接管子节点，搜集子节点的时机 */
@@ -401,6 +425,7 @@ export interface FormControlProps<
   help?: ReactNode;
   isFormList?: boolean;
   hasFeedback?: boolean;
+  children?: ReactNode;
 }
 
 /**
@@ -422,6 +447,18 @@ export interface FormListProps<
    * @version 2.22.0
    */
   initialValue?: SubFieldValue[];
+  /**
+   * @zh FormItemProps['noStyle'].  `rules` 存在时默认为 `false`(需要渲染校验信息)，否则默认为 `true`
+   * @en FormItemProps['noStyle'].Defaults to `false` when `rules` exists (requires rendering validation information), otherwise defaults to `true`
+   * @version 2.46.0
+   */
+  noStyle?: FormItemProps['noStyle'];
+  /**
+   * @zh 受控模式下的验证规则，[RulesProps](#rules)
+   * @en Validation rules in controlled component, [RulesProps](#rules)
+   * @version 2.46.0
+   */
+  rules?: RulesProps<SubFieldValue[]>[];
   /**
    * @zh 函数类型的 children
    * @en Function type children
@@ -488,8 +525,10 @@ export type FormInstance<
   | 'clearFields'
   | 'submit'
   | 'validate'
+  | 'getFieldsState'
 > & {
   scrollToField: (field: FieldKey, options?: ScrollIntoViewOptions) => void;
+  // arco 内部使用，业务万不可调用
   getInnerMethods: (inner?: boolean) => InnerMethodsReturnType<FormData, FieldValue, FieldKey>;
 };
 
@@ -500,13 +539,22 @@ export type InnerMethodsReturnType<
 > = Pick<
   Store<FormData, FieldValue, FieldKey>,
   | 'registerField'
+  | 'registerStateWatcher'
+  | 'registerFormWatcher'
   | 'registerWatcher'
   | 'innerSetInitialValues'
   | 'innerSetInitialValue'
   | 'innerSetCallbacks'
   | 'innerSetFieldValue'
   | 'innerGetStore'
+  | 'innerGetStoreStatus'
+  | 'innerCollectFormState'
+  | 'innerGetFieldValue'
 >;
+
+export interface ValidateOptions {
+  validateOnly?: boolean;
+}
 
 export interface FormValidateFn<
   FormData = any,
@@ -525,6 +573,12 @@ export interface FormValidateFn<
   (fields: FieldKey[]): Promise<Partial<FormData>>;
 
   /**
+   * 校验配置
+   * @param options
+   */
+  (options: ValidateOptions): Promise<Partial<FormData>>;
+
+  /**
    * 验证所有表单的值，并且返回报错和表单数据
    * @param callback 校验完成后的回调函数
    */
@@ -539,6 +593,25 @@ export interface FormValidateFn<
    */
   (
     fields: FieldKey[],
+    callback: (
+      errors?: ValidateFieldsErrors<FieldValue, FieldKey>,
+      values?: Partial<FormData>
+    ) => void
+  ): void;
+
+  (fields: FieldKey[], options: ValidateOptions): Promise<Partial<FormData>>;
+
+  (
+    options: ValidateOptions,
+    callback: (
+      errors?: ValidateFieldsErrors<FieldValue, FieldKey>,
+      values?: Partial<FormData>
+    ) => void
+  ): void;
+
+  (
+    fields: FieldKey[],
+    options: ValidateOptions,
     callback: (
       errors?: ValidateFieldsErrors<FieldValue, FieldKey>,
       values?: Partial<FormData>
@@ -587,4 +660,19 @@ export interface FormProviderProps {
       };
     }
   ) => void;
+}
+
+export type FieldState<FieldValue = any> = {
+  errors: FieldError<FieldValue>[];
+  warnings: ReactNode[];
+  validateStatus: FormItemProps['validateStatus'] | undefined;
+  isSubmitting: boolean;
+  isTouched: boolean;
+};
+
+export enum SubmitStatus {
+  init = 'init',
+  error = 'error',
+  success = 'success',
+  submitting = 'submitting',
 }

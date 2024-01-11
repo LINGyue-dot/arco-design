@@ -19,11 +19,12 @@ export interface DateInputRangeProps {
   style?: CSSProperties;
   className?: string | string[];
   error?: boolean;
+  status?: 'error' | 'warning';
   disabled?: boolean | boolean[];
   placeholder?: string[];
   value?: Dayjs[];
   popupVisible?: boolean;
-  format?: string;
+  format?: string | string[];
   size?: 'mini' | 'small' | 'default' | 'large';
   allowClear?: boolean;
   onClear?: (e) => void;
@@ -37,6 +38,7 @@ export interface DateInputRangeProps {
   changeFocusedInputIndex?: (index: number) => void;
   focusedInputIndex?: number;
   isPlaceholder?: boolean;
+  prefix?: ReactNode;
 }
 
 type DateInputHandle = {
@@ -48,6 +50,7 @@ function DateInput(
   {
     allowClear,
     error,
+    status,
     style,
     className,
     disabled,
@@ -67,11 +70,12 @@ function DateInput(
     changeFocusedInputIndex,
     focusedInputIndex,
     isPlaceholder,
+    prefix,
     ...rest
   }: DateInputRangeProps,
   ref
 ) {
-  const { getPrefixCls, size: ctxSize, locale } = useContext(ConfigContext);
+  const { getPrefixCls, size: ctxSize, locale, rtl } = useContext(ConfigContext);
   const input0 = useRef<HTMLInputElement>(null);
   const input1 = useRef<HTMLInputElement>(null);
 
@@ -105,9 +109,10 @@ function DateInput(
   function onKeyDown(e) {
     const keyCode = e.keyCode || e.which;
     if (keyCode === Enter.code) {
-      onPressEnter && onPressEnter();
+      onPressEnter?.();
     }
     if (keyCode === Tab.code) {
+      e.preventDefault();
       onPressTab && onPressTab(e);
     }
   }
@@ -120,6 +125,7 @@ function DateInput(
   const prefixCls = getPrefixCls('picker');
   const size = propSize || ctxSize;
 
+  const inputStatus = status || (error ? 'error' : undefined);
   const inputClassNames = cs(
     prefixCls,
     `${prefixCls}-range`,
@@ -127,12 +133,16 @@ function DateInput(
     {
       [`${prefixCls}-focused`]: !!popupVisible,
       [`${prefixCls}-disabled`]: disabled1 && disabled2,
-      [`${prefixCls}-error`]: error,
+      [`${prefixCls}-${inputStatus}`]: inputStatus,
+      [`${prefixCls}-rtl`]: rtl,
+      [`${prefixCls}-has-prefix`]: prefix,
     },
     className
   );
   const getInputValue = (index: number) => {
-    const valueText = value[index] ? value[index].locale(locale.dayjsLocale).format(format) : '';
+    const valueText = value[index]
+      ? value[index].locale(locale.dayjsLocale).format(isArray(format) ? format[index] : format)
+      : '';
     if (inputValue) {
       return index === focusedInputIndex ? inputValue : valueText;
     }
@@ -149,6 +159,7 @@ function DateInput(
 
   return (
     <div style={style} className={inputClassNames} {...omit(rest, ['onChange', 'onPressEnter'])}>
+      {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
       <div className={getFocusInputClassName(0)}>
         <input
           ref={input0}

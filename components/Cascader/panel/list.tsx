@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import scrollIntoView from 'scroll-into-view-if-needed';
 import isEqualWith from 'lodash/isEqualWith';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import cs from '../../_util/classNames';
 import Option from './option';
-import { isFunction } from '../../_util/is';
+import { isFunction, isObject, isString } from '../../_util/is';
 import { CascaderPanelProps, OptionProps } from '../interface';
 import useRefs from '../../_util/hooks/useRefs';
 import useForceUpdate from '../../_util/hooks/useForceUpdate';
@@ -12,6 +11,8 @@ import { ArrowDown, Esc, Enter, ArrowUp, ArrowRight, ArrowLeft } from '../../_ut
 import useUpdate from '../../_util/hooks/useUpdate';
 import Node from '../base/node';
 import { getMultipleCheckValue } from '../util';
+import VirtualList, { VirtualListHandle } from '../../_class/VirtualList';
+import { on, off } from '../../_util/dom';
 
 const getLegalActiveNode = (options) => {
   for (let index = 0; index < options.length; index++) {
@@ -47,8 +48,7 @@ export const getLegalIndex = (currentIndex, maxIndex) => {
 };
 
 const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
-  const [activeOptionList, setActiveOptionList] = useRefs<HTMLLIElement>();
-  const [refWrapper, setRefWrapper] = useRefs<HTMLUListElement>();
+  const [refWrapper, setRefWrapper] = useRefs<VirtualListHandle>();
   const forceUpdate = useForceUpdate();
   const {
     store,
@@ -60,6 +60,8 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
     showEmptyChildren,
     loadMore,
     renderEmpty,
+    rtl,
+    icons,
   } = props;
 
   const [activeNode, setActiveNode] = useState(
@@ -116,9 +118,23 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
     triggerChange(newValue);
   };
 
+  const scrollToActiveNode = useCallback(
+    (targetNode = activeNode) => {
+      let current = targetNode;
+      while (current) {
+        refWrapper[current._level]?.scrollTo({
+          index: current._index,
+          options: { block: 'nearest' },
+        });
+        current = current._level < 1 ? null : current.parent;
+      }
+    },
+    [activeNode]
+  );
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      e.stopPropagation();
+      // e.stopPropagation();
       // 使用keycode，避免中文输入法输入时，触发enter,space等事件。
       // p.s 中文输入时，keycode 都是229
       const keyCode = e.keyCode || e.which;
@@ -148,6 +164,7 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
               }
             }
           }
+          scrollToActiveNode(nextActiveNode);
           onClickOption(nextActiveNode, false);
           e.preventDefault();
           return false;
@@ -211,29 +228,23 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
 
   useEffect(() => {
     if (props.popupVisible && options.length) {
-      const scrollTo = () => {
-        activeOptionList.forEach((activeOption, i) => {
-          activeOption &&
-            scrollIntoView(activeOption, {
-              block: 'nearest',
-              boundary: refWrapper[i],
-            });
-        });
-      };
-      setTimeout(() => {
-        scrollTo();
-      });
+      setTimeout(scrollToActiveNode);
     }
-  }, [props.popupVisible, activeNode]);
+  }, [props.popupVisible]);
 
   useEffect(() => {
+    const target = props.getTriggerElement();
+    if (!target) {
+      return;
+    }
+
     if (props.popupVisible) {
-      document.addEventListener('keydown', handleKeyDown);
+      on(target, 'keydown', handleKeyDown);
     } else {
-      document.removeEventListener('keydown', handleKeyDown);
+      off(target, 'keydown', handleKeyDown);
     }
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      off(target, 'keydown', handleKeyDown);
     };
   }, [props.popupVisible, handleKeyDown]);
 
@@ -250,14 +261,13 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
     ? props.dropdownColumnRender
     : (menu) => menu;
 
-  return (
+  return !menus.length || !menus[0]?.length ? (
+    <>{renderEmpty()}</>
+  ) : (
     <TransitionGroup component={React.Fragment}>
       {menus.map((list, level) => {
         const footer = renderFooter ? renderFooter(level, activeNode || null) : null;
 
-        if (list.length === 0 && !showEmptyChildren && level === 0) {
-          return renderEmpty();
-        }
         return list.length === 0 && !showEmptyChildren ? null : (
           <CSSTransition
             key={level}
@@ -276,7 +286,14 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
               e.style.marginLeft = '';
             }}
           >
-            <div className={`${prefixCls}-list-column`} style={{ zIndex: menus.length - level }}>
+            <div
+              className={cs(`${prefixCls}-list-column`, {
+                [`${prefixCls}-list-column-virtual`]:
+                  props.virtualListProps && props.virtualListProps.threshold !== null,
+                [`${prefixCls}-list-column-rtl`]: rtl,
+              })}
+              style={{ zIndex: menus.length - level, ...props.dropdownMenuColumnStyle }}
+            >
               {dropdownColumnRender(
                 <div
                   className={cs(`${prefixCls}-list-wrapper`, {
@@ -284,16 +301,24 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
                   })}
                 >
                   {list.length === 0 ? (
-                    renderEmpty && renderEmpty(120)
+                    renderEmpty && renderEmpty(props.virtualListProps ? '100%' : 120)
                   ) : (
-                    <ul
+                    <VirtualList
+                      needFiller={false}
+                      threshold={props.virtualListProps ? 100 : null}
+                      data={list}
+                      isStaticItemHeight
+                      itemKey="value"
+                      {...(isObject(props.virtualListProps) ? props.virtualListProps : {})}
+                      wrapper="ul"
                       role="menu"
                       ref={(node) => setRefWrapper(node, level)}
                       className={cs(`${prefixCls}-list`, `${prefixCls}-list-select`, {
                         [`${prefixCls}-list-multiple`]: multiple,
+                        [`${prefixCls}-list-rtl`]: rtl,
                       })}
                     >
-                      {list.map((option) => {
+                      {(option) => {
                         let isActive = false;
                         if (activeNode) {
                           isActive = activeNode.pathValue[level] === option.value;
@@ -306,19 +331,15 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
                             aria-expanded={isActive && !option.isLeaf}
                             aria-disabled={option.disabled}
                             key={option.value}
-                            title={option.label}
+                            title={isString(option.label) ? option.label : undefined}
                             className={cs(`${prefixCls}-list-item`, {
                               [`${prefixCls}-list-item-active`]: isActive,
                               [`${prefixCls}-list-item-disabled`]: option.disabled,
                             })}
-                            ref={(ref) => {
-                              if (isActive) {
-                                setActiveOptionList(ref, level);
-                              }
-                            }}
                           >
                             <Option
                               prefixCls={prefixCls}
+                              rtl={rtl}
                               multiple={multiple}
                               option={option}
                               // 叶子节点被选中
@@ -327,6 +348,7 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
                                 option.isLeaf &&
                                 isEqualWith(props.value, option.pathValue)
                               }
+                              icons={icons}
                               onMouseEnter={() => {
                                 if (option.disabled) {
                                   return;
@@ -356,8 +378,8 @@ const ListPanel = <T extends OptionProps>(props: CascaderPanelProps<T>) => {
                             />
                           </li>
                         );
-                      })}
-                    </ul>
+                      }}
+                    </VirtualList>
                   )}
                   {footer && (
                     <div

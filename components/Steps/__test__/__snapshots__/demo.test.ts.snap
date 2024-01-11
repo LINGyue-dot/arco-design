@@ -1572,21 +1572,12 @@ exports[`renders Steps/demo/navigation.md correctly 1`] = `
 exports[`renders Steps/demo/onchange.md correctly 1`] = `
 <div>
   <div
-    class="arco-steps arco-steps-horizontal arco-steps-label-horizontal arco-steps-size-default arco-steps-change-onclick"
+    class="arco-steps arco-steps-horizontal arco-steps-label-horizontal arco-steps-size-default arco-steps-change-onclick arco-steps-mode-arrow"
     style="margin-bottom:20px"
   >
     <div
       class="arco-steps-item arco-steps-item-process arco-steps-item-active"
     >
-      <div
-        class="arco-steps-item-icon"
-      >
-        <div
-          class="arco-steps-icon"
-        >
-          1
-        </div>
-      </div>
       <div
         class="arco-steps-item-content"
       >
@@ -1606,15 +1597,6 @@ exports[`renders Steps/demo/onchange.md correctly 1`] = `
       class="arco-steps-item arco-steps-item-wait"
     >
       <div
-        class="arco-steps-item-icon"
-      >
-        <div
-          class="arco-steps-icon"
-        >
-          2
-        </div>
-      </div>
-      <div
         class="arco-steps-item-content"
       >
         <div
@@ -1632,15 +1614,6 @@ exports[`renders Steps/demo/onchange.md correctly 1`] = `
     <div
       class="arco-steps-item arco-steps-item-wait"
     >
-      <div
-        class="arco-steps-item-icon"
-      >
-        <div
-          class="arco-steps-icon"
-        >
-          3
-        </div>
-      </div>
       <div
         class="arco-steps-item-content"
       >
@@ -1759,15 +1732,18 @@ exports[`renders Steps/demo/vertical.md correctly 1`] = `
   style="display:flex;max-width:780px;padding:40px;background:var(--color-fill-2)"
 >
   <div
-    style="background:var(--color-bg-2);padding:24px;height:272px;border-right:1px solid var(--color-border);box-sizing:border-box"
+    style="background:var(--color-bg-2);padding:24px;height:272px;box-sizing:border-box"
   >
     <div
-      class="arco-steps arco-steps-vertical arco-steps-label-horizontal arco-steps-size-default arco-steps-lineless"
+      class="arco-steps arco-steps-vertical arco-steps-label-horizontal arco-steps-size-default"
       style="width:170px"
     >
       <div
         class="arco-steps-item arco-steps-item-process arco-steps-item-active"
       >
+        <div
+          class="arco-steps-item-tail"
+        />
         <div
           class="arco-steps-item-icon"
         >
@@ -1796,6 +1772,9 @@ exports[`renders Steps/demo/vertical.md correctly 1`] = `
         class="arco-steps-item arco-steps-item-wait"
       >
         <div
+          class="arco-steps-item-tail"
+        />
+        <div
           class="arco-steps-item-icon"
         >
           <div
@@ -1823,6 +1802,9 @@ exports[`renders Steps/demo/vertical.md correctly 1`] = `
         class="arco-steps-item arco-steps-item-wait"
       >
         <div
+          class="arco-steps-item-tail"
+        />
+        <div
           class="arco-steps-item-icon"
         >
           <div
@@ -1848,6 +1830,11 @@ exports[`renders Steps/demo/vertical.md correctly 1`] = `
       </div>
     </div>
   </div>
+  <div
+    class="arco-divider arco-divider-vertical"
+    role="separator"
+    style="display:block;height:auto"
+  />
   <div
     style="width:100%;height:272px;text-align:center;background:var(--color-bg-2);color:#C2C7CC"
   >

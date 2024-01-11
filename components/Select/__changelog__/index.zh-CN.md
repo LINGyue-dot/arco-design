@@ -1,3 +1,289 @@
+## 2.58.2
+
+2024-01-08
+
+### 🐛 问题修复
+
+- 修复 `Select` 在开启 `allowCreate` 后在边缘情况可能出现的 `effect` 无限循环。([#2484](https://github.com/arco-design/arco-design/pull/2484))
+
+## 2.58.1
+
+2024-01-05
+
+### 🐛 问题修复
+
+- 修复 `Select` 单选模式开启 `allowCreate` 时，将值更新为 `undefined` 后导致的页面报错。([#2473](https://github.com/arco-design/arco-design/pull/2473))
+
+## 2.57.2
+
+2023-12-22
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件 `allowCreate.formatter` 属性在单选模式下 `creating` 参数始终为 `true` 的问题。([#2447](https://github.com/arco-design/arco-design/pull/2447))
+
+## 2.54.0
+
+2023-10-09
+
+### 🆕 功能升级
+
+- `Select` 组件支持通过 `autoWidth` 属性设置宽度自适应。([#2274](https://github.com/arco-design/arco-design/pull/2274))
+- `Select` 组件 `allowCreate` 属性允许传入 `formatter` 以格式化用户创建的选项。([#2259](https://github.com/arco-design/arco-design/pull/2259))
+
+## 2.53.1
+
+2023-09-15
+
+### 🐛 问题修复
+
+- 修复 Firefox 浏览器中 `Select` 需要点击两次才能出现下拉框的问题。([#2233](https://github.com/arco-design/arco-design/pull/2233))
+
+## 2.53.0
+
+2023-09-08
+
+### 🐛 问题修复
+
+- 修复 `Select` 搜索文本改变后，回车会将之前选中的选项取消选中的 bug。([#2217](https://github.com/arco-design/arco-design/pull/2217))
+
+## 2.52.2
+
+2023-09-01
+
+### 🐛 问题修复
+
+- 修复 `Select` 单选模式配合 `renderFormat` 和 `showSearch` 使用时，下拉框需要点击两次才能弹出的问题。([#2190](https://github.com/arco-design/arco-design/pull/2190))
+
+## 2.52.0
+
+2023-08-18
+
+### 🆕 功能升级
+
+- `Select` 新增 `onSelect` 回调（仅对多选模式生效）。([#2157](https://github.com/arco-design/arco-design/pull/2157))
+- `Select` 调整 `defaultActiveFirstOption` 对于选中的选项亦生效。([#2157](https://github.com/arco-design/arco-design/pull/2157))
+
+### 🐛 问题修复
+
+- 修复多选 `Select` 在 Chrome 116+ 设置 `showSearch=false` 时点击 `<input>` 区域下拉框无法展开的问题。([#2156](https://github.com/arco-design/arco-design/pull/2156))
+
+## 2.51.1
+
+2023-08-04
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件宽度为 `auto` 且存在选中值时，聚焦后宽度丢失的问题。([#2122](https://github.com/arco-design/arco-design/pull/2122))
+
+## 2.50.2
+
+2023-07-21
+
+### 💎 功能优化
+
+- `Select` 在选项 `label` 为富文本但通过 `triggerProps.style` 设置了弹出框宽度时，仍然保持其开启虚拟列表的能力。([#2092](https://github.com/arco-design/arco-design/pull/2092))
+
+## 2.50.0
+
+2023-06-30
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件被 `ConfigProvider.componentConfig.InputTag` 设置的默认属性影响的问题。([#2064](https://github.com/arco-design/arco-design/pull/2064))
+
+## 2.47.2
+
+2023-05-06
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件允许创建时输入文本内容过长导致的页面报错。([#1948](https://github.com/arco-design/arco-design/pull/1948))
+
+## 2.47.1
+
+2023-04-21
+
+### 🐛 问题修复
+
+- 修复 `Select` 多选模式下值被清空之后，其宽度缓慢恢复的问题。([#1935](https://github.com/arco-design/arco-design/pull/1935))
+
+## 2.47.0
+
+2023-04-14
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件弹窗触发方式设置为 `focus` 不生效的 bug。([#1915](https://github.com/arco-design/arco-design/pull/1915))
+
+## 2.46.3
+
+2023-04-07
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件多选模式下点击 `Tag` 的关闭按钮删除选项时，`Select` 会变为 Focus 状态的问题。([#1894](https://github.com/arco-design/arco-design/pull/1894))
+
+## 2.46.1
+
+2023-03-24
+
+### 🐛 问题修复
+
+- 修复 `Select` 多选模式下，选择第一个选项时下拉框抖动问题。([#1863](https://github.com/arco-design/arco-design/pull/1863))
+
+## 2.46.0
+
+2023-03-17
+
+### 🆕 功能升级
+
+- `Select` 组件 `ref` 引用新增 `scrollIntoView` 方法以支持滚动列表至指定选项。([#1843](https://github.com/arco-design/arco-design/pull/1843))
+
+## 2.45.2
+
+2023-03-10
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件 `dragToSort` 和 `maxTagCount` 配合使用时，拖拽排序结果异常的问题。([#1830](https://github.com/arco-design/arco-design/pull/1830))
+
+## 2.45.1
+
+2023-03-01
+
+### 🐛 问题修复
+
+- 修复 `Select` 选项内容为空字符串时，选项在下拉列表中不展示的问题。([#1807](https://github.com/arco-design/arco-design/pull/1807))
+
+## 2.45.0
+
+2023-02-17
+
+### 💎 功能优化
+
+- 优化 `Select` 允许创建选项时，如果搜索结果返回同样 `option.value` 的选项，此选项未更新的问题。([#1788](https://github.com/arco-design/arco-design/pull/1788))
+
+## 2.44.1
+
+2023-02-03
+
+### 💎 功能优化
+
+- 优化 `Select` 组件搜索/创建选项后，失焦导致的下拉框抖动问题。([#1747](https://github.com/arco-design/arco-design/pull/1747))
+
+## 2.43.2
+
+2023-01-06
+
+### 💎 功能优化
+
+- 优化 `Select` 组件选项值的空字符串展示。([#1703](https://github.com/arco-design/arco-design/pull/1703))
+
+## 2.42.2
+
+2022-12-09
+
+### 💎 功能优化
+
+- `Select` 允许在 `allowCreate` 并且无选项数据时展示下拉框。([#1640](https://github.com/arco-design/arco-design/pull/1640))
+
+## 2.42.0
+
+2022-11-25
+
+### 🐛 问题修复
+
+- 修复 Firefox 浏览器下当 `showSearch = true` 时，Select 需要点击两次才能弹出下拉框的问题。([#1569](https://github.com/arco-design/arco-design/pull/1569))
+
+## 2.41.1
+
+2022-11-04
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件在 `value = ''` 时，错误将 `placeholder` 作为 `value` 展示的 bug。([#1536](https://github.com/arco-design/arco-design/pull/1536))
+
+### 💅 样式更新
+
+- 修复 `Select` 组件在 `Input.Group` 内使用时竖直方向无法对齐的问题。([#1534](https://github.com/arco-design/arco-design/pull/1534))
+
+## 2.41.0
+
+2022-10-28
+
+### 🆕 功能升级
+
+- `Select` 组件支持通过 `addBefore` 属性设置前置标签([#1464](https://github.com/arco-design/arco-design/pull/1464))
+
+### 🐛 问题修复
+
+- 修复 `Select` 在 `width: auto` 时宽度未跟随内容自动变化的问题。（单选模式下内层新增 DOM 节点直接包裹 `.arco-select-view-value` 和 `input` 标签）([#1490](https://github.com/arco-design/arco-design/pull/1490))
+
+## 2.40.0
+
+2022-09-16
+
+### 🆕 功能升级
+
+- `Select` 组件支持监听 `onKeyDown` 回调。([#1360](https://github.com/arco-design/arco-design/pull/1360))
+
+## 2.39.2
+
+2022-08-26
+
+### 💎 功能优化
+
+- 确保 `Select` 组件使用 `dropdownRender` 自定义下拉框内容并获取页面焦点时，键盘快捷键仍然可用。([#1328](https://github.com/arco-design/arco-design/pull/1328))
+
+## 2.39.1
+
+2022-08-19
+
+### 💅 样式更新
+
+- 统一 `Select` 多选和单选模式下的右侧箭头样式。([#1302](https://github.com/arco-design/arco-design/pull/1302))
+
+## 2.38.0
+
+2022-07-29
+
+### 🐛 问题修复
+
+- 修复 Select 在 `allowCreate` 时下拉框闪烁空状态的问题。([#1184](https://github.com/arco-design/arco-design/pull/1184))
+
+## 2.37.2
+
+2022-07-22
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件 `inputValue` 受控模式下，`onInputValueChange` 回调可能无法触发的问题。([#1178](https://github.com/arco-design/arco-design/pull/1178))
+
+## 2.37.0
+
+2022-07-08
+
+### 🆕 功能升级
+
+- `Select` 组件支持通过对象类型的 `maxTagCount` 属性定制 `maxTag` 内容展示([#1112](https://github.com/arco-design/arco-design/pull/1112))
+
+## 2.35.1
+
+2022-06-17
+
+### 💎 功能优化
+
+- `Select` 组件通过 Dom Attribute 标记用户正在创建和已经创建的选项。([#1011](https://github.com/arco-design/arco-design/pull/1011))
+
+## 2.35.0
+
+2022-06-10
+
+### 🐛 问题修复
+
+- 修复 `Select` 组件设置 `LabelInValue` 时可能出现的回调参数格式错误的 bug。([#953](https://github.com/arco-design/arco-design/pull/953))
+
 ## 2.32.2
 
 2022-04-29

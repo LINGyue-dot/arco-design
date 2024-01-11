@@ -6,6 +6,7 @@ import React, {
   ElementRef,
   useEffect,
   PropsWithChildren,
+  ReactNode,
 } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { ConfigContext } from '../ConfigProvider';
@@ -18,13 +19,19 @@ import IconClose from '../../icon/react-icon/IconClose';
 import { isObject, isArray } from '../_util/is';
 import getHotkeyHandler from '../_util/getHotkeyHandler';
 import { Backspace } from '../_util/keycode';
-import { pickTriggerPropsFromRest } from '../_util/constant';
+// import { pickTriggerPropsFromRest } from '../_util/constant';
 import { ObjectValueType, InputTagProps, ValueChangeReason } from './interface';
 import useMergeProps from '../_util/hooks/useMergeProps';
 import Draggable from '../_class/Draggable';
+import omit from '../_util/omit';
+import fillNBSP from '../_util/fillNBSP';
 
 const CSS_TRANSITION_DURATION = 300;
 const REACT_KEY_FOR_INPUT = `__input_${Math.random().toFixed(10).slice(2)}`;
+
+const isEmptyNode = (node: ReactNode): boolean => {
+  return node === null || node === undefined;
+};
 
 const keepFocus = (e) => {
   e.target.tagName !== 'INPUT' && e.preventDefault();
@@ -88,7 +95,7 @@ const defaultProps: InputTagProps = {
 };
 
 function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
-  const { getPrefixCls, size: ctxSize, componentConfig } = useContext(ConfigContext);
+  const { getPrefixCls, size: ctxSize, componentConfig, rtl } = useContext(ConfigContext);
   const props = useMergeProps<InputTagProps>(baseProps, defaultProps, componentConfig?.InputTag);
   const {
     className,
@@ -105,7 +112,11 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
     saveOnBlur,
     dragToSort,
     icon,
+    prefix,
     suffix,
+    addBefore,
+    addAfter,
+    tokenSeparators,
     validate,
     renderTag,
     tagClassName,
@@ -119,11 +130,13 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
     onRemove,
     onClear,
     onClick,
+    ...rest
   } = props;
   const prefixCls = getPrefixCls('input-tag');
   const size = 'size' in props ? props.size : ctxSize;
 
-  const inputRef = useRef<ElementRef<typeof InputComponent>>();
+  const refInput = useRef<ElementRef<typeof InputComponent>>();
+  const refTSLastSeparateTriggered = useRef<number>(null);
 
   const [focused, setFocused] = useState(false);
   const [value, setValue] = useMergeValue<ObjectValueType[]>([], {
@@ -140,8 +153,8 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
     ref,
     () => {
       return {
-        blur: inputRef.current && inputRef.current.blur,
-        focus: inputRef.current && inputRef.current.focus,
+        blur: refInput.current?.blur,
+        focus: refInput.current?.focus,
       };
     },
     []
@@ -184,9 +197,16 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
 
   const tryAddInputValueToTag = async () => {
     try {
-      const isLegal = typeof validate === 'function' ? await validate(inputValue, value) : true;
-      if (isLegal) {
-        valueChangeHandler(value.concat({ value: inputValue, label: inputValue }), 'add');
+      const validateResult =
+        typeof validate === 'function' ? await validate(inputValue, value) : true;
+      if (validateResult) {
+        valueChangeHandler(
+          value.concat({
+            value: validateResult === true ? inputValue : validateResult,
+            label: inputValue,
+          }),
+          'add'
+        );
         setInputValue('');
       }
     } catch (error) {
@@ -222,16 +242,53 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
         })}
         closable={closable}
         closeIcon={icon && icon.removeIcon}
+        __closeIconProps={{
+          onMouseDown: keepFocus,
+        }}
+        title={typeof label === 'string' ? label : undefined}
         onClose={onClose}
       >
-        <span
-          title={typeof label === 'string' ? label : undefined}
-          className={`${prefixCls}-tag-content`}
-        >
-          {typeof label === 'string' ? label.replace(/\s/g, '\u00A0') : label}
-        </span>
+        {fillNBSP(label)}
       </Tag>
     );
+  };
+
+  const handleTokenSeparators = async (str: string) => {
+    // clear the timestamp, and then we can judge whether tokenSeparators has been triggered
+    // according to timestamp value
+    refTSLastSeparateTriggered.current = null;
+
+    if (isArray(tokenSeparators) && tokenSeparators.length) {
+      const splitTextList = str.split(new RegExp(`[${tokenSeparators.join('')}]`));
+
+      if (splitTextList.length > 1) {
+        // record the timestamp of tokenSeparators triggered
+        refTSLastSeparateTriggered.current = Date.now();
+
+        const validatedValueList: ObjectValueType[] = [];
+
+        await Promise.all(
+          splitTextList.map(async (text) => {
+            // filter empty string and validate it
+            const validateResult = text
+              ? typeof validate === 'function'
+                ? await validate(text, value)
+                : true
+              : false;
+            if (validateResult) {
+              validatedValueList.push({
+                value: validateResult === true ? text : validateResult,
+                label: text,
+              });
+            }
+          })
+        );
+
+        if (validatedValueList.length) {
+          valueChangeHandler(value.concat(validatedValueList), 'add');
+        }
+      }
+    }
   };
 
   const clearIcon =
@@ -244,17 +301,16 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
           e.stopPropagation();
           valueChangeHandler([], 'clear');
           if (!focused) {
-            inputRef.current && inputRef.current.focus();
+            refInput.current?.focus();
           }
-          onClear && onClear();
+          onClear?.();
         }}
-        onMouseDown={keepFocus}
       >
         {(icon && icon.clearIcon) || <IconClose />}
       </IconHover>
     ) : null;
 
-  const hasSuffix = !!(clearIcon || suffix);
+  const disableInputComponent = disabled || disableInput;
 
   // CSSTransition needs to be a direct child of TransitionGroup, otherwise the animation will NOT work
   // https://github.com/arco-design/arco-design/issues/622
@@ -284,79 +340,110 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
         <InputComponent
           autoComplete="off"
           size={size}
-          disabled={disabled || disableInput}
+          disabled={disableInputComponent}
           readOnly={readOnly}
-          ref={inputRef}
+          ref={refInput}
           autoFocus={autoFocus}
           placeholder={!value.length ? placeholder : ''}
           prefixCls={`${prefixCls}-input`}
           autoFitWidth={{
             delay: () => refDelay.current,
+            pure: true,
           }}
           onPressEnter={async (e) => {
             inputValue && e.preventDefault();
-            onPressEnter && onPressEnter(e);
+            onPressEnter?.(e);
             await tryAddInputValueToTag();
           }}
           onFocus={(e) => {
-            if (!disabled && !readOnly) {
+            if (!disableInputComponent && !readOnly) {
               setFocused(true);
-              onFocus && onFocus(e);
+              onFocus?.(e);
             }
           }}
           onBlur={async (e) => {
             setFocused(false);
-            onBlur && onBlur(e);
+            onBlur?.(e);
             if (saveOnBlur) {
               await tryAddInputValueToTag();
             }
             setInputValue('');
           }}
           value={inputValue}
-          onValueChange={(v, e) => {
-            setInputValue(v);
+          onChange={(value, event) => {
             // Only fire callback on user input to ensure parent component can get real input value on controlled mode.
-            onInputChange && onInputChange(v, e);
+            onInputChange?.(value, event);
+
+            // Pasting in the input box will trigger onPaste first and then onChange, but the value of onChange does not contain a newline character.
+            // If word segmentation has just been triggered due to pasting, onChange will no longer attempt word segmentation.
+            // Do NOT use await, need to update input value right away.
+            event.nativeEvent.inputType !== 'insertFromPaste' && handleTokenSeparators(value);
+
+            if (refTSLastSeparateTriggered.current) {
+              setInputValue('');
+            } else {
+              setInputValue(value);
+            }
           }}
           onKeyDown={(event) => {
             hotkeyHandler(event as any);
-            onKeyDown && onKeyDown(event);
+            onKeyDown?.(event);
           }}
-          onPaste={onPaste}
+          onPaste={(event) => {
+            onPaste?.(event);
+            handleTokenSeparators(event.clipboardData.getData('text'));
+          }}
         />
       </CSSTransition>
     );
 
-  return (
+  const hasPrefix = !isEmptyNode(prefix);
+  const hasSuffix = !isEmptyNode(suffix) || !isEmptyNode(clearIcon);
+  const needAddBefore = !isEmptyNode(addBefore);
+  const needAddAfter = !isEmptyNode(addAfter);
+  const needWrapper = needAddBefore || needAddAfter;
+
+  const status = props.status || (error ? 'error' : undefined);
+  const innerClassNames = cs(prefixCls, {
+    [`${prefixCls}-size-${size}`]: size,
+    [`${prefixCls}-disabled`]: disabled,
+    [`${prefixCls}-${status}`]: status,
+    [`${prefixCls}-focus`]: focused,
+    [`${prefixCls}-readonly`]: readOnly,
+    [`${prefixCls}-has-suffix`]: hasSuffix,
+    [`${prefixCls}-has-placeholder`]: !value.length,
+    [`${prefixCls}-rtl`]: rtl,
+  });
+  const propsAppliedToRoot = { style, className };
+
+  const eleInputTagCore = (
     <div
-      {...pickTriggerPropsFromRest(props)}
-      style={style}
-      className={cs(
-        prefixCls,
-        {
-          [`${prefixCls}-size-${size}`]: size,
-          [`${prefixCls}-disabled`]: disabled,
-          [`${prefixCls}-error`]: error,
-          [`${prefixCls}-focus`]: focused,
-          [`${prefixCls}-readonly`]: readOnly,
-          [`${prefixCls}-has-suffix`]: hasSuffix,
-          [`${prefixCls}-has-placeholder`]: !value.length,
-        },
-        className
-      )}
+      {...omit(rest, ['status', 'size', 'defaultValue', 'value', 'inputValue'])}
+      {...(needWrapper ? {} : propsAppliedToRoot)}
+      className={needWrapper ? innerClassNames : cs(innerClassNames, propsAppliedToRoot.className)}
       onMouseDown={(event) => {
         focused && keepFocus(event);
       }}
       onClick={(e) => {
-        !focused && inputRef.current && inputRef.current.focus();
+        !focused && refInput.current?.focus();
         if (onClick) {
           onClick(e);
         }
       }}
     >
       <div className={`${prefixCls}-view`}>
-        <UsedTransitionGroup prefixCls={prefixCls} animation={animation}>
-          {draggable ? (
+        {hasPrefix && (
+          <div className={`${prefixCls}-prefix`} onMouseDown={keepFocus}>
+            {prefix}
+          </div>
+        )}
+
+        {draggable ? (
+          <UsedTransitionGroup
+            key="transitionGroupWithDrag"
+            prefixCls={prefixCls}
+            animation={animation}
+          >
             <Draggable
               itemWrapperStyle={{ display: 'inline-block' }}
               direction="horizontal"
@@ -373,10 +460,12 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
             >
               {childrenWithAnimation}
             </Draggable>
-          ) : (
-            childrenWithAnimation
-          )}
-        </UsedTransitionGroup>
+          </UsedTransitionGroup>
+        ) : (
+          <UsedTransitionGroup prefixCls={prefixCls} animation={animation}>
+            {childrenWithAnimation}
+          </UsedTransitionGroup>
+        )}
 
         {hasSuffix && (
           <div className={`${prefixCls}-suffix`} onMouseDown={keepFocus}>
@@ -385,6 +474,27 @@ function InputTag(baseProps: InputTagProps<string | ObjectValueType>, ref) {
           </div>
         )}
       </div>
+    </div>
+  );
+
+  if (!needWrapper) {
+    return eleInputTagCore;
+  }
+
+  return (
+    <div
+      {...propsAppliedToRoot}
+      className={cs(
+        `${prefixCls}-wrapper`,
+        {
+          [`${prefixCls}-wrapper-rtl`]: rtl,
+        },
+        propsAppliedToRoot.className
+      )}
+    >
+      {needAddBefore && <div className={`${prefixCls}-addbefore`}>{addBefore}</div>}
+      {eleInputTagCore}
+      {needAddAfter && <div className={`${prefixCls}-addafter`}>{addAfter}</div>}
     </div>
   );
 }

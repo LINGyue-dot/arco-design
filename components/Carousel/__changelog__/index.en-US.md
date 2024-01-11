@@ -1,3 +1,28 @@
+## 2.51.1
+
+2023-08-04
+
+### 🐛 BugFix
+
+- Optimize `Carousel` double-click the text at the bottom of the arrow to avoid being selected([#2119](https://github.com/arco-design/arco-design/pull/2119) [@notbucai](https://github.com/notbucai))
+
+## 2.50.0
+
+2023-06-30
+
+### 🐛 BugFix
+
+- Fix the problem that the page switch is abnormal when the `trigger` of the `Carousel` is set to `hover`.([#2063](https://github.com/arco-design/arco-design/pull/2063))
+
+## 2.38.0
+
+2022-07-29
+
+### 🐛 BugFix
+
+- Fixed the bug that `Carousel` would slide to the first page when clicking in the middle of indicators.([#1210](https://github.com/arco-design/arco-design/pull/1210))
+- Fixed the bug that child elements of `Carousel` could not fill up the height of the component.([#1210](https://github.com/arco-design/arco-design/pull/1210))
+
 ## 2.28.0
 
 2022-01-07

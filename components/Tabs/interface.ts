@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ReactNode, ReactElement } from 'react';
 import TabHeader from './tab-header/index';
 
 /**
@@ -46,6 +46,12 @@ export interface TabsProps {
    */
   type?: 'line' | 'card' | 'card-gutter' | 'text' | 'rounded' | 'capsule';
   /**
+   * @zh 定制下划线尺寸
+   * @en custom the size of underline
+   * @version 2.54.0
+   */
+  inkBarSize?: { width?: CSSProperties['width']; height?: CSSProperties['height'] };
+  /**
    * @zh 选项卡头部是否存在水平边距。仅对 `type`等于 `line`、`text`类型的选项卡生效
    * @en Whether there is a horizontal margin on the tab. It only effect when `type` is `line` or `text`
    * @defaultValue true
@@ -70,13 +76,16 @@ export interface TabsProps {
    */
   showAddButton?: boolean;
   /**
-   * @zh 图标配置
-   * @en Icon configuration
-   * @version 2.15.0
+   * @zh 标签页头部 编辑/滚动/下拉 图标配置。对于不想展示的图标可以将其设置为`null`
+   * @en Tab header edit/scroll/dropdown icon configuration. You can set it to `null` for icons you don't want to display
+   * @version 2.15.0, `prev`,`next`,`dropdown` in `2.47.0`
    */
   icons?: {
     add?: ReactNode;
     delete?: ReactNode;
+    prev?: ReactNode;
+    next?: ReactNode;
+    dropdown?: ReactNode;
   };
   /**
    * @zh 是否在标签增减后，自动进行滚动调整(`editable`为`true`时生效）
@@ -152,7 +161,7 @@ export interface TabsProps {
    * @zh 自定义选项卡头部
    * @en Custom Tab Header
    */
-  renderTabHeader?: (tabProps: TabsProps, DefaultTabHeader: typeof TabHeader) => React.ReactElement;
+  renderTabHeader?: (tabProps: TabsProps, DefaultTabHeader: typeof TabHeader) => ReactElement;
   /**
    * @zh 自定义单个选项卡头部
    * @en Customize tab header

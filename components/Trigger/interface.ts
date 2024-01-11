@@ -33,7 +33,7 @@ export interface TriggerProps {
   /**
    * @zh 动画类名
    * @en Animation class name
-   * @defaultValue fadeId
+   * @defaultValue fadeIn
    */
   classNames?: string;
   /**
@@ -146,28 +146,33 @@ export interface TriggerProps {
    */
   mouseLeaveToClose?: boolean;
   /**
-   * @zh 是否能通过点击触发节点来关闭弹出框
-   * @en Whether to allow close the popup by clicking the child node.
-   * @defaultValue true
+   * @zh 是否能通过点击触发节点来关闭弹出框。trigger 包含 click, contextMenu 时，默认为 true。否则为 false
+   * @en Whether to allow close the popup by clicking the child node.When trigger contains click, contextMenu, the default is true. otherwise false
    */
   clickToClose?: boolean;
   /**
-   * @zh 是否在点击空白处（触发节点和弹出框以外的区域）时关闭弹出层。 关闭时会触发 `onVisibleChange`。
-   * @en Whether to allow close the popup by clicking the area outside the child node and the popup box.
+   * @zh 是否在点击空白处（触发节点和弹出框以外的区域）时关闭弹出层。 关闭时会触发 `onVisibleChange`。默认是在冒泡阶段触发该逻辑，可设置 `{ capture: true }` 指定捕获阶段触发
+   * @en Whether to allow close the popup by clicking the area outside the child node and the popup box.By default, this logic is triggered in the bubbling phase. You can set `{ capture: true }` to specify the triggering phase in the capture phase.
    * @defaultValue true
+   * @version `{ capture: boolean }` in `2.55.0`
    */
-  clickOutsideToClose?: boolean;
+  clickOutsideToClose?: boolean | { capture: boolean };
   /**
    * @zh 是否允许按 `ESC` 键关闭弹出框。
    * @en Whether to allow close the popup by pressing `ESC`.
-   * @defaultValue false
    */
   escToClose?: boolean;
+  /**
+   * @zh 是否在容器滚动时关闭弹出框
+   * @en Whether to close the popup when the container is scrolled
+   * @version 2.34.0
+   */
+  containerScrollToClose?: boolean;
   /**
    * @zh 按钮点击事件（`trigger` 包含 `click` 时生效）
    * @en Callback when click the child node. (Only work when `trigger` contains `click`)
    */
-  onClick?: (popupVisible: boolean) => void;
+  onClick?: (e) => void;
   /**
    * @zh 点击触发节点和弹出框以外的区域的回调。
    * @en Callback when click the area outside the child and the popup
@@ -224,6 +229,9 @@ export interface TriggerProps {
    * @version 2.32.0
    */
   updateOnScroll?: boolean;
+  children?: ReactNode;
+  __onExit?: (event) => void;
+  __onExited?: (event) => void;
 }
 
 export type MouseLocationType = { clientX: number; clientY: number };

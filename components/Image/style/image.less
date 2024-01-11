@@ -9,6 +9,10 @@
   &-img {
     vertical-align: middle;
     border-radius: inherit;
+
+    &:focus-visible {
+      box-shadow: 0 0 0 2px @image-color-box-shadow;
+    }
   }
 
   &-overlay {
@@ -79,6 +83,8 @@
       position: absolute;
       left: 0;
       bottom: 0;
+      border-bottom-right-radius: inherit;
+      border-bottom-left-radius: inherit;
     }
 
     .@{image-prefix-cls}-caption {
@@ -123,6 +129,10 @@
         }
       }
     }
+  }
+
+  &-with-preview:hover {
+    cursor: zoom-in;
   }
 
   &-error {
@@ -189,6 +199,7 @@
     }
   }
 
+  &-before-load,
   &-loading,
   &-loading-error {
     .@{image-prefix-cls}-img {

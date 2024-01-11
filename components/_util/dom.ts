@@ -13,9 +13,9 @@ export const on = (function () {
     return NOOP;
   }
   return function (
-    element: any,
+    element: EventTarget | null,
     event: string,
-    handler: EventListener | EventListenerObject | Function,
+    handler: EventListenerOrEventListenerObject,
     options?: boolean | AddEventListenerOptions
   ) {
     element && element.addEventListener(event, handler, options || false);
@@ -27,16 +27,22 @@ export const off = (function () {
     return NOOP;
   }
   return function (
-    element: any,
+    element: EventTarget | null,
     event: string,
-    handler: EventListener | EventListenerObject | Function,
+    handler: EventListenerOrEventListenerObject,
     options?: boolean | AddEventListenerOptions
   ) {
     element && element.removeEventListener(event, handler, options || false);
   };
 })();
 
-export const contains = function (root, ele) {
+export const contains = function (root: HTMLElement, ele) {
+  if (!root) {
+    return false;
+  }
+  if (root.contains) {
+    return root.contains(ele);
+  }
   let node = ele;
   while (node) {
     if (node === root) {
@@ -48,7 +54,12 @@ export const contains = function (root, ele) {
 };
 
 export const isScrollElement = (element: HTMLElement) => {
-  return element.scrollHeight > element.offsetHeight || element.scrollWidth > element.offsetWidth;
+  const clientHeight =
+    element === document.documentElement ? element.clientHeight : element.offsetHeight;
+  const clientWidth =
+    element === document.documentElement ? element.clientWidth : element.offsetWidth;
+
+  return element.scrollHeight > clientHeight || element.scrollWidth > clientWidth;
 };
 
 /**

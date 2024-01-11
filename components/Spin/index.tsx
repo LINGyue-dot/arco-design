@@ -6,6 +6,7 @@ import { ConfigContext } from '../ConfigProvider';
 import DotLoading from './dot-loading';
 import { SpinProps } from './interface';
 import useMergeProps from '../_util/hooks/useMergeProps';
+import { isEmptyReactNode } from '../_util/is';
 
 function Spin(baseProps: SpinProps, ref) {
   const { getPrefixCls, componentConfig } = useContext(ConfigContext);
@@ -22,6 +23,7 @@ function Spin(baseProps: SpinProps, ref) {
     dot,
     delay,
     block = false,
+    ...rest
   } = props;
 
   const [loading, setLoading] = useState<boolean>(delay ? false : propLoading);
@@ -64,8 +66,14 @@ function Spin(baseProps: SpinProps, ref) {
         className
       )}
       style={style}
+      {...rest}
     >
-      {children ? (
+      {isEmptyReactNode(children) ? (
+        <>
+          {loadingIcon}
+          {tip ? <div className={`${prefixCls}-tip`}>{tip}</div> : null}
+        </>
+      ) : (
         <>
           <div className={`${prefixCls}-children`}>{children}</div>
           {_usedLoading && (
@@ -76,11 +84,6 @@ function Spin(baseProps: SpinProps, ref) {
               </span>
             </div>
           )}
-        </>
-      ) : (
-        <>
-          {loadingIcon}
-          {tip ? <div className={`${prefixCls}-tip`}>{tip}</div> : null}
         </>
       )}
     </div>

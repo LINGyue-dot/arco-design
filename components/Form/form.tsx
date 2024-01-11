@@ -20,6 +20,7 @@ import {
 import { isObject } from '../_util/is';
 import omit from '../_util/omit';
 import useMergeProps from '../_util/hooks/useMergeProps';
+import useCreate from '../_util/hooks/useCreate';
 import { ID_SUFFIX } from './utils';
 
 function getFormElementId<FieldKey extends KeyType = string>(
@@ -52,7 +53,6 @@ const Form = <
   const formProviderCtx = useContext(FormProviderContext);
   const wrapperRef = useRef<HTMLElement>(null);
   const [formInstance] = useForm<FormData, FieldValue, FieldKey>(baseProps.form);
-  const isMount = useRef<boolean>();
 
   const props = useMergeProps<FormProps>(baseProps, defaultProps, ctx.componentConfig?.Form);
 
@@ -73,14 +73,13 @@ const Form = <
     ...rest
   } = props;
   const prefixCls = formPrefixCls || ctx.getPrefixCls('form');
+  const rtl = ctx.rtl;
   const size = 'size' in props ? props.size : ctx.size;
   const innerMethods = formInstance.getInnerMethods(true);
-  if (!isMount.current) {
+
+  useCreate(() => {
     innerMethods.innerSetInitialValues(props.initialValues);
-  }
-  useEffect(() => {
-    isMount.current = true;
-  }, []);
+  });
 
   useEffect(() => {
     let unregister;
@@ -129,8 +128,9 @@ const Form = <
     },
     onSubmitFailed: props.onSubmitFailed,
     onSubmit: (values) => {
-      props.onSubmit && props.onSubmit(values);
+      const returnValue = props.onSubmit && props.onSubmit(values);
       formProviderCtx.onFormSubmit && formProviderCtx.onFormSubmit(props.id, values);
+      return returnValue;
     },
   });
 
@@ -176,6 +176,7 @@ const Form = <
             prefixCls,
             `${prefixCls}-${layout}`,
             `${prefixCls}-size-${size}`,
+            { [`${prefixCls}-rtl`]: rtl },
             className
           )}
           style={props.style}

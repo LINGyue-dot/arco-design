@@ -8,7 +8,7 @@
 
 ## 安装
 
-```
+```bash
 npm i @arco-design/theme-line
 ```
 
@@ -24,12 +24,12 @@ npm i @arco-design/theme-line
 
 #### 需要按需加载样式
 
-通过 [Arco Webpack 插件](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-webpack-react/README.md) 或 [Arco Vite 插件](https://github.com/arco-design/arco-plugins/blob/main/packages/plugin-vite-react/README.md) 引入主题包（推荐 `1.5.0` 版本及以上）
+通过 [Arco 构建插件](https://github.com/arco-design/arco-plugins/blob/main/README.zh-CN.md) 实现。
 
-以 webpack 配置为例，引入 `@arco-design/webpack-plugin` 插件。通过 `theme` 字段指定主题包名。
+以 webpack 配置为例，引入 `@arco-plugins/webpack-react` 插件。通过 `theme` 字段指定主题包名。
 
 ```js
-const ArcoWebpackPlugin = require('@arco-design/webpack-plugin');
+const ArcoWebpackPlugin = require('@arco-plugins/webpack-react');
 
 // webpack config
 {
@@ -57,6 +57,6 @@ const ArcoWebpackPlugin = require('@arco-design/webpack-plugin');
 
 1. #### 使用开发者模式配置的样式未生效？
 
-如果使用了样式的按需加载，请升级ArcoWebpack插件至少`1.5.0`版本。
+如果使用了样式的按需加载，请升级 ArcoWebpack 插件到最新版本
 
 如果未使用样式按需加载，请查看是否在项目中引入了主题包的 `index.less`.

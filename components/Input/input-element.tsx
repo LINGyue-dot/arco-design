@@ -1,18 +1,55 @@
-import React, { useState, useRef, useImperativeHandle, useEffect } from 'react';
-import { InputComponentProps, RefInputType } from './interface';
+import React, { useRef, useImperativeHandle, useEffect, CSSProperties, useState } from 'react';
+import { InputComponentProps, InputProps, RefInputType } from './interface';
 import cs from '../_util/classNames';
 import omit from '../_util/omit';
-import { Enter } from '../_util/keycode';
 import ResizeObserver from '../_util/resizeObserver';
 import IconClose from '../../icon/react-icon/IconClose';
 import IconHover from '../_class/icon-hover';
-import { isObject } from '../_util/is';
+import { isFunction, isObject } from '../_util/is';
+import useComposition from './useComposition';
+import useKeyboardEvent from '../_util/hooks/useKeyboardEvent';
+import fillNBSP from '../_util/fillNBSP';
+
+// 设置 input 元素缓冲宽度，避免 autoWidth.minWidth < padding + border 时，content 区域宽度为0，光标会看不到
+// 后续可考虑是否作为 autoWidth 的一个配置项暴露
+const inputContentWidth = 2;
+
+// 从 input 标签获取影响到宽度计算的"文本样式属性"和“布局”属性 https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_text
+// 为什么不是直接把 input 标签的类名设置给 mirror 元素？避免用户对 input 类名自定义样式会影响到 mirror
+// 仅在 mounted 的时候执行一次
+const getStyleFromInput = (input: HTMLElement): CSSProperties => {
+  if (!input) {
+    return {};
+  }
+  const computeStyle = window.getComputedStyle(input);
+
+  const cssKeys = [
+    'font',
+    'letterSpacing',
+    'overflow',
+    'tabSize',
+    'textIndent',
+    'textTransform',
+    'whiteSpace',
+    'wordBreak',
+    'wordSpacing',
+    'paddingLeft',
+    'paddingRight',
+    'borderLeft',
+    'borderRight',
+    'boxSizing',
+  ];
+
+  return cssKeys.reduce((t, n) => {
+    t[n] = computeStyle[n];
+    return t;
+  }, {});
+};
 
 const InputComponent = React.forwardRef<RefInputType, InputComponentProps>(
   (props: InputComponentProps, ref) => {
     const {
       allowClear,
-      error,
       disabled,
       placeholder,
       className,
@@ -25,12 +62,17 @@ const InputComponent = React.forwardRef<RefInputType, InputComponentProps>(
       autoFitWidth,
       onClear,
       readOnly,
-      onValueChange,
+      onChange,
+      onKeyDown,
+      onPressEnter,
       maxLength: propMaxLength,
+      clearIcon,
       ...rest
     } = props;
 
     const otherProps = omit(rest, [
+      'error',
+      'status',
       'showWordLimit',
       'className',
       'defaultValue',
@@ -38,32 +80,84 @@ const InputComponent = React.forwardRef<RefInputType, InputComponentProps>(
       'addAfter',
       'afterStyle',
       'beforeStyle',
-      'onKeyDown',
-      'onPressEnter',
       'prefix',
       'suffix',
+      'normalize',
+      'normalizeTrigger',
+      'autoWidth',
     ]);
 
-    const [compositionValue, setCompositionValue] = useState('');
+    const [inputComputeStyle, setInputComputeStyle] = useState<CSSProperties>();
 
-    const refIsComposition = useRef(false);
+    const getKeyboardEvents = useKeyboardEvent();
     const refInput = useRef<HTMLInputElement>();
     const refInputMirror = useRef<HTMLSpanElement>();
     const refPrevInputWidth = useRef<number>(null);
 
-    const maxLength = isObject(propMaxLength) ? propMaxLength.length : propMaxLength;
-    const mergedMaxLength =
-      isObject(propMaxLength) && propMaxLength.errorOnly ? undefined : maxLength;
+    const maxLength = isObject(propMaxLength)
+      ? propMaxLength.errorOnly
+        ? undefined
+        : propMaxLength.length
+      : propMaxLength;
+
+    const normalizeHandler = (type: InputProps['normalizeTrigger'][number]) => {
+      let handler;
+      const normalizeTrigger = props.normalizeTrigger || ['onBlur'];
+      if (
+        Array.isArray(normalizeTrigger) &&
+        normalizeTrigger.indexOf(type) > -1 &&
+        isFunction(props.normalize)
+      ) {
+        handler = props.normalize;
+      }
+      return handler;
+    };
+
+    const {
+      compositionValue,
+      valueChangeHandler,
+      compositionHandler,
+      keyDownHandler,
+      triggerValueChangeCallback,
+    } = useComposition({
+      value,
+      maxLength,
+      onChange,
+      onKeyDown,
+      onPressEnter,
+      normalizeHandler,
+    });
 
     const inputClassNames = cs(
       prefixCls,
       prefixCls && {
         [`${prefixCls}-size-${size}`]: size,
-        [`${prefixCls}-error`]: error,
+        [`${prefixCls}-${props.status}`]: props.status,
         [`${prefixCls}-disabled`]: disabled,
+        [`${prefixCls}-autowidth`]: autoFitWidth,
       },
       hasParent ? undefined : className
     );
+    const inputProps = {
+      'aria-invalid': props.status === 'error' || undefined,
+      ...otherProps,
+      readOnly,
+      maxLength,
+      disabled,
+      placeholder,
+      value: compositionValue || value || '',
+      className: inputClassNames,
+      onKeyDown: keyDownHandler,
+      onChange: valueChangeHandler,
+      onCompositionStart: compositionHandler,
+      onCompositionUpdate: compositionHandler,
+      onCompositionEnd: compositionHandler,
+      onBlur: (e) => {
+        props.onBlur?.(e);
+        const normalize = normalizeHandler('onBlur');
+        normalize && triggerValueChangeCallback(normalize(e.target.value), e);
+      },
+    };
 
     useImperativeHandle(
       ref,
@@ -84,78 +178,31 @@ const InputComponent = React.forwardRef<RefInputType, InputComponentProps>(
     const updateInputWidth = () => {
       if (refInputMirror.current && refInput.current) {
         const width = refInputMirror.current.offsetWidth;
-        refInput.current.style.width = `${width + (width ? 8 : 4)}px`;
+
+        refInput.current.style.width = `${width + inputContentWidth}px`;
       }
     };
 
-    // 设定 <input> 初始宽度，之后的更新交由 ResizeObserver 触发
-    useEffect(() => autoFitWidth && updateInputWidth(), []);
-
-    const tryTriggerValueChangeCallback: typeof onValueChange = (newValue, e) => {
-      if (
-        onValueChange &&
-        // https://github.com/arco-design/arco-design/issues/520
-        // Avoid triggering onChange repeatedly for the same value
-        // Compositionend is earlier than onchange in Firefox, different with chrome
-        newValue !== value &&
-        (mergedMaxLength === undefined || newValue.length <= mergedMaxLength)
-      ) {
-        onValueChange(newValue, e);
+    // Set the initial width of <input>, and subsequent updates are triggered by ResizeObserver
+    useEffect(() => {
+      if (autoFitWidth) {
+        if (!isObject(autoFitWidth) || !autoFitWidth.pure) {
+          setInputComputeStyle(getStyleFromInput(refInput?.current));
+        }
+        updateInputWidth();
       }
-    };
+    }, [autoFitWidth]);
 
-    const onChange: React.ChangeEventHandler<HTMLInputElement> = (e: any) => {
-      const newValue = e.target.value;
-      if (!refIsComposition.current) {
-        compositionValue && setCompositionValue(undefined);
-        tryTriggerValueChangeCallback(newValue, e);
-      } else {
-        // https://github.com/arco-design/arco-design/issues/397
-        // compositionupdate => onchange
-        refIsComposition.current = false;
-        setCompositionValue(newValue);
-      }
-    };
-
-    const onComposition = (e) => {
-      refIsComposition.current = e.type !== 'compositionend';
-      if (!refIsComposition.current) {
-        setCompositionValue(undefined);
-        tryTriggerValueChangeCallback(e.target.value, e);
-      }
-    };
-
-    const onKeyDown = (e) => {
-      const { onKeyDown, onPressEnter } = props;
-      const keyCode = e.keyCode || e.which;
-
-      if (refIsComposition.current) {
-        return;
-      }
-
-      onKeyDown && onKeyDown(e);
-      if (keyCode === Enter.code) {
-        onPressEnter && onPressEnter(e);
-      }
-    };
-
-    const inputProps = {
-      'aria-invalid': error,
-      ...otherProps,
-      readOnly,
-      maxLength: mergedMaxLength,
-      value: compositionValue || value || '',
-      disabled,
-      placeholder,
-      onChange,
-      onKeyDown,
-      className: inputClassNames,
-      onCompositionStart: onComposition,
-      onCompositionUpdate: onComposition,
-      onCompositionEnd: onComposition,
-    };
-
+    // Here also need placeholder to trigger updateInputWidth after user-input is cleared
     const mirrorValue = inputProps.value || placeholder;
+
+    const handleClear = (e) => {
+      if (refInput.current && refInput.current.focus) {
+        refInput.current.focus();
+      }
+      triggerValueChangeCallback('', e);
+      onClear?.();
+    };
 
     return (
       <>
@@ -163,31 +210,55 @@ const InputComponent = React.forwardRef<RefInputType, InputComponentProps>(
           <>
             <input ref={refInput} {...inputProps} />
             {!readOnly && !disabled && allowClear && value ? (
-              <IconHover
-                className={`${prefixCls}-clear-icon`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (refInput.current && refInput.current.focus) {
-                    refInput.current.focus();
-                  }
-                  tryTriggerValueChangeCallback('', e);
-                  onClear && onClear();
-                }}
-              >
-                <IconClose
-                  // keep focus status
+              clearIcon !== undefined ? (
+                <span
+                  tabIndex={0}
+                  className={`${prefixCls}-clear-icon`}
+                  {...getKeyboardEvents({ onPressEnter: handleClear })}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClear(e);
+                  }}
                   onMouseDown={(e) => {
                     e.preventDefault();
                   }}
-                />
-              </IconHover>
+                >
+                  {clearIcon}
+                </span>
+              ) : (
+                <IconHover
+                  tabIndex={0}
+                  className={`${prefixCls}-clear-icon`}
+                  {...getKeyboardEvents({ onPressEnter: handleClear })}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClear(e);
+                  }}
+                >
+                  <IconClose
+                    // keep focus status
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                    }}
+                  />
+                </IconHover>
+              )
             ) : null}
           </>
         ) : (
           <input
             ref={refInput}
             {...inputProps}
-            style={hasParent ? {} : { ...style, ...('height' in props ? { height } : {}) }}
+            style={
+              hasParent
+                ? {}
+                : {
+                    minWidth: isObject(autoFitWidth) ? autoFitWidth.minWidth : undefined,
+                    maxWidth: isObject(autoFitWidth) ? autoFitWidth.maxWidth : undefined,
+                    ...style,
+                    ...('height' in props ? { height } : {}),
+                  }
+            }
           />
         )}
         {autoFitWidth && (
@@ -206,8 +277,20 @@ const InputComponent = React.forwardRef<RefInputType, InputComponentProps>(
               refPrevInputWidth.current = inputWidth;
             }}
           >
-            <span className={`${prefixCls}-mirror`} ref={refInputMirror}>
-              {mirrorValue && mirrorValue.replace(/\s/g, '\u00A0')}
+            <span
+              className={cs(`${prefixCls}-mirror`)}
+              style={
+                hasParent
+                  ? inputComputeStyle
+                  : {
+                      ...inputComputeStyle,
+                      ...style,
+                      ...('height' in props ? { height } : {}),
+                    }
+              }
+              ref={refInputMirror}
+            >
+              {fillNBSP(mirrorValue)}
             </span>
           </ResizeObserver>
         )}
